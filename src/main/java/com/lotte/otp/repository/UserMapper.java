@@ -1,5 +1,7 @@
 package com.lotte.otp.repository;
 
+import com.lotte.otp.domain.UserVO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -8,5 +10,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserMapper {
 
-    String getId();
+    int duplicateUserId(@Param("id") String id);
+
+    void createUser(@Param("userVO") UserVO userVO);
+
+    int login(@Param("id") String id, @Param("pw") String pw);  //uuid 리턴
+
+
 }

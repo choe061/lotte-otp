@@ -41,7 +41,7 @@ public class DatabaseConfig {
     public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
         SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
         sqlSessionFactory.setDataSource(dataSource);
-        sqlSessionFactory.setTypeAliasesPackage("com.lotte.otp.entity");
+        sqlSessionFactory.setTypeAliasesPackage("com.lotte.otp.domain");
         sqlSessionFactory.setMapperLocations(applicationContext.getResources("classpath:mapper/*-mapper.xml"));
 
         return sqlSessionFactory.getObject();

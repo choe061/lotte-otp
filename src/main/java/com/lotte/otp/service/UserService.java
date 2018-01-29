@@ -1,5 +1,6 @@
 package com.lotte.otp.service;
 
+import com.lotte.otp.domain.UserVO;
 import com.lotte.otp.repository.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,9 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    public String getId() {
-        return userMapper.getId();
+    public boolean createUser(UserVO userVO) {
+
+        return true;
     }
 
 }
