@@ -19,15 +19,15 @@
               <input type="text" class="form-control" id="id">
           </div>
           <div class="form-group">
-              <label for="pwd">비밀번호:</label>
-              <input type="password" class="form-control" id="pwd">
+              <label for="pw">비밀번호:</label>
+              <input type="password" class="form-control" id="pw">
           </div>
           <div class="form-group">
-              <label for="pwd2">비밀번호 재입력:</label>
-              <input type="password" class="form-control" id="pwd2">
+              <label for="pw2">비밀번호 재입력:</label>
+              <input type="password" class="form-control" id="pw2">
           </div>
 
-          <button type="submit" class="btn btn-primary">회원가입</button>
+          <button type="submit" class="btn btn-primary">가입하기</button>
       </form>
 
       <script src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>

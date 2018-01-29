@@ -3,6 +3,8 @@ package com.lotte.otp.service;
 import com.lotte.otp.domain.UserVO;
 import com.lotte.otp.exception.DuplicateUserIDException;
 import com.lotte.otp.repository.UserMapper;
+import com.lotte.otp.util.UserValidator;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +48,12 @@ public class UserService {
             logger.info(e.getMessage());
             return false;
         }
-        userMapper.createUser(user);
-        return true;
+        if (UserValidator.isValidationUserInfo(user)) {
+            userMapper.createUser(user);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

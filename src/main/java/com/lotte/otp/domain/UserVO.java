@@ -17,4 +17,19 @@ public class UserVO {
     private String id;
     private String pw;
     private Date created_at;
+
+    private String pw2;
+
+    public UserVO(String id, String pw, String pw2) {
+        this.id = id;
+        this.pw = pw;
+        this.pw2 = pw2;
+    }
+
+    public UserVO(int uuid, String id, String pw, Date created_at) {
+        this.uuid = uuid;
+        this.id = id;
+        this.pw = pw;
+        this.created_at = created_at;
+    }
 }
