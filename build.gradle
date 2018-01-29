@@ -32,6 +32,9 @@ dependencies {
 	compile("org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1")
 	compile("mysql:mysql-connector-java:5.1.39")
 
+	compile('org.apache.tomcat.embed:tomcat-embed-jasper')
+	compile('javax.servlet:jstl')
+
 	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.1'
 }
 

@@ -12,7 +12,7 @@ public interface UserMapper {
 
     int duplicateUserId(@Param("id") String id);
 
-    void createUser(@Param("userVO") UserVO userVO);
+    void createUser(@Param("user") UserVO user);
 
     int login(@Param("id") String id, @Param("pw") String pw);  //uuid 리턴
 

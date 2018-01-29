@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface User2NdAuthMapper {
 
-    void insertUser2ndAuth(@Param("2nd_auth") User2NdAuthVO user2NdAuthVO);
+    void insertUser2ndAuth(@Param("2nd_auth") User2NdAuthVO user2NdAuth);
 
     User2NdAuthVO getUser2ndAuth(@Param("uuid") int uuid);    //검증을하기 위해 secret_key, last_published_at 획득
 

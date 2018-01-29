@@ -16,7 +16,21 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    public boolean createUser(UserVO userVO) {
+    /**
+     * 중복된 ID가 있으면 true 리턴
+     * @param userId
+     * @return boolean
+     */
+    public boolean duplicateUserId(String userId) {
+        try {
+            int id = userMapper.duplicateUserId(userId);
+        } catch (RuntimeException e) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean createUser(UserVO user) {
 
         return true;
     }
