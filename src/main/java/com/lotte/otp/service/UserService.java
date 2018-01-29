@@ -1,8 +1,12 @@
 package com.lotte.otp.service;
 
 import com.lotte.otp.domain.UserVO;
+import com.lotte.otp.exception.DuplicateUserIDException;
 import com.lotte.otp.repository.UserMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,26 +16,37 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class UserService {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private UserMapper userMapper;
 
+    private static final int NONE = -1;
+
     /**
-     * 중복된 ID가 있으면 true 리턴
+     * 중복된 ID가 없으면 true 리턴
+     * 있다면 DuplicateUserIDException 발생
      * @param userId
      * @return boolean
      */
     public boolean duplicateUserId(String userId) {
         try {
-            int id = userMapper.duplicateUserId(userId);
-        } catch (RuntimeException e) {
+            userMapper.duplicateUserId(userId);
             return true;
+        } catch (DataAccessException e) {
+            logger.info("Database exception : " + e.getCause() + ". " + e.getMessage());
+            throw new DuplicateUserIDException();
         }
-        return false;
     }
 
     public boolean createUser(UserVO user) {
-
+        try {
+            duplicateUserId(user.getId());
+        } catch (DuplicateUserIDException e) {
+            logger.info(e.getMessage());
+            return false;
+        }
+        userMapper.createUser(user);
         return true;
     }
 
