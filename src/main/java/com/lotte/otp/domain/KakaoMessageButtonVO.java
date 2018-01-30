@@ -5,12 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Created by choi on 2018. 1. 29. PM 3:25.
+ * Created by choi on 2018. 1. 30. PM 2:23.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class KakaoMessageVO {
-    private String text;
-    private KakaoMessageButtonVO message_button;
+public class KakaoMessageButtonVO {
+
+    private String label;
+    private String url;
+
 }

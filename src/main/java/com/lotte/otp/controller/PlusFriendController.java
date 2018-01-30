@@ -1,9 +1,6 @@
 package com.lotte.otp.controller;
 
-import com.lotte.otp.domain.KakaoKeyboardVO;
-import com.lotte.otp.domain.KakaoMessageVO;
-import com.lotte.otp.domain.KakaoRequestMessageVO;
-import com.lotte.otp.domain.KakaoResponseMessageVO;
+import com.lotte.otp.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -34,8 +31,9 @@ public class PlusFriendController {
     @RequestMapping(value = "/message", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public KakaoResponseMessageVO message(@RequestBody KakaoRequestMessageVO message) {
         KakaoResponseMessageVO response = new KakaoResponseMessageVO(
-                new KakaoMessageVO("반사 : " + message.getContent()),
-                new KakaoKeyboardVO("buttons", new String[]{"OTP (재)발급", "OTP 만료일시 확인", "로그인 내역 보러가기"})
+                new KakaoMessageVO("반사 : " + message.getContent(),
+                        new KakaoMessageButtonVO("OTP 만료일시 확인", "www.naver.com")),
+                new KakaoKeyboardVO("buttons", new String[]{"OTP (재)발급", "로그인 내역 확인"})
         );
         logger.info("REQUEST Message : " + message.getUser_key() + ", " + message.getContent() + ", " + message.getType());
         return response;
