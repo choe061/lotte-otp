@@ -30,6 +30,8 @@ dependencies {
 
 	compile("org.springframework.boot:spring-boot-starter-jdbc")
 	compile("org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1")
+	compile("org.mybatis:mybatis-spring")
+	compile("org.mybatis:mybatis")
 	compile("mysql:mysql-connector-java:5.1.39")
 
 	compile('org.apache.tomcat.embed:tomcat-embed-jasper')

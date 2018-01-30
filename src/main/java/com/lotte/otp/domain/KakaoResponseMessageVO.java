@@ -13,5 +13,6 @@ import lombok.NoArgsConstructor;
 public class KakaoResponseMessageVO {
 
     private KakaoMessageVO message;
+    private KakaoKeyboardVO keyboard;
 
 }

@@ -4,11 +4,14 @@ import com.lotte.otp.domain.UserVO;
 import com.lotte.otp.exception.DuplicateUserIDException;
 import com.lotte.otp.repository.UserMapper;
 import com.lotte.otp.util.UserValidator;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,8 +25,7 @@ public class UserService {
 
     @Autowired
     private UserMapper userMapper;
-
-    private static final int NONE = -1;
+    private static final int EXIST_USER = 1;
 
     /**
      * 중복된 ID가 없으면 true 리턴
@@ -32,13 +34,11 @@ public class UserService {
      * @return boolean
      */
     public boolean duplicateUserId(String userId) {
-        try {
-            userMapper.duplicateUserId(userId);
-            return true;
-        } catch (DataAccessException e) {
-            logger.info("Database exception : " + e.getCause() + ". " + e.getMessage());
+        int user = userMapper.duplicateUserId(userId);
+        if (user == EXIST_USER) {
             throw new DuplicateUserIDException();
         }
+        return true;
     }
 
     public boolean createUser(UserVO user) {

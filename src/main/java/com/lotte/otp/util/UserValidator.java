@@ -10,8 +10,8 @@ public class UserValidator {
 
     public static boolean isValidationUserInfo(UserVO user) {
         if (!StringUtils.isAlphanumeric(user.getId())
-                || !StringUtils.isNotBlank(user.getId())
-                || !StringUtils.isNotEmpty(user.getId())) {
+                || StringUtils.isBlank(user.getId())
+                || StringUtils.isEmpty(user.getId())) {
             return false;
         }
         if (user.getId().length() < 5 || user.getId().length() > 20) {

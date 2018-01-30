@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,8 +30,8 @@ public class UserController {
         return new ModelAndView("home");
     }
 
-    @RequestMapping(value = "/duplicate")
-    public ResponseEntity<HashMap<String, Boolean>> duplicateUserID(@RequestParam("id") String id) {
+    @RequestMapping(value = "/duplicate/{id}", method = RequestMethod.GET)
+    public ResponseEntity<HashMap<String, Boolean>> duplicateUserID(@PathVariable("id") String id) {
         logger.info("ID : " + id);
         HashMap<String, Boolean> result = new HashMap<>();
         ResponseEntity<HashMap<String, Boolean>> responseEntity = null;
@@ -46,10 +47,14 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/sign-up", method = RequestMethod.POST)
-    public String signUp(@RequestBody UserVO user) {
-        userService.createUser(user);
-        return "redirect:login";
+    @RequestMapping(value = "/sign-up", method = RequestMethod.POST
+            , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ModelAndView signUp(UserVO user) {
+        if (userService.createUser(user)) {
+            return new ModelAndView("redirect:/login");
+        } else {
+            return new ModelAndView("/sign-up");
+        }
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)

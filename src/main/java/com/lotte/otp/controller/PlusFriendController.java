@@ -1,7 +1,9 @@
 package com.lotte.otp.controller;
 
 import com.lotte.otp.domain.KakaoKeyboardVO;
+import com.lotte.otp.domain.KakaoMessageVO;
 import com.lotte.otp.domain.KakaoRequestMessageVO;
+import com.lotte.otp.domain.KakaoResponseMessageVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -15,12 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/kakaoApi")
-public class ChatController {
+public class PlusFriendController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @RequestMapping(value = "/keyboard", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public KakaoKeyboardVO getKeyboard() {
-        return new KakaoKeyboardVO("buttons", new String[]{"테스트"});
+        return new KakaoKeyboardVO("buttons", new String[]{"ID 등록"});
     }
 
     /**
@@ -30,9 +32,13 @@ public class ChatController {
      * @return
      */
     @RequestMapping(value = "/message", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public String message(@RequestBody KakaoRequestMessageVO message) {
+    public KakaoResponseMessageVO message(@RequestBody KakaoRequestMessageVO message) {
+        KakaoResponseMessageVO response = new KakaoResponseMessageVO(
+                new KakaoMessageVO("반사 : " + message.getContent()),
+                new KakaoKeyboardVO("buttons", new String[]{"OTP (재)발급", "OTP 만료일시 확인", "로그인 내역 보러가기"})
+        );
         logger.info("REQUEST Message : " + message.getUser_key() + ", " + message.getContent() + ", " + message.getType());
-        return "반사 : " + message.getContent();
+        return response;
     }
 
 }

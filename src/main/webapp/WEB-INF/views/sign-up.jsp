@@ -13,22 +13,27 @@
     <title>회원가입</title>
   </head>
   <body>
+    <div class="container">
       <form action="/user/sign-up" method="post">
           <div class="form-group">
               <label for="id">아이디:</label>
-              <input type="text" class="form-control" id="id">
+              <input type="text" name="id" class="form-control" id="id">
           </div>
+
+          <button type="button" class="btn btn-danger">ID 중복확인</button>
+
           <div class="form-group">
               <label for="pw">비밀번호:</label>
-              <input type="password" class="form-control" id="pw">
+              <input type="password" name="pw" class="form-control" id="pw">
           </div>
           <div class="form-group">
               <label for="pw2">비밀번호 재입력:</label>
-              <input type="password" class="form-control" id="pw2">
+              <input type="password" name="pw2" class="form-control" id="pw2">
           </div>
 
-          <button type="submit" class="btn btn-primary">가입하기</button>
+          <input type="submit" class="btn btn-primary" value="가입하기">
       </form>
+    </div>
 
       <script src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
       <script src="/webjars/bootstrap/3.3.4/dist/js/bootstrap.min.js"></script>
