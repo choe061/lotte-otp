@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class KakaoKeyboardVO {
     private String type;
-    private String[] button;
+    private String[] buttons;
 }
