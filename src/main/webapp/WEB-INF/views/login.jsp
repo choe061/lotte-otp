@@ -14,6 +14,7 @@
   </head>
   <body>
     <div class="container">
+      <img src="http://image.lotte.com/lotte/images/common/header2015/logo_main_2015.gif">
       <form action="" method="post" id="login_user_info">
         <div class="form-group">
           <label for="id">아이디:</label>
@@ -34,8 +35,8 @@
       </form>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" role="dialog">
+    <!-- OTP Input Modal -->
+    <div class="modal fade" id="otpInputDialog" role="dialog">
       <div class="modal-dialog">
 
         <!-- Modal content-->
@@ -46,7 +47,7 @@
           </div>
 
           <div class="modal-body">
-            <form action="/to-do/update" method="post">
+            <form action="/otp/auth" method="get">
               <div class="form-group">
                 <label for="otp">OTP :</label>
                 <input type="text" name="otp" placeholder="otp" class="form-control" id="otp">
@@ -59,32 +60,48 @@
       </div>
     </div>
 
+    <!-- OTP Input Modal -->
+    <div class="modal fade" id="otpConnectDialog" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">OTP 연동 필수</h4>
+          </div>
+
+          <div class="modal-body">
+            <div>
+              <p> &bigcirc; 카카오톡 플러스 친구('균봇'검색 or QR코드를 통해 친구 추가하세요.)</p>
+              <img src="images/qrcode_350.png" sizes="50%">
+            </div>
+            <div>
+              <p> &bigcirc; 회원님과 카카오톡 연동을 위한 임시키를 발급해드립니다. 플러스 친구 추가 후 안내에 따라 입력해주세요.</p>
+              <p></p>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">확인</button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
     <script src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
     <script src="/webjars/bootstrap/3.3.4/dist/js/bootstrap.min.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/otp-auth.js"></script>
     <script type="text/javascript">
+        printLogo();
         $(document).ready(function() {
             $('#login_submit_button').on('click', function () {
                 var id = $('#id').val();
-                var pw = $('#pw').val()
-                console.log('val : ' + id + ", "+ pw);
-                $.ajax({
-                    url: "/user/login",
-                    method: "POST",
-                    contentType : "application/json; charset=UTF-8",
-                    dataType: "json",
-                    data: JSON.stringify({
-                        "id": id,
-                        "pw": pw
-                    }),
-                    success: function (responseJson) {
-                        alert("data : "+responseJson);
-                        console.log("%csuccess%c!!!", "color: blue", "color: red");
-                    },
-                    error: function (request, status, error) {
-                        alert("error : "+status+". "+error);
-                        console.log("%cfail%c!!!", "color: blue", "color: red");
-                    }
-                });
+                var pw = $('#pw').val();
+                requestLogin(id, pw);
             });
         });
     </script>
