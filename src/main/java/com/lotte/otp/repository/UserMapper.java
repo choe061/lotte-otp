@@ -14,7 +14,6 @@ public interface UserMapper {
 
     void createUser(@Param("user") UserVO user);
 
-    int login(@Param("id") String id, @Param("pw") String pw);  //uuid 리턴
-
+    UserVO login(@Param("id") String id);
 
 }

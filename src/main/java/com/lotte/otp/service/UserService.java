@@ -4,6 +4,7 @@ import com.lotte.otp.domain.UserVO;
 import com.lotte.otp.exception.DuplicateUserIDException;
 import com.lotte.otp.repository.UserMapper;
 import com.lotte.otp.util.SecurityUtils;
+import com.lotte.otp.util.UserAuthStatus;
 import com.lotte.otp.util.UserValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,7 @@ public class UserService {
     /**
      * 중복된 ID가 없으면 true 리턴
      * 있다면 DuplicateUserIDException 발생
+     *
      * @param userId
      * @return boolean
      */
@@ -52,6 +54,16 @@ public class UserService {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public UserAuthStatus login(String id, String pw) {
+        UserVO user = userMapper.login(id);
+        logger.info("User INFO - " + user.getId() + ", " + user.getPw());
+        if (SecurityUtils.isValidationPassword(pw, user.getPw())) {
+            return UserAuthStatus.OK;
+        } else {
+            return UserAuthStatus.UNAUTHORIZED;
         }
     }
 

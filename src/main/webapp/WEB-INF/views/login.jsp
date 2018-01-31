@@ -34,6 +34,31 @@
       </form>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">상세 내용</h4>
+          </div>
+
+          <div class="modal-body">
+            <form action="/to-do/update" method="post">
+              <div class="form-group">
+                <label for="otp">OTP :</label>
+                <input type="text" name="otp" placeholder="otp" class="form-control" id="otp">
+              </div>
+              <input type="submit" value="인증">
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
     <script src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
     <script src="/webjars/bootstrap/3.3.4/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript">

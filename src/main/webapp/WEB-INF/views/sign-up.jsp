@@ -43,7 +43,6 @@
         $(document).ready(function() {
             $('#duplicate_button').on('click', function () {
                 var id = $('#id').val();
-                console.log(id);
                 duplicateId(id);
             });
         });
