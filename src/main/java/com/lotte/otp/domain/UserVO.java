@@ -20,6 +20,11 @@ public class UserVO {
 
     private String pw2;
 
+    public UserVO(String id, String pw) {
+        this.id = id;
+        this.pw = pw;
+    }
+
     public UserVO(String id, String pw, String pw2) {
         this.id = id;
         this.pw = pw;

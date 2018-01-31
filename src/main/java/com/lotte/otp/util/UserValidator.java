@@ -2,6 +2,7 @@ package com.lotte.otp.util;
 
 import com.lotte.otp.domain.UserVO;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  * Created by choi on 2018. 1. 29. PM 5:46.
@@ -14,7 +15,7 @@ public class UserValidator {
                 || StringUtils.isEmpty(user.getId())) {
             return false;
         }
-        if (user.getId().length() < 5 || user.getId().length() > 20) {
+        if (user.getId().length() <= 6 || user.getId().length() >= 20) {
             return false;
         }
         if (StringUtils.isBlank(user.getPw()) || StringUtils.isEmpty(user.getPw())) {
@@ -27,6 +28,10 @@ public class UserValidator {
             return false;
         }
         return true;
+    }
+
+    public static String passwordEncoder(String pw) {
+        return new BCryptPasswordEncoder().encode(pw);
     }
 
 }

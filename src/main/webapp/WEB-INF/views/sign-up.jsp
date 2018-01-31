@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <link rel="stylesheet" href="/webjars/bootstrap/3.3.4/dist/css/bootstrap.min.css">
 <html>
   <head>
@@ -20,7 +21,7 @@
               <input type="text" name="id" class="form-control" id="id">
           </div>
 
-          <button type="button" class="btn btn-danger">ID 중복확인</button>
+          <button type="button" class="btn btn-danger" id="duplicate_button">ID 중복확인</button>
 
           <div class="form-group">
               <label for="pw">비밀번호:</label>
@@ -35,7 +36,17 @@
       </form>
     </div>
 
-      <script src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
-      <script src="/webjars/bootstrap/3.3.4/dist/js/bootstrap.min.js"></script>
+    <script src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.4/dist/js/bootstrap.min.js"></script>
+    <script src="js/sign-up.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#duplicate_button').on('click', function () {
+                var id = $('#id').val();
+                console.log(id);
+                duplicateId(id);
+            });
+        });
+    </script>
   </body>
 </html>

@@ -14,7 +14,7 @@
   </head>
   <body>
     <div class="container">
-      <form action="/user/login" method="post">
+      <form action="" method="post" id="login_user_info">
         <div class="form-group">
           <label for="id">아이디:</label>
           <input type="text" class="form-control" id="id">
@@ -30,11 +30,31 @@
           </label>
         </div>
 
-        <button type="submit" class="btn btn-primary">로그인</button>
+        <button type="submit" class="btn btn-primary" id="login_submit_button">로그인</button>
       </form>
     </div>
 
     <script src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
     <script src="/webjars/bootstrap/3.3.4/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#login_submit_button').on('click', function () {
+                $.ajax({
+                    url: "/user/login",
+                    method: "POST",
+                    type: "json",
+                    data: $('#login_user_info').serialize(),
+                    success: function (data) {
+                        console.log("%csuccess%c!!!", "color: blue", "color: red");
+                        alert("data");
+                    },
+                    error: function (request, status, error) {
+                        console.log("%cfail%c!!!", "color: blue", "color: red");
+                        alert("error");
+                    }
+                });
+            });
+        });
+    </script>
   </body>
 </html>

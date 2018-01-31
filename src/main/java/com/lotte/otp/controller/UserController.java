@@ -51,15 +51,31 @@ public class UserController {
             , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ModelAndView signUp(UserVO user) {
         if (userService.createUser(user)) {
-            return new ModelAndView("redirect:/login");
+            return new ModelAndView("redirect:/login", HttpStatus.CREATED);
         } else {
-            return new ModelAndView("/sign-up");
+            return new ModelAndView("/sign-up", HttpStatus.BAD_REQUEST);
         }
     }
 
+    /**
+     * 200 : 정상 응답
+     * 204 : 1차 로그인은 성공이지만, OTP 미연동 회원
+     * 401 : ID/PW - 1차 로그인 실패
+     * 404 : ID가 없음
+     * @param user
+     * @return
+     */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelAndView login() {
+    public ResponseEntity<HashMap<String, Boolean>> login(UserVO user) {
+        HashMap<String, Boolean> result = new HashMap<>();
 
+        result.put("result", true);
+
+        ResponseEntity<HashMap<String, Boolean>> responseEntity = null;
+
+        responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
+
+        responseEntity = new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
         return null;
     }
 }

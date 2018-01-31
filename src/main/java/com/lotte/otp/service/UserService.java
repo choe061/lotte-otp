@@ -3,15 +3,11 @@ package com.lotte.otp.service;
 import com.lotte.otp.domain.UserVO;
 import com.lotte.otp.exception.DuplicateUserIDException;
 import com.lotte.otp.repository.UserMapper;
+import com.lotte.otp.util.SecurityUtils;
 import com.lotte.otp.util.UserValidator;
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +45,9 @@ public class UserService {
             return false;
         }
         if (UserValidator.isValidationUserInfo(user)) {
+            String encodingPW = SecurityUtils.passwordEncoder(user.getPw());
+            logger.info("PW - " + encodingPW);
+            user.setPw(encodingPW);
             userMapper.createUser(user);
             return true;
         } else {
