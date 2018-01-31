@@ -36,9 +36,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.formLogin()    // 로그인 페이지 : 컨트롤러 매핑을 하지 않으면 기본 제공되는 로그인 페이지가 뜬다.
                 .loginPage("/login")
-                .loginProcessingUrl("/user/login")
-                .failureUrl("/login")
-                .successHandler(successHandler());
+//                .loginProcessingUrl("/user/login")
+                .failureUrl("/login");
+//                .successHandler(successHandler());
 
         http.logout()   // /logout 을 호출할 경우 로그아웃
             .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))

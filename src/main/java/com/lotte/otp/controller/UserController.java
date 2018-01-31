@@ -69,8 +69,8 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST
-            , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ResponseEntity<HashMap<String, Boolean>> login(UserVO user) {
+            , consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<HashMap<String, Boolean>> login(@RequestBody UserVO user) {
         logger.info(user.getId()+", "+user.getPw());
         HashMap<String, Boolean> result = new HashMap<>();
         ResponseEntity<HashMap<String, Boolean>> responseEntity = null;

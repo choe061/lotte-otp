@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="/webjars/bootstrap/3.3.4/dist/css/bootstrap.min.css">
 <html>
   <head>
-    <title>Title</title>
+    <title>LOTTE.com 로그인</title>
   </head>
   <body>
     <div class="container">
@@ -20,8 +20,8 @@
           <input type="text" class="form-control" id="id">
         </div>
         <div class="form-group">
-          <label for="pwd">비밀번호:</label>
-          <input type="password" class="form-control" id="pwd">
+          <label for="pw">비밀번호:</label>
+          <input type="password" class="form-control" id="pw">
         </div>
 
         <div class="form-check">
@@ -30,7 +30,7 @@
           </label>
         </div>
 
-        <button type="submit" class="btn btn-primary" id="login_submit_button">로그인</button>
+        <button type="button" class="btn btn-primary" id="login_submit_button" >로그인</button>
       </form>
     </div>
 
@@ -64,13 +64,20 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#login_submit_button').on('click', function () {
+                var id = $('#id').val();
+                var pw = $('#pw').val()
+                console.log('val : ' + id + ", "+ pw);
                 $.ajax({
                     url: "/user/login",
                     method: "POST",
-                    type: "json",
-                    data: $('#login_user_info').serialize(),
-                    success: function (data) {
-                        alert("success : "+data.result);
+                    contentType : "application/json; charset=UTF-8",
+                    dataType: "json",
+                    data: JSON.stringify({
+                        "id": id,
+                        "pw": pw
+                    }),
+                    success: function (responseJson) {
+                        alert("data : "+responseJson);
                         console.log("%csuccess%c!!!", "color: blue", "color: red");
                     },
                     error: function (request, status, error) {

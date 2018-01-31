@@ -14,7 +14,7 @@
         VALUES(#{user.id}, #{user.pw})
     </insert>
 
-    <select id="login" parameterType="com.lotte.otp.domain.UserVO">
+    <select id="login" resultType="com.lotte.otp.domain.UserVO">
         SELECT uuid, id, pw
         FROM USER WHERE id=#{id}
     </select>
