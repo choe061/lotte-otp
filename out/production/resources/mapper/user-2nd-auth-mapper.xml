@@ -2,12 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lotte.otp.repository.UserMapper">
+<mapper namespace="com.lotte.otp.repository.User2NdAuthMapper">
 
-    <select id="duplicateUserId" resultType="int">
-        SELECT COUNT(id)
-        FROM USER WHERE id=#{id}
+    <select id="findUser2NdAuth" resultType="int">
+        SELECT COUNT(auth_id)
+        FROM USER_2ND_AUTH AS a JOIN USER u
+        ON a.uuid = u.uuid
+        WHERE u.id=#{id}
     </select>
+
+
 
     <insert id="createUser" parameterType="com.lotte.otp.domain.UserVO">
         INSERT INTO USER(id, pw)

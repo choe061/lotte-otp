@@ -68,8 +68,10 @@ public class UserController {
      * @param user
      * @return
      */
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST
+            , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ResponseEntity<HashMap<String, Boolean>> login(UserVO user) {
+        logger.info(user.getId()+", "+user.getPw());
         HashMap<String, Boolean> result = new HashMap<>();
         ResponseEntity<HashMap<String, Boolean>> responseEntity = null;
 
@@ -86,7 +88,7 @@ public class UserController {
 //                result.put("result", false);
 //                responseEntity = new ResponseEntity<>(result, HttpStatus.NO_CONTENT);
 //            }
-            
+
         } else {
             result.put("result", false);
             responseEntity = new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);

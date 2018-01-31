@@ -70,12 +70,12 @@
                     type: "json",
                     data: $('#login_user_info').serialize(),
                     success: function (data) {
+                        alert("success : "+data.result);
                         console.log("%csuccess%c!!!", "color: blue", "color: red");
-                        alert("data");
                     },
                     error: function (request, status, error) {
+                        alert("error : "+status+". "+error);
                         console.log("%cfail%c!!!", "color: blue", "color: red");
-                        alert("error");
                     }
                 });
             });

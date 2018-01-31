@@ -60,6 +60,7 @@ public class UserService {
     public UserAuthStatus login(String id, String pw) {
         UserVO user = userMapper.login(id);
         logger.info("User INFO - " + user.getId() + ", " + user.getPw());
+        logger.info(String.valueOf(SecurityUtils.isValidationPassword(pw, user.getPw())));
         if (SecurityUtils.isValidationPassword(pw, user.getPw())) {
             return UserAuthStatus.OK;
         } else {

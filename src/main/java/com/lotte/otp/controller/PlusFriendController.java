@@ -31,7 +31,7 @@ public class PlusFriendController {
     @RequestMapping(value = "/message", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public KakaoResponseMessageVO message(@RequestBody KakaoRequestMessageVO message) {
         KakaoResponseMessageVO response = new KakaoResponseMessageVO(
-                new KakaoMessageVO("반사 : " + message.getContent(),
+                new KakaoMessageVO("응답 : " + message.getContent(),
                         new KakaoMessageButtonVO("OTP 만료일시 확인", "www.naver.com")),
                 new KakaoKeyboardVO("buttons", new String[]{"OTP (재)발급", "로그인 내역 확인"})
         );

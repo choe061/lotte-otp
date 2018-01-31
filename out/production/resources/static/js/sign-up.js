@@ -15,8 +15,12 @@ var duplicateId = function (id) {
                 console.log("%cSuccess%c!!!", "color: blue", "color: red");
             },
             error: function (request, status, error) {
-                alert("error");
-                console.log("%cError%c!!!", "color: blue", "color: red");
+                if (status === 409) {
+                    alert("이미 존재하는 아이디입니다.")
+                } else {
+                    alert("error");
+                    console.log("%cError%c!!!", "color: blue", "color: red");
+                }
             }
         });
     } else {
