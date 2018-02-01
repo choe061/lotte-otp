@@ -23,7 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         // 메인페이지 : css나 js 같은것들도 여기에 포함시켜준다.
-        web.ignoring().antMatchers("/user", "/sign-up", "/login");
+        web.ignoring().antMatchers("/user", "/sign-up", "/login", "/otp");
     }
 
     @Override
@@ -56,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         public void onAuthenticationSuccess(HttpServletRequest request,
                                             HttpServletResponse response,
                                             Authentication authentication) throws IOException, ServletException {
-            
+
         }
     }
 }

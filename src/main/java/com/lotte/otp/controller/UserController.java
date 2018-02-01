@@ -4,6 +4,7 @@ import com.lotte.otp.domain.UserVO;
 import com.lotte.otp.exception.DuplicateUserIDException;
 import com.lotte.otp.service.User2NdAuthService;
 import com.lotte.otp.service.UserService;
+import com.lotte.otp.util.SecurityUtils;
 import com.lotte.otp.util.UserAuthStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
 /**
@@ -62,7 +64,7 @@ public class UserController {
 
     /**
      * 200 : 정상 응답                          OK - OTP입력 팝업
-     * 204 : 1차 로그인은 성공이지만, OTP 미연동 회원 NO_CONTENT - OTP연동 팝업(qrcode 게시 등)
+     * 203 : 1차 로그인은 성공이지만, OTP 미연동 회원 NO_CONTENT - OTP연동 팝업(qrcode 게시 등)
      * 401 : ID/PW - 1차 로그인 실패             UNAUTHORIZED - 다시 입력
      * 404 : ID가 없음                         NOT_FOUND - 다시 입력, 401과 같음...
      * @param user
@@ -95,4 +97,5 @@ public class UserController {
         }
         return responseEntity;
     }
+
 }

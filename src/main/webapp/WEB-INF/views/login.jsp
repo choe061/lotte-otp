@@ -6,7 +6,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
 <link rel="stylesheet" href="/webjars/bootstrap/3.3.4/dist/css/bootstrap.min.css">
 <html>
   <head>
@@ -77,8 +79,8 @@
               <img src="images/qrcode_350.png" sizes="50%">
             </div>
             <div>
-              <p> &bigcirc; 회원님과 카카오톡 연동을 위한 임시키를 발급해드립니다. 플러스 친구 추가 후 안내에 따라 입력해주세요.</p>
-              <p></p>
+              <p> &bigcirc; 회원님과 카카오톡 연동을 위한 임시 키를 발급해드립니다. 플러스 친구 추가 후 안내에 따라 임시 키를 입력해주세요.</p>
+              <p> &bigcirc; 임시 키 :</p><p id="temp-key"></p>
             </div>
           </div>
 
