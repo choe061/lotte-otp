@@ -32,10 +32,8 @@ public class PlusFriendController {
      * @return
      */
     @RequestMapping(value = "/message", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public KakaoResponseMessageVO message(HttpSession session, @RequestBody KakaoRequestMessageVO message) {
-        int temp_key = (int) session.getAttribute(message.getContent());
+    public KakaoResponseMessageVO message(@RequestBody KakaoRequestMessageVO message) {
         logger.info("ID = " + message.getContent());
-        logger.info("temp key = " + temp_key);
 
         KakaoResponseMessageVO response = new KakaoResponseMessageVO(
                 new KakaoMessageVO("응답 : " + message.getContent(),

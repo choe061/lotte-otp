@@ -11,16 +11,4 @@
         WHERE u.id=#{id}
     </select>
 
-
-
-    <insert id="createUser" parameterType="com.lotte.otp.domain.UserVO">
-        INSERT INTO USER(id, pw)
-        VALUES(#{user.id}, #{user.pw})
-    </insert>
-
-    <select id="login" parameterType="com.lotte.otp.domain.UserVO">
-        SELECT uuid, id, pw
-        FROM USER WHERE id=#{id}
-    </select>
-
 </mapper>
