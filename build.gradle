@@ -10,7 +10,7 @@ buildscript {
 	}
 }
 
-apply plugin: 'java'
+apply plugin: 'org.gradle.java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 
