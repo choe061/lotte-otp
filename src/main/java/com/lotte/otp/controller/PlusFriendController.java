@@ -34,13 +34,14 @@ public class PlusFriendController {
     }
 
     /**
-     * 5초 안에 응답을 전송해야함. 5초가 지나면 응답없음 메시지가 사용자에게 전송됨.
-     *  -> 1차 로그인 후 바로 유저에게 메시지 전송이 불가능함.
+     *
      * @param message
      * @return
      */
     @RequestMapping(value = "/message", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public KakaoResponseMessageVO message(@RequestBody KakaoRequestMessageVO message) {
+        logger.info("Session => " + chatBotSession.getHttpSession(message.getUser_key()));
+
         KakaoResponseMessageVO response = null;
         if (user2NdAuthService.isUser2NdAuthWithUserKey(message.getUser_key())) {
             String responseMessage = plusFriendService.chat(message);
@@ -52,8 +53,10 @@ public class PlusFriendController {
             //세션 확인 -> 순서 정의
             if (chatBotSession.getHttpSession(message.getUser_key()) == null) {
                 chatBotSession.setHttpSession(message.getUser_key(), ChatBotStep.NO_BASE);
+                chatBotSession.nextStep(message.getUser_key());
                 response = new KakaoResponseMessageVO(
-                        new KakaoMessageVO(ChatBotStep.NO_BASE.getMessage())
+                        new KakaoMessageVO(ChatBotStep.NO_BASE.getMessage()),
+                        new KakaoKeyboardVO("buttons", new String[]{"ID 등록"})
                 );
             } else if (chatBotSession.getHttpSession(message.getUser_key()) == ChatBotStep.REQUEST_INFO) {
                 chatBotSession.nextStep(message.getUser_key());
