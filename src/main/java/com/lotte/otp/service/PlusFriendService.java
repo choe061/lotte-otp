@@ -40,7 +40,7 @@ public class PlusFriendService {
      * @return ChatBotStep.SUCCESS.getMessage() or 실패 메시지
      */
     public String connectWebService(KakaoRequestMessageVO message) {
-        
+
         return "";
     }
 

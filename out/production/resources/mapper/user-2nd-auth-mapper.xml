@@ -4,11 +4,19 @@
 
 <mapper namespace="com.lotte.otp.repository.User2NdAuthMapper">
 
-    <select id="findUser2NdAuth" resultType="int">
+    <select id="findUser2NdAuthWithID" resultType="int">
         SELECT COUNT(auth_id)
         FROM USER_2ND_AUTH AS a JOIN USER u
         ON a.uuid = u.uuid
         WHERE u.id=#{id}
     </select>
+
+    <select id="findUser2NdAuthWithUserKey" resultType="int">
+        SELECT COUNT(auth_id)
+        FROM USER_2ND_AUTH
+        WHERE kakao_user_key=#{kakao_user_key}
+    </select>
+
+
 
 </mapper>

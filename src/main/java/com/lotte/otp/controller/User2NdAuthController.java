@@ -35,6 +35,7 @@ public class User2NdAuthController {
             return responseEntity;
         } else {
             int tempKey = user2NdAuthService.distributeTempkey(id);
+            logger.info("temp key = " + String.valueOf(tempKey));
             result.put("temp_key", tempKey);
             responseEntity = new ResponseEntity<>(result, HttpStatus.NON_AUTHORITATIVE_INFORMATION);
             return responseEntity;
