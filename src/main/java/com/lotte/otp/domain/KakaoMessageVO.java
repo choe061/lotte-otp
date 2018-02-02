@@ -13,4 +13,8 @@ import lombok.NoArgsConstructor;
 public class KakaoMessageVO {
     private String text;
     private KakaoMessageButtonVO message_button;
+
+    public KakaoMessageVO(String text) {
+        this.text = text;
+    }
 }

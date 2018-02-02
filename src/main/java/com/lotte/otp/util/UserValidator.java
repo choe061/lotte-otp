@@ -9,6 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 public class UserValidator {
 
+    private UserValidator() {}
+
     public static boolean isValidationUserInfo(UserVO user) {
         if (!StringUtils.isAlphanumeric(user.getId())
                 || StringUtils.isBlank(user.getId())

@@ -17,10 +17,11 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SessionScope implements Serializable {
+public class ChatBotSessionScope implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private String id;
-    private int temp_key;
+    private ChatBotStep step;
+
 }

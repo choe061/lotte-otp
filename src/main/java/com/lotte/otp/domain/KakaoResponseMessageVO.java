@@ -15,4 +15,7 @@ public class KakaoResponseMessageVO {
     private KakaoMessageVO message;
     private KakaoKeyboardVO keyboard;
 
+    public KakaoResponseMessageVO(KakaoMessageVO message) {
+        this.message = message;
+    }
 }

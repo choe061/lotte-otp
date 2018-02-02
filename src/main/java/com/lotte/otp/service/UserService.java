@@ -4,7 +4,7 @@ import com.lotte.otp.domain.UserVO;
 import com.lotte.otp.exception.DuplicateUserIDException;
 import com.lotte.otp.repository.UserMapper;
 import com.lotte.otp.util.SecurityUtils;
-import com.lotte.otp.util.UserAuthStatus;
+import com.lotte.otp.domain.UserAuthStatus;
 import com.lotte.otp.util.UserValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
