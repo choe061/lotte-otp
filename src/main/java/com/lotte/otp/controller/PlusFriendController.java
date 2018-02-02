@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpSession;
-
 /**
  * Created by choi on 2018. 1. 29. PM 2:31.
  */
@@ -28,7 +26,7 @@ public class PlusFriendController {
     @Autowired
     private PlusFriendService plusFriendService;
     @Autowired
-    private ChatBotSessionScope chatBotSessionScope;
+    private ChatBotSession chatBotSession;
 
     @RequestMapping(value = "/keyboard", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public KakaoKeyboardVO getKeyboard() {
@@ -52,18 +50,20 @@ public class PlusFriendController {
             );
         } else {
             //세션 확인 -> 순서 정의
-
-
-
-            if (message.getContent().equals("아이디 등록")) {
-                //이미 등록되어 있는지 아닌지 확인
-                response = new KakaoResponseMessageVO(new KakaoMessageVO(PlusFriendResponse.REQUEST_CONNECT));
-                //String text = plusFriendService.connectWebService(message.getContent());
-            } else {
-
+            if (chatBotSession.getHttpSession(message.getUser_key()) == null) {
+                chatBotSession.setHttpSession(message.getUser_key(), ChatBotStep.NO_BASE);
                 response = new KakaoResponseMessageVO(
-                        new KakaoMessageVO("응답 : " + message.getContent(),
-                                new KakaoMessageButtonVO("OTP 만료일시 확인", "www.naver.com")),
+                        new KakaoMessageVO(ChatBotStep.NO_BASE.getMessage())
+                );
+            } else if (chatBotSession.getHttpSession(message.getUser_key()) == ChatBotStep.REQUEST_INFO) {
+                chatBotSession.nextStep(message.getUser_key());
+                response = new KakaoResponseMessageVO(
+                        new KakaoMessageVO(ChatBotStep.REQUEST_INFO.getMessage())
+                );
+            } else if (chatBotSession.getHttpSession(message.getUser_key()) == ChatBotStep.SUCCESS) {
+                String responseMessage = plusFriendService.connectWebService(message);
+                response = new KakaoResponseMessageVO(
+                        new KakaoMessageVO(responseMessage),
                         new KakaoKeyboardVO("buttons", new String[]{"OTP (재)발급", "로그인 내역 확인"})
                 );
             }

@@ -6,9 +6,6 @@ package com.lotte.otp.util;
 public class PlusFriendResponse {
     private PlusFriendResponse() {}
 
-    public static final String REQUEST_CONNECT = "ID와 Web에서 발급받은 임시 키를 입력하세요.('/'로 구분)\n" +
-                                                "Ex) honggildong/q1w2e3";
-
     public static final String OK = "회원님의 ID와 카카오 채팅 연동이 성공했습니다.";
     public static final String NO_CONETNT = "등록되지 않은 유저입니다.";
     public static final String UNAUTHORIZED = "ID와 임시키가 일치하는 정보가 없습니다.";

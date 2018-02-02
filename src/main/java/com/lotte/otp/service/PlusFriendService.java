@@ -34,16 +34,14 @@ public class PlusFriendService {
 
     /**
      * 웹과 연동 플로우
-     * 1. 먼저 연동이 되어 있는지 확인
-     * 2. 되어있으면 불가능
-     * 3. 안되어있으면 키발급 프로세스 시작
+     * 1. 먼저 연동이 되어 있는지 확인 - 컨트롤러단에서 확인하여 chat()메소드와 분기 호출
+     * 2. 안되어있으면 키발급 프로세스 시작
      *
-     *
-     * @return
+     * @return ChatBotStep.SUCCESS.getMessage() or 실패 메시지
      */
-    public String connectWebService(String text) {
-
-        return null;
+    public String connectWebService(KakaoRequestMessageVO message) {
+        
+        return "";
     }
 
     /**
