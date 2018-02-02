@@ -1,5 +1,7 @@
 package com.lotte.otp.domain;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,17 +12,20 @@ import javax.servlet.http.HttpSession;
  */
 @Component
 public class ChatBotSession {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private HttpSession httpSession;
 
     public ChatBotStep getHttpSession(String kakaoUserKey) {
+        logger.info("세션 조회 => " + httpSession.getAttribute(kakaoUserKey));
         return (ChatBotStep) httpSession.getAttribute(kakaoUserKey);
     }
 
     public void setHttpSession(String kakaoUserKey, ChatBotStep chatBotStep) {
         this.httpSession.setAttribute(kakaoUserKey, chatBotStep);
         this.httpSession.setMaxInactiveInterval(10 * 60);   //10분의 세션 유지 시간
+        logger.info("세션 저장 => " + httpSession.getAttribute(kakaoUserKey));
     }
 
     public void nextStep(String kakaoUserKey) {
