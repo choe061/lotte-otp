@@ -1,5 +1,6 @@
 package com.lotte.otp.service;
 
+import com.lotte.otp.domain.ChatBotStep;
 import com.lotte.otp.domain.KakaoRequestMessageVO;
 import com.lotte.otp.domain.UserConnectionQueueVO;
 import com.lotte.otp.repository.User2NdAuthMapper;
@@ -41,7 +42,7 @@ public class PlusFriendService {
      */
     public String connectWebService(KakaoRequestMessageVO message) {
 
-        return "";
+        return ChatBotStep.SUCCESS.getMessage();
     }
 
     /**

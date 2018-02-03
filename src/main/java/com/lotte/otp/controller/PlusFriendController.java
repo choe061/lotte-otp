@@ -27,8 +27,6 @@ public class PlusFriendController {
     @Autowired
     private PlusFriendService plusFriendService;
     @Autowired
-    private ChatBotSession chatBotSession;
-    @Autowired
     private ChatRedisService chatRedisService;
 
     @RequestMapping(value = "/keyboard", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -44,7 +42,7 @@ public class PlusFriendController {
      */
     @RequestMapping(value = "/message", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public KakaoResponseMessageVO message(@RequestBody KakaoRequestMessageVO message) {
-        logger.info("Session => " + chatBotSession.getHttpSession(message.getUser_key()));
+        logger.info(message.getUser_key() + " Session => " + chatRedisService.getStep(message.getUser_key()));
 
         KakaoResponseMessageVO response = null;
         if (user2NdAuthService.isUser2NdAuthWithUserKey(message.getUser_key())) {
@@ -56,44 +54,33 @@ public class PlusFriendController {
         } else {
             //세션 확인 -> 순서 정의
             String step = String.valueOf(chatRedisService.getStep(message.getUser_key()));
+            if (ChatBotStep.valueOf(step) == ChatBotStep.NO_BASE
+                    && (message.getContent().equals("아이디 등록") || message.getContent().equals("ID 등록"))) {
+                chatRedisService.nextStep(message.getUser_key());
+            }
 
             if (ChatBotStep.valueOf(step) == ChatBotStep.NO_BASE) {
+
                 response = new KakaoResponseMessageVO(
                         new KakaoMessageVO(ChatBotStep.NO_BASE.getMessage()),
                         new KakaoKeyboardVO("buttons", new String[]{"ID 등록"})
                 );
-            } else if (ChatBotStep.valueOf(step) == ChatBotStep.REQUEST_INFO) {
+                chatRedisService.nextStep(message.getUser_key());
+            } else if (ChatBotStep.valueOf(step) == ChatBotStep.REQUEST_INFO) {     //입력으로 "ID 등록"이 들어옴
                 response = new KakaoResponseMessageVO(
                         new KakaoMessageVO(ChatBotStep.REQUEST_INFO.getMessage())
                 );
-            } else if (ChatBotStep.valueOf(step) == ChatBotStep.SUCCESS) {
+                chatRedisService.nextStep(message.getUser_key());
+            } else if (ChatBotStep.valueOf(step) == ChatBotStep.SUCCESS) {          //입력으로 ID/temp_key가 들어옴
+                //ID/temp_key가 제대로 되었는지 확인하는 절차 추가
+
                 String responseMessage = plusFriendService.connectWebService(message);
                 response = new KakaoResponseMessageVO(
                         new KakaoMessageVO(responseMessage),
                         new KakaoKeyboardVO("buttons", new String[]{"OTP (재)발급", "로그인 내역 확인"})
                 );
+                //완전히 등록 되었는지 확인 후 등록 실패 시 Step 낮추기 + 아이디 재입력 멘트
             }
-            chatRedisService.nextStep(message.getUser_key());
-
-//            if (chatBotSession.getHttpSession(message.getUser_key()) == null) {
-//                chatBotSession.setHttpSession(message.getUser_key(), ChatBotStep.NO_BASE);
-//                chatBotSession.nextStep(message.getUser_key());
-//                response = new KakaoResponseMessageVO(
-//                        new KakaoMessageVO(ChatBotStep.NO_BASE.getMessage()),
-//                        new KakaoKeyboardVO("buttons", new String[]{"ID 등록"})
-//                );
-//            } else if (chatBotSession.getHttpSession(message.getUser_key()) == ChatBotStep.REQUEST_INFO) {
-//                chatBotSession.nextStep(message.getUser_key());
-//                response = new KakaoResponseMessageVO(
-//                        new KakaoMessageVO(ChatBotStep.REQUEST_INFO.getMessage())
-//                );
-//            } else if (chatBotSession.getHttpSession(message.getUser_key()) == ChatBotStep.SUCCESS) {
-//                String responseMessage = plusFriendService.connectWebService(message);
-//                response = new KakaoResponseMessageVO(
-//                        new KakaoMessageVO(responseMessage),
-//                        new KakaoKeyboardVO("buttons", new String[]{"OTP (재)발급", "로그인 내역 확인"})
-//                );
-//            }
         }
         logger.info("REQUEST Message : " + message.getUser_key() + ", " + message.getContent() + ", " + message.getType());
         return response;
