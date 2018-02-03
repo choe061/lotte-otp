@@ -16,7 +16,7 @@
 
     <insert id="insertTempKey">
         INSERT INTO USER_CONNECTION_QUEUE(id, temp_key)
-        VALUES (#{id}, temp_key})
+        VALUES (#{id}, #{temp_key})
     </insert>
 
 </mapper>
