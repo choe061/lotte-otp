@@ -1,6 +1,7 @@
 package com.lotte.otp.controller;
 
 import com.lotte.otp.domain.*;
+import com.lotte.otp.service.ChatRedisService;
 import com.lotte.otp.service.PlusFriendService;
 import com.lotte.otp.service.User2NdAuthService;
 import com.lotte.otp.util.PlusFriendResponse;
@@ -27,6 +28,8 @@ public class PlusFriendController {
     private PlusFriendService plusFriendService;
     @Autowired
     private ChatBotSession chatBotSession;
+    @Autowired
+    private ChatRedisService chatRedisService;
 
     @RequestMapping(value = "/keyboard", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public KakaoKeyboardVO getKeyboard() {
@@ -52,25 +55,45 @@ public class PlusFriendController {
             );
         } else {
             //세션 확인 -> 순서 정의
-            if (chatBotSession.getHttpSession(message.getUser_key()) == null) {
-                chatBotSession.setHttpSession(message.getUser_key(), ChatBotStep.NO_BASE);
-                chatBotSession.nextStep(message.getUser_key());
+            String step = String.valueOf(chatRedisService.getStep(message.getUser_key()));
+
+            if (ChatBotStep.valueOf(step) == ChatBotStep.NO_BASE) {
                 response = new KakaoResponseMessageVO(
                         new KakaoMessageVO(ChatBotStep.NO_BASE.getMessage()),
                         new KakaoKeyboardVO("buttons", new String[]{"ID 등록"})
                 );
-            } else if (chatBotSession.getHttpSession(message.getUser_key()) == ChatBotStep.REQUEST_INFO) {
-                chatBotSession.nextStep(message.getUser_key());
+            } else if (ChatBotStep.valueOf(step) == ChatBotStep.REQUEST_INFO) {
                 response = new KakaoResponseMessageVO(
                         new KakaoMessageVO(ChatBotStep.REQUEST_INFO.getMessage())
                 );
-            } else if (chatBotSession.getHttpSession(message.getUser_key()) == ChatBotStep.SUCCESS) {
+            } else if (ChatBotStep.valueOf(step) == ChatBotStep.SUCCESS) {
                 String responseMessage = plusFriendService.connectWebService(message);
                 response = new KakaoResponseMessageVO(
                         new KakaoMessageVO(responseMessage),
                         new KakaoKeyboardVO("buttons", new String[]{"OTP (재)발급", "로그인 내역 확인"})
                 );
             }
+            chatRedisService.nextStep(message.getUser_key());
+
+//            if (chatBotSession.getHttpSession(message.getUser_key()) == null) {
+//                chatBotSession.setHttpSession(message.getUser_key(), ChatBotStep.NO_BASE);
+//                chatBotSession.nextStep(message.getUser_key());
+//                response = new KakaoResponseMessageVO(
+//                        new KakaoMessageVO(ChatBotStep.NO_BASE.getMessage()),
+//                        new KakaoKeyboardVO("buttons", new String[]{"ID 등록"})
+//                );
+//            } else if (chatBotSession.getHttpSession(message.getUser_key()) == ChatBotStep.REQUEST_INFO) {
+//                chatBotSession.nextStep(message.getUser_key());
+//                response = new KakaoResponseMessageVO(
+//                        new KakaoMessageVO(ChatBotStep.REQUEST_INFO.getMessage())
+//                );
+//            } else if (chatBotSession.getHttpSession(message.getUser_key()) == ChatBotStep.SUCCESS) {
+//                String responseMessage = plusFriendService.connectWebService(message);
+//                response = new KakaoResponseMessageVO(
+//                        new KakaoMessageVO(responseMessage),
+//                        new KakaoKeyboardVO("buttons", new String[]{"OTP (재)발급", "로그인 내역 확인"})
+//                );
+//            }
         }
         logger.info("REQUEST Message : " + message.getUser_key() + ", " + message.getContent() + ", " + message.getType());
         return response;
