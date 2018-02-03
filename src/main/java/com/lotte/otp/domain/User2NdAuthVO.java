@@ -24,4 +24,10 @@ public class User2NdAuthVO {
         this.uuid = uuid;
         this.secret_key = secret_key;
     }
+
+    public User2NdAuthVO(int uuid, String secret_key, String kakao_user_key) {
+        this.uuid = uuid;
+        this.secret_key = secret_key;
+        this.kakao_user_key = kakao_user_key;
+    }
 }

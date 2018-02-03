@@ -17,6 +17,11 @@
         WHERE kakao_user_key=#{kakao_user_key}
     </select>
 
+    <insert id="insertUser2ndAuth" parameterType="com.lotte.otp.domain.User2NdAuthVO">
+        INSERT INTO USER_2ND_AUTH (uuid, secret_key, kakao_user_key)
+        VALUES (#{user_2nd_auth.uuid}, #{user_2nd_auth.secret_key}, #{user_2nd_auth.kakao_user_key})
+    </insert>
+
 
 
 </mapper>

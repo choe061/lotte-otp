@@ -19,4 +19,9 @@
         FROM USER WHERE id=#{id}
     </select>
 
+    <select id="getUUID" parameterType="int">
+        SELECT uuid
+        FROM USER WHERE id=#{id}
+    </select>
+
 </mapper>

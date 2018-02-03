@@ -58,4 +58,9 @@ public class SecurityUtils {
         return new UserConnectionQueueVO(keys[0], Integer.parseInt(keys[1]));
     }
 
+    public static String createSecretKey() {
+
+        return "";
+    }
+
 }

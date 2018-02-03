@@ -2,11 +2,17 @@ package com.lotte.otp.service;
 
 import com.lotte.otp.domain.ChatBotStep;
 import com.lotte.otp.domain.KakaoRequestMessageVO;
+import com.lotte.otp.domain.User2NdAuthVO;
 import com.lotte.otp.domain.UserConnectionQueueVO;
+import com.lotte.otp.exception.DuplicateUserIDException;
+import com.lotte.otp.exception.TempKeyTimeOutException;
+import com.lotte.otp.exception.UnAuthorizedUserException;
 import com.lotte.otp.repository.User2NdAuthMapper;
 import com.lotte.otp.repository.UserConnectionQueueMapper;
+import com.lotte.otp.repository.UserMapper;
 import com.lotte.otp.util.PlusFriendResponse;
 import com.lotte.otp.util.SecurityUtils;
+import com.sun.org.apache.bcel.internal.classfile.Unknown;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class PlusFriendService {
 
+    @Autowired
+    private UserMapper userMapper;
     @Autowired
     private User2NdAuthMapper user2NdAuthMapper;
     @Autowired
@@ -41,6 +49,23 @@ public class PlusFriendService {
      * @return ChatBotStep.SUCCESS.getMessage() or 실패 메시지
      */
     public String connectWebService(KakaoRequestMessageVO message) {
+        UserConnectionQueueVO userConnection = null;
+        try {
+            userConnection = vertifyUserMatching(message.getContent());
+            User2NdAuthVO user2NdAuth = new User2NdAuthVO(
+                    userMapper.getUUID(userConnection.getId()),
+                    SecurityUtils.createSecretKey(),
+                    message.getUser_key()
+            );
+            user2NdAuthMapper.insertUser2ndAuth(user2NdAuth);
+
+            //등록에 성공하면 커넥션큐테이블에 데이터를 삭제
+            userConnectionQueueMapper.deleteTempKey(userConnection.getId());
+        } catch (UnAuthorizedUserException | TempKeyTimeOutException uaue) {
+            return "Failed";
+        }
+
+
 
         return ChatBotStep.SUCCESS.getMessage();
     }
@@ -53,20 +78,22 @@ public class PlusFriendService {
      * @param text ex) choe061/123123
      * @return
      */
-    private String vertifyUserMatching(String text) {
+    private UserConnectionQueueVO vertifyUserMatching(String text) {
         UserConnectionQueueVO tokens = SecurityUtils.tokenizeText(text);
 
         UserConnectionQueueVO userConnection = userConnectionQueueMapper.getTempKey(tokens.getId());
 
         if (userConnection.getTemp_key() != tokens.getTemp_key()) {
-            return PlusFriendResponse.UNAUTHORIZED;
+            throw new UnAuthorizedUserException();  //TODO 예외 정의
+            //return PlusFriendResponse.UNAUTHORIZED;
         }
 
         long publishTime = userConnection.getPublished_at().getTime();
         if (SecurityUtils.isTimeoutTempKey(publishTime, 5)) {
-            return PlusFriendResponse.TIME_OUT;
+            throw new TempKeyTimeOutException();    //TODO 예외 정의
+            //return PlusFriendResponse.TIME_OUT;
         }
-        return PlusFriendResponse.OK;
+        return userConnection;
     }
 
 }

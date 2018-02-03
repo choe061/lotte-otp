@@ -16,4 +16,6 @@ public interface UserMapper {
 
     UserVO login(@Param("id") String id);
 
+    int getUUID(@Param("id") String id);
+
 }
