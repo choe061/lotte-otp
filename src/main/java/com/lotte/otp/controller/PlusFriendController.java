@@ -42,8 +42,6 @@ public class PlusFriendController {
      */
     @RequestMapping(value = "/message", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public KakaoResponseMessageVO message(@RequestBody KakaoRequestMessageVO message) {
-        logger.info(message.getUser_key() + " Session => " + chatRedisService.getStep(message.getUser_key()));
-
         KakaoResponseMessageVO response = null;
         if (user2NdAuthService.isUser2NdAuthWithUserKey(message.getUser_key())) {
             String responseMessage = plusFriendService.chat(message);
@@ -54,6 +52,7 @@ public class PlusFriendController {
         } else {
             //세션 확인 -> 순서 정의
             String step = String.valueOf(chatRedisService.getStep(message.getUser_key()));
+            logger.info(message.getUser_key() + " Session => " + step);
             if (ChatBotStep.valueOf(step) == ChatBotStep.NO_BASE
                     && (message.getContent().equals("아이디 등록") || message.getContent().equals("ID 등록"))) {
                 chatRedisService.nextStep(message.getUser_key());
