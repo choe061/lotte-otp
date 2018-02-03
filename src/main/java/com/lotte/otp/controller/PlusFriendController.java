@@ -35,8 +35,7 @@ public class PlusFriendController {
     }
 
     /**
-     * 문제점 : 세션 저장은 되는데 다음 채팅에서는 세션 유지가 안된다.
-     * 해결 : ...
+     *
      * @param message
      * @return
      */
@@ -65,7 +64,9 @@ public class PlusFriendController {
                         new KakaoMessageVO(ChatBotStep.NO_BASE.getMessage()),
                         new KakaoKeyboardVO("buttons", new String[]{"ID 등록"})
                 );
-                chatRedisService.nextStep(message.getUser_key());
+                if (message.getContent().equals("아이디 등록") || message.getContent().equals("ID 등록")) {
+                    chatRedisService.nextStep(message.getUser_key());
+                }
             } else if (ChatBotStep.valueOf(step) == ChatBotStep.REQUEST_INFO) {     //입력으로 "ID 등록"이 들어옴
                 response = new KakaoResponseMessageVO(
                         new KakaoMessageVO(ChatBotStep.REQUEST_INFO.getMessage())

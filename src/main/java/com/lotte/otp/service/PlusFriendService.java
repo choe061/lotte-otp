@@ -13,6 +13,8 @@ import com.lotte.otp.repository.UserMapper;
 import com.lotte.otp.util.PlusFriendResponse;
 import com.lotte.otp.util.SecurityUtils;
 import com.sun.org.apache.bcel.internal.classfile.Unknown;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class PlusFriendService {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private UserMapper userMapper;
@@ -49,25 +52,21 @@ public class PlusFriendService {
      * @return ChatBotStep.SUCCESS.getMessage() or 실패 메시지
      */
     public String connectWebService(KakaoRequestMessageVO message) {
-        UserConnectionQueueVO userConnection = null;
         try {
-            userConnection = vertifyUserMatching(message.getContent());
+            UserConnectionQueueVO userConnection = vertifyUserMatching(message.getContent());
             User2NdAuthVO user2NdAuth = new User2NdAuthVO(
                     userMapper.getUUID(userConnection.getId()),
-                    SecurityUtils.createSecretKey(),
+                    SecurityUtils.generateSecretKey(),
                     message.getUser_key()
             );
             user2NdAuthMapper.insertUser2ndAuth(user2NdAuth);
-
-            //등록에 성공하면 커넥션큐테이블에 데이터를 삭제
-            userConnectionQueueMapper.deleteTempKey(userConnection.getId());
-        } catch (UnAuthorizedUserException | TempKeyTimeOutException uaue) {
-            return "Failed";
+            userConnectionQueueMapper.deleteTempKey(userConnection.getId());    //등록에 성공하면 커넥션큐테이블의 데이터를 삭제
+            return ChatBotStep.SUCCESS.getMessage();
+        } catch (UnAuthorizedUserException | TempKeyTimeOutException e) {
+            logger.info("OTP 연동에 실패했습니다.\n" +
+                    "에러 내용 => " + e.getMessage());
+            return "OTP 연동에 실패했습니다.";
         }
-
-
-
-        return ChatBotStep.SUCCESS.getMessage();
     }
 
     /**
@@ -80,18 +79,15 @@ public class PlusFriendService {
      */
     private UserConnectionQueueVO vertifyUserMatching(String text) {
         UserConnectionQueueVO tokens = SecurityUtils.tokenizeText(text);
-
         UserConnectionQueueVO userConnection = userConnectionQueueMapper.getTempKey(tokens.getId());
 
         if (userConnection.getTemp_key() != tokens.getTemp_key()) {
             throw new UnAuthorizedUserException();  //TODO 예외 정의
-            //return PlusFriendResponse.UNAUTHORIZED;
         }
 
         long publishTime = userConnection.getPublished_at().getTime();
-        if (SecurityUtils.isTimeoutTempKey(publishTime, 5)) {
+        if (SecurityUtils.isTimeoutKey(publishTime, 5)) {
             throw new TempKeyTimeOutException();    //TODO 예외 정의
-            //return PlusFriendResponse.TIME_OUT;
         }
         return userConnection;
     }

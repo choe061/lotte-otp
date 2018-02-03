@@ -1,9 +1,9 @@
 package com.lotte.otp.util;
 
 import com.lotte.otp.domain.UserConnectionQueueVO;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -44,7 +44,13 @@ public class SecurityUtils {
         return tempKey;
     }
 
-    public static boolean isTimeoutTempKey(long publishTime, int expirationMin) {
+    /**
+     * Key가 발급된 시간으로부터 만료시간이 지났는지 아닌지 확인해주는 메서드
+     * @param publishTime 키 발급 시간
+     * @param expirationMin 키 만료 시간(분 단위)
+     * @return
+     */
+    public static boolean isTimeoutKey(long publishTime, int expirationMin) {
         Date now = new Date();
         long requestTime = now.getTime();
         if (requestTime - publishTime > expirationMin * 60 * 1000) {    //5분
@@ -58,9 +64,8 @@ public class SecurityUtils {
         return new UserConnectionQueueVO(keys[0], Integer.parseInt(keys[1]));
     }
 
-    public static String createSecretKey() {
-
-        return "";
+    public static String generateSecretKey() {
+        return RandomStringUtils.randomAlphanumeric(255);
     }
 
 }
