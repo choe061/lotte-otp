@@ -56,6 +56,7 @@ public class PlusFriendController {
             if (ChatBotStep.valueOf(step) == ChatBotStep.NO_BASE
                     && (message.getContent().equals("아이디 등록") || message.getContent().equals("ID 등록"))) {
                 chatRedisService.nextStep(message.getUser_key());
+                step = String.valueOf(chatRedisService.getStep(message.getUser_key()));
             }
 
             if (ChatBotStep.valueOf(step) == ChatBotStep.NO_BASE) {
