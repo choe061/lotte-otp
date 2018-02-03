@@ -34,7 +34,8 @@ public class PlusFriendController {
     }
 
     /**
-     *
+     * 문제점 : 세션 저장은 되는데 다음 채팅에서는 세션 유지가 안된다.
+     * 해결 : ...
      * @param message
      * @return
      */

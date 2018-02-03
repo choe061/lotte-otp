@@ -18,14 +18,14 @@ public class ChatBotSession {
     private HttpSession httpSession;
 
     public ChatBotStep getHttpSession(String kakaoUserKey) {
-        logger.info("세션 조회 => " + httpSession.getAttribute(kakaoUserKey));
+        logger.info("세션 조회 => " + httpSession.getId() + ". " + httpSession.getAttribute(kakaoUserKey));
         return (ChatBotStep) httpSession.getAttribute(kakaoUserKey);
     }
 
     public void setHttpSession(String kakaoUserKey, ChatBotStep chatBotStep) {
         this.httpSession.setAttribute(kakaoUserKey, chatBotStep);
         this.httpSession.setMaxInactiveInterval(10 * 60);   //10분의 세션 유지 시간
-        logger.info("세션 저장 => " + httpSession.getAttribute(kakaoUserKey));
+        logger.info("세션 저장 => " + httpSession.getId() + ". " + httpSession.getAttribute(kakaoUserKey));
     }
 
     public void nextStep(String kakaoUserKey) {
