@@ -79,7 +79,7 @@ public class PlusFriendService {
      */
     private UserConnectionQueueVO vertifyUserMatching(String text) {
         UserConnectionQueueVO tokens = SecurityUtils.tokenizeText(text);
-        UserConnectionQueueVO userConnection = userConnectionQueueMapper.getTempKey(tokens.getId());
+        UserConnectionQueueVO userConnection = userConnectionQueueMapper.getUserConnection(tokens.getId());
 
         if (userConnection.getTemp_key() != tokens.getTemp_key()) {
             throw new UnAuthorizedUserException();  //TODO 예외 정의

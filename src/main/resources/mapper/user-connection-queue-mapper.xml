@@ -4,7 +4,7 @@
 
 <mapper namespace="com.lotte.otp.repository.UserConnectionQueueMapper">
 
-    <select id="getMyTempKey" resultType="com.lotte.otp.domain.UserConnectionQueueVO">
+    <select id="getUserConnection" resultType="com.lotte.otp.domain.UserConnectionQueueVO">
         SELECT *
         FROM USER_CONNECTION_QUEUE
         WHERE id=#{id}

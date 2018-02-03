@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserConnectionQueueMapper {
 
-    UserConnectionQueueVO getTempKey(@Param("id") String id);
+    UserConnectionQueueVO getUserConnection(@Param("id") String id);
 
     void insertTempKey(@Param("id") String id, @Param("temp_key") int temp_key);    //발급 요청 시 추가
 
