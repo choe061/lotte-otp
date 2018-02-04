@@ -44,6 +44,7 @@ public class User2NdAuthService {
     public int distributeTempkey(String id) {
         int tempKey = SecurityUtils.distributeTempKey();
         userConnectionQueueMapper.deleteTempKey(id);
+        logger.info("Distribute key date => " + DateUtils.now());
         userConnectionQueueMapper.insertTempKey(id, tempKey, DateUtils.now());
         return tempKey;
     }
