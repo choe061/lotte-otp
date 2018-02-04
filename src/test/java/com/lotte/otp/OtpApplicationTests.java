@@ -5,6 +5,7 @@ import com.lotte.otp.domain.ChatBotStep;
 import com.lotte.otp.domain.UserConnectionQueueVO;
 import com.lotte.otp.domain.UserConnectionStatus;
 import com.lotte.otp.repository.UserConnectionQueueMapper;
+import com.lotte.otp.util.DateUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ import java.util.Date;
 import java.util.Locale;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = OtpApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = OtpApplication.class)
 public class OtpApplicationTests {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -40,6 +41,7 @@ public class OtpApplicationTests {
 
 	@Test
 	public void printDateTime() {
+		logger.info("TIME => " + DateUtils.now());
 		UserConnectionQueueVO userConnection = userConnectionQueueMapper.getUserConnection("choe061");
 		logger.info("UserConnection => " + userConnection);
 		logger.info("UserConnection Time => " + userConnection.getPublished_at());
@@ -59,4 +61,10 @@ public class OtpApplicationTests {
 		logger.info("키 시간 차이 => " + (utc - publishTime));
 	}
 
+	@Test
+	public void testTime() {
+		String str = DateUtils.now();
+		logger.info("Time => " + str);
+		logger.info("long Time => " + DateUtils.convertStrToLongDate(str));
+	}
 }

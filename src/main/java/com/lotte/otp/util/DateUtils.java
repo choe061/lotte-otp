@@ -12,13 +12,7 @@ public class DateUtils {
 
     public static String now() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
-        Date now = null;
-        try {
-            now = dateFormat.parse(dateFormat.format(new Date()));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return now.toString();
+        return dateFormat.format(new Date());
     }
 
     public static long convertStrToLongDate(String strDate) {
@@ -29,7 +23,6 @@ public class DateUtils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        long time = date.getTime();
-        return time;
+        return date.getTime();
     }
 }
