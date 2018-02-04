@@ -5,7 +5,7 @@
 <mapper namespace="com.lotte.otp.repository.UserConnectionQueueMapper">
 
     <select id="getUserConnection" resultType="com.lotte.otp.domain.UserConnectionQueueVO">
-        SELECT qid, id, temp_key, DATE_FORMAT(published_at, '%Y-%m-%d %T')
+        SELECT qid, id, temp_key, published_at
         FROM USER_CONNECTION_QUEUE
         WHERE id=#{id}
     </select>
@@ -15,8 +15,8 @@
     </delete>
 
     <insert id="insertTempKey">
-        INSERT INTO USER_CONNECTION_QUEUE(id, temp_key)
-        VALUES (#{id}, #{temp_key})
+        INSERT INTO USER_CONNECTION_QUEUE(id, temp_key, published_at)
+        VALUES (#{id}, #{temp_key}, published_at)
     </insert>
 
 </mapper>

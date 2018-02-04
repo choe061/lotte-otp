@@ -10,8 +10,8 @@
     </select>
 
     <insert id="createUser" parameterType="com.lotte.otp.domain.UserVO">
-        INSERT INTO USER(id, pw)
-        VALUES(#{user.id}, #{user.pw})
+        INSERT INTO USER(id, pw, created_at)
+        VALUES(#{user.id}, #{user.pw}, #{user.created_at})
     </insert>
 
     <select id="login" resultType="com.lotte.otp.domain.UserVO">

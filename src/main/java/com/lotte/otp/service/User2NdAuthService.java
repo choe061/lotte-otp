@@ -2,6 +2,7 @@ package com.lotte.otp.service;
 
 import com.lotte.otp.repository.User2NdAuthMapper;
 import com.lotte.otp.repository.UserConnectionQueueMapper;
+import com.lotte.otp.util.DateUtils;
 import com.lotte.otp.util.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +44,7 @@ public class User2NdAuthService {
     public int distributeTempkey(String id) {
         int tempKey = SecurityUtils.distributeTempKey();
         userConnectionQueueMapper.deleteTempKey(id);
-        userConnectionQueueMapper.insertTempKey(id, tempKey);
+        userConnectionQueueMapper.insertTempKey(id, tempKey, DateUtils.now());
         return tempKey;
     }
 }

@@ -10,6 +10,7 @@ import com.lotte.otp.exception.UnAuthorizedUserException;
 import com.lotte.otp.repository.User2NdAuthMapper;
 import com.lotte.otp.repository.UserConnectionQueueMapper;
 import com.lotte.otp.repository.UserMapper;
+import com.lotte.otp.util.DateUtils;
 import com.lotte.otp.util.PlusFriendResponse;
 import com.lotte.otp.util.SecurityUtils;
 import com.sun.org.apache.bcel.internal.classfile.Unknown;
@@ -87,7 +88,7 @@ public class PlusFriendService {
             throw new UnAuthorizedUserException();
         }
 
-        long publishTime = userConnection.getPublished_at().getTime();
+        long publishTime = DateUtils.convertStrToLongDate(userConnection.getPublished_at());
         Date now = new Date();
         long requestTime = now.getTime();
         logger.info("현재 시간 => " + now + ", 발급 시간 => " + userConnection.getPublished_at());

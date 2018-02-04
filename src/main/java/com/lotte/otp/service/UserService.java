@@ -1,10 +1,11 @@
 package com.lotte.otp.service;
 
+import com.lotte.otp.domain.UserAuthStatus;
 import com.lotte.otp.domain.UserVO;
 import com.lotte.otp.exception.DuplicateUserIDException;
 import com.lotte.otp.repository.UserMapper;
+import com.lotte.otp.util.DateUtils;
 import com.lotte.otp.util.SecurityUtils;
-import com.lotte.otp.domain.UserAuthStatus;
 import com.lotte.otp.util.UserValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +51,7 @@ public class UserService {
             String encodingPW = SecurityUtils.passwordEncoder(user.getPw());
             logger.info("PW - " + encodingPW);
             user.setPw(encodingPW);
+            user.setCreated_at(DateUtils.now());
             userMapper.createUser(user);
             return true;
         } else {

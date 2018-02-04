@@ -12,7 +12,9 @@ public interface UserConnectionQueueMapper {
 
     UserConnectionQueueVO getUserConnection(@Param("id") String id);
 
-    void insertTempKey(@Param("id") String id, @Param("temp_key") int temp_key);    //발급 요청 시 추가
+    void insertTempKey(@Param("id") String id,
+                       @Param("temp_key") int temp_key,
+                       @Param("published_at") String published_at);    //발급 요청 시 추가
 
     void deleteTempKey(@Param("id") String id); //삭제 후 추가 or 인증 완료 후 삭제
 }

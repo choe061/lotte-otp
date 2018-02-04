@@ -16,7 +16,7 @@ public class UserVO {
     private int uuid;
     private String id;
     private String pw;
-    private Date created_at;
+    private String created_at;
 
     private String pw2;
 
@@ -31,7 +31,7 @@ public class UserVO {
         this.pw2 = pw2;
     }
 
-    public UserVO(int uuid, String id, String pw, Date created_at) {
+    public UserVO(int uuid, String id, String pw, String created_at) {
         this.uuid = uuid;
         this.id = id;
         this.pw = pw;
