@@ -50,7 +50,7 @@ public class SecurityUtils {
     public static boolean isTimeoutKey(long publishTime, int expirationMin) {
         Date now = new Date();
         long requestTime = now.getTime();
-        if (requestTime - publishTime > expirationMin * 60 * 1000) {    //5분
+        if (requestTime - publishTime > expirationMin * 60 * 1000) {
             return true;
         }
         return false;

@@ -5,12 +5,14 @@ import com.lotte.otp.domain.KakaoRequestMessageVO;
 import com.lotte.otp.domain.User2NdAuthVO;
 import com.lotte.otp.domain.UserConnectionQueueVO;
 import com.lotte.otp.exception.DuplicateUserIDException;
+import com.lotte.otp.exception.GenerateOtpException;
 import com.lotte.otp.exception.TempKeyTimeOutException;
 import com.lotte.otp.exception.UnAuthorizedUserException;
 import com.lotte.otp.repository.User2NdAuthMapper;
 import com.lotte.otp.repository.UserConnectionQueueMapper;
 import com.lotte.otp.repository.UserMapper;
 import com.lotte.otp.util.DateUtils;
+import com.lotte.otp.util.OTP;
 import com.lotte.otp.util.PlusFriendResponse;
 import com.lotte.otp.util.SecurityUtils;
 import com.sun.org.apache.bcel.internal.classfile.Unknown;
@@ -37,14 +39,41 @@ public class PlusFriendService {
     @Autowired
     private UserConnectionQueueMapper userConnectionQueueMapper;
 
+    private static final String REQUEST_OTP_BUTTON = "OTP (재)발급";
+    private static final String OTP_EXPIRATION_TIME = "OTP 만료 시간 확인";
+    private static final String LOGIN_HISTORY_BUTTON = "로그인 내역 확인";
+
     /**
      * 연동된 회원은 채팅 진행
+     * 1. 발급 or 재발급
+     * 2. 로그인 내역 확인
      * @param message
      * @return
      */
     public String chat(KakaoRequestMessageVO message) {
-
-        return "";
+        if (message.getContent().equals(REQUEST_OTP_BUTTON)) {
+            String now = DateUtils.now();
+            String secretKey = user2NdAuthMapper.getUserSecretKey(message.getUser_key());
+            try {
+                String otp = OTP.create(DateUtils.convertStrToLongDate(now), secretKey);
+                user2NdAuthMapper.updateLastPublishTime(message.getUser_key(), now);
+                return "OTP : " + otp +
+                        "\n발급 일시 : " + now +
+                        "\n만료 일시 : " + DateUtils.expireMin(now, 1);
+            } catch (GenerateOtpException e) {
+                logger.info("에러 내용 => " + e.getMessage());
+                return e.getMessage();
+            }
+        } else if (message.getContent().equals(OTP_EXPIRATION_TIME)) {
+            String publishTime = user2NdAuthMapper.getLastPublishTime(message.getUser_key());
+            if (SecurityUtils.isTimeoutKey(DateUtils.convertStrToLongDate(publishTime), 1)) {
+                return "이전에 받은 OTP는 만료되었습니다. 새로운 OTP를 요청하세요.";
+            }
+            return "만료 일시 : " + DateUtils.expireMin(publishTime, 1);
+        } else if (message.getContent().equals(LOGIN_HISTORY_BUTTON)) {
+            //TODO USER_IP 테이블 데이터 확인
+        }
+        return PlusFriendResponse.NO_MATCHING[(int)(Math.random() * 10) % 3];
     }
 
     /**
@@ -62,6 +91,7 @@ public class PlusFriendService {
                     SecurityUtils.generateSecretKey(),
                     message.getUser_key()
             );
+            logger.info("Auth => " + user2NdAuth.getUuid() + ", " + user2NdAuth.getKakao_user_key() + ", " + user2NdAuth.getSecret_key());
             user2NdAuthMapper.insertUser2ndAuth(user2NdAuth);
             userConnectionQueueMapper.deleteTempKey(userConnection.getId());    //등록에 성공하면 커넥션큐테이블의 데이터를 삭제
             return ChatBotStep.SUCCESS.getMessage();

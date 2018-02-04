@@ -2,6 +2,7 @@ package com.lotte.otp.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -24,5 +25,13 @@ public class DateUtils {
             e.printStackTrace();
         }
         return date.getTime();
+    }
+
+    public static String expireMin(String now, int min) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(convertStrToLongDate(now));
+        calendar.add(Calendar.MINUTE, min);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+        return dateFormat.format(calendar.getTime());
     }
 }

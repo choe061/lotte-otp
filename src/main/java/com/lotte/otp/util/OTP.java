@@ -1,7 +1,11 @@
 package com.lotte.otp.util;
 
+import com.lotte.otp.exception.GenerateOtpException;
+
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
 /**
@@ -11,15 +15,21 @@ public class OTP {
     private static final long DISTANCE = 60 * 1000;     //1분
     private static final String ALGORITHM = "HmacSHA1";
 
-    private static long create(String secretKey, long time) throws Exception {
+    private static long create(String secretKey, long time) {
         byte[] data = new byte[8];
         long value = time;
         for (int i = 8; i-- > 0; value >>>= 8) {
             data[i] = (byte) value;
         }
 
-        Mac mac = Mac.getInstance(ALGORITHM);
-        mac.init(new SecretKeySpec(secretKey.getBytes(), ALGORITHM));
+        Mac mac = null;
+        try {
+            mac = Mac.getInstance(ALGORITHM);
+            mac.init(new SecretKeySpec(secretKey.getBytes(), ALGORITHM));
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            e.printStackTrace();
+            throw new GenerateOtpException();
+        }
 
         byte[] hash = mac.doFinal(data);
         int offset = hash[20 - 1] & 0xF;
@@ -41,10 +51,10 @@ public class OTP {
      * TODO 예외 던지기 수정,보완
      * @param secretKey
      * @return
-     * @throws Exception
+     * @throws GenerateOtpException
      */
-    public static String create(String secretKey) throws Exception {
-        return String.format("%06d", create(secretKey, new Date().getTime() / DISTANCE));
+    public static String create(long time, String secretKey) throws GenerateOtpException {
+        return String.format("%06d", create(secretKey, time / DISTANCE));
     }
 
     /**
@@ -53,9 +63,9 @@ public class OTP {
      * @param secretKey
      * @param code 웹에서 입력으로 들어온 OTP
      * @return
-     * @throws Exception
+     * @throws GenerateOtpException
      */
-    public static boolean vertify(String secretKey, String code) throws Exception {
-        return create(secretKey).equals(code);
+    public static boolean vertify(long time, String secretKey, String code) throws GenerateOtpException {
+        return create(time, secretKey).equals(code);
     }
 }

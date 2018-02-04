@@ -16,6 +16,24 @@
         FROM USER_2ND_AUTH
         WHERE kakao_user_key=#{kakao_user_key}
     </select>
+    
+    <select id="getUserSecretKey">
+        SELECT secret_key
+        FROM USER_2ND_AUTH
+        WHERE kakao_user_key=#{kakao_user_key}
+    </select>
+
+    <update id="updateLastPublishTime">
+        UPDATE USER_2ND_AUTH
+        SET last_published_at=#{last_published_at}
+        WHERE kakao_user_key=#{kakao_user_key}
+    </update>
+
+    <select id="getLastPublishTime">
+        SELECT last_published_at
+        FROM USER_2ND_AUTH
+        WHERE kakao_user_key=#{kakao_user_key}
+    </select>
 
     <insert id="insertUser2ndAuth" parameterType="com.lotte.otp.domain.User2NdAuthVO">
         INSERT INTO USER_2ND_AUTH (uuid, secret_key, kakao_user_key)

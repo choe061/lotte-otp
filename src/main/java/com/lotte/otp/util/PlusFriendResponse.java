@@ -11,5 +11,10 @@ public class PlusFriendResponse {
     public static final String UNAUTHORIZED = "ID와 임시키가 일치하는 정보가 없습니다.";
     public static final String TIME_OUT = "발급받은 임시키의 만료일시가 초과했습니다. Web상에서 다시 로그인해주세요.";
 
+    public static final String[] NO_MATCHING = {
+            "무슨 말씀을 하시는지 잘 모르겠어요. ^^;",
+            "아래 3가지 버튼 중 원하시는 기능을 선택해주세요!",
+            "아직 한국어를 배우고 있는 봇이에요! :)"
+    };
     //TIME_OUT일 경우 바로 발급해주지 않음 -> 보안상 더 안전하게
 }
