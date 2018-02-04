@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 /**
  * Created by choi on 2018. 2. 2. PM 2:04.
  */
@@ -82,12 +84,16 @@ public class PlusFriendService {
         UserConnectionQueueVO userConnection = userConnectionQueueMapper.getUserConnection(tokens.getId());
 
         if (userConnection.getTemp_key() != tokens.getTemp_key()) {
-            throw new UnAuthorizedUserException();  //TODO 예외 정의
+            throw new UnAuthorizedUserException();
         }
 
         long publishTime = userConnection.getPublished_at().getTime();
+        Date now = new Date();
+        long requestTime = now.getTime();
+        logger.info("현재 시간 => " + now + ", 발급 시간 => " + userConnection.getPublished_at());
+        logger.info("키 시간 차이 => " + (requestTime - publishTime));
         if (SecurityUtils.isTimeoutKey(publishTime, 5)) {
-            throw new TempKeyTimeOutException();    //TODO 예외 정의
+            throw new TempKeyTimeOutException();
         }
         return userConnection;
     }

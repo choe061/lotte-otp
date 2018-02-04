@@ -5,6 +5,6 @@ package com.lotte.otp.exception;
  */
 public class DuplicateUserIDException extends LotteServiceException {
     public DuplicateUserIDException() {
-        super(409, "아이디 중복");
+        super(409, "중복된 아이디입니다.");
     }
 }

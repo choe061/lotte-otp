@@ -37,10 +37,7 @@ public class SecurityUtils {
      * @return
      */
     public static int distributeTempKey() {
-        int tempKey = 0;
-        for (int i = 0; i < 6; i++) {
-            tempKey += (int) (Math.random() * 10) * Math.pow(10, i);
-        }
+        int tempKey = Integer.parseInt(RandomStringUtils.randomNumeric(6));
         return tempKey;
     }
 
