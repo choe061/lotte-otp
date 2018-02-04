@@ -5,7 +5,7 @@
 <mapper namespace="com.lotte.otp.repository.UserConnectionQueueMapper">
 
     <select id="getUserConnection" resultType="com.lotte.otp.domain.UserConnectionQueueVO">
-        SELECT *
+        SELECT qid, id, temp_key, DATE_FORMAT(published_at, '%Y-%m-%d %T')
         FROM USER_CONNECTION_QUEUE
         WHERE id=#{id}
     </select>
