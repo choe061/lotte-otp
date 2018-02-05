@@ -1,6 +1,7 @@
 package com.lotte.otp.controller;
 
 import com.lotte.otp.service.User2NdAuthService;
+import com.lotte.otp.util.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
 /**
@@ -40,7 +43,17 @@ public class User2NdAuthController {
     }
 
     @RequestMapping(value = "/auth", method = RequestMethod.GET)
-    public ModelAndView authenticateOtp(@RequestParam("otp-id") String id, @RequestParam("otp") String otp) {
+    public ModelAndView authenticateOtp(HttpSession httpSession, HttpServletRequest request,
+                                        @RequestParam("otp-id") String id, @RequestParam("otp") String otp) {
+        httpSession.setAttribute("otp-certification", true);
+        httpSession.setMaxInactiveInterval(60 * 60);    //first-certification의 세션 저장 시간과 공유됨... 시간 값을 세션에 넣어야하나...
+
+        String ip = request.getRemoteAddr();
+        String agent = request.getHeader("User-Agent");
+        String browser = SecurityUtils.getBrowser(agent);
+        String os = SecurityUtils.getOS(agent);
+
+        logger.info("IP => " + ip + ", Browser => " + browser + ", OS => " + os);
         logger.info("ID => " + id + ", OTP => " + otp);
         if (user2NdAuthService.authenticateOtp(id, otp)) {
             return new ModelAndView("redirect:/main");

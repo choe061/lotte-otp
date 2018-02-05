@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
 /**
@@ -70,7 +71,10 @@ public class UserController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST
             , consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<HashMap<String, Boolean>> login(@RequestBody UserVO user) {
+    public ResponseEntity<HashMap<String, Boolean>> login(HttpSession httpSession, @RequestBody UserVO user) {
+        httpSession.setAttribute("first-certification", true);
+        httpSession.setMaxInactiveInterval(5 * 60);
+        
         logger.info(user.getId()+", "+user.getPw());
         HashMap<String, Boolean> result = new HashMap<>();
         ResponseEntity<HashMap<String, Boolean>> responseEntity = null;
@@ -80,15 +84,6 @@ public class UserController {
         if (authStatus == UserAuthStatus.OK) {
             result.put("result", true);
             responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
-
-//            if (user2NdAuthService.isUser2NdAuth(user.getId())) {
-//                result.put("result", true);
-//                responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
-//            } else {
-//                result.put("result", false);
-//                responseEntity = new ResponseEntity<>(result, HttpStatus.NO_CONTENT);
-//            }
-
         } else {
             result.put("result", false);
             responseEntity = new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);

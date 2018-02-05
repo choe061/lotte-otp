@@ -2,7 +2,7 @@ package com.lotte.otp.util;
 
 import com.lotte.otp.domain.UserConnectionQueueVO;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Date;
 
@@ -12,23 +12,24 @@ import java.util.Date;
 public class SecurityUtils {
 
     private SecurityUtils() {}
+
     /**
      * 비밀번호 암호화
      * @param pw
      * @return
      */
     public static String passwordEncoder(String pw) {
-        return new BCryptPasswordEncoder().encode(pw);
+        return BCrypt.hashpw(pw, BCrypt.gensalt());
     }
 
     /**
      * 암호화된 비밀번호 검증
-     * @param rawPassword
-     * @param encodedPassword
+     * @param plainPassword 평문
+     * @param hashedPassword 암호화
      * @return
      */
-    public static boolean isValidationPassword(String rawPassword, String encodedPassword) {
-        return new BCryptPasswordEncoder().matches(rawPassword, encodedPassword);
+    public static boolean isValidationPassword(String plainPassword, String hashedPassword) {
+        return BCrypt.checkpw(plainPassword, hashedPassword);
     }
 
     /**
@@ -63,6 +64,42 @@ public class SecurityUtils {
 
     public static String generateSecretKey() {
         return RandomStringUtils.randomAlphanumeric(255);
+    }
+
+    public static String getBrowser(String agent) {
+        String browser = null;
+        if (agent != null) {
+            if (agent.indexOf("Trident") > -1) {
+                browser = "MSIE";
+            } else if (agent.indexOf("Chrome") > -1) {
+                browser = "Chrome";
+            } else if (agent.indexOf("Opera") > -1) {
+                browser = "Opera";
+            } else if (agent.indexOf("iPhone") > -1 && agent.indexOf("Mobile") > -1) {
+                browser = "iPhone";
+            } else if (agent.indexOf("Android") > -1 && agent.indexOf("Mobile") > -1) {
+                browser = "Android";
+            }
+        }
+        return browser;
+    }
+
+    public static String getOS(String agent) {
+        String os = null;
+        if(agent.indexOf("NT 6.0") != -1) os = "Windows Vista/Server 2008";
+        else if(agent.indexOf("NT 5.2") != -1) os = "Windows Server 2003";
+        else if(agent.indexOf("NT 5.1") != -1) os = "Windows XP";
+        else if(agent.indexOf("NT 5.0") != -1) os = "Windows 2000";
+        else if(agent.indexOf("NT") != -1) os = "Windows NT";
+        else if(agent.indexOf("9x 4.90") != -1) os = "Windows Me";
+        else if(agent.indexOf("98") != -1) os = "Windows 98";
+        else if(agent.indexOf("95") != -1) os = "Windows 95";
+        else if(agent.indexOf("Win16") != -1) os = "Windows 3.x";
+        else if(agent.indexOf("Windows") != -1) os = "Windows";
+        else if(agent.indexOf("Linux") != -1) os = "Linux";
+        else if(agent.indexOf("Macintosh") != -1) os = "Macintosh";
+        else os = "";
+        return os;
     }
 
 }
