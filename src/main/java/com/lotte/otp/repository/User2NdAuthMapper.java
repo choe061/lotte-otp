@@ -14,7 +14,7 @@ public interface User2NdAuthMapper {
 
     int findUser2NdAuthWithUserKey(@Param("kakao_user_key") String kakaoUserKey);
 
-    String getUserSecretKey(@Param("kakao_user_key") String kakaoUserKey);
+    String getUserSecretKey(@Param("kakao_user_key") String kakao_user_key);
 
     User2NdAuthVO getUser2ndAuth(@Param("id") String id);   //검증을하기 위해 secret_key, last_published_at 획득
 

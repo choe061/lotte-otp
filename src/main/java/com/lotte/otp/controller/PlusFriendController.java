@@ -31,7 +31,11 @@ public class PlusFriendController {
 
     @RequestMapping(value = "/keyboard", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public KakaoKeyboardVO getKeyboard() {
-        return new KakaoKeyboardVO("buttons", new String[]{"OTP (재)발급", "로그인 내역 확인"});
+        return new KakaoKeyboardVO("buttons", new String[]{
+                ChattingText.REQUEST_OTP_BUTTON,
+                ChattingText.OTP_EXPIRATION_TIME_BUTTON,
+                ChattingText.LOGIN_HISTORY_BUTTON
+        });
     }
 
     /**

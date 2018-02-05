@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class OTP {
     private static final long DISTANCE = 60 * 1000;     //1분
-    private static final String ALGORITHM = "HmacSHA1";
+    private static final String ALGORITHM = "HmacSHA256";
 
     private static long create(String secretKey, long time) {
         byte[] data = new byte[8];
@@ -60,7 +60,7 @@ public class OTP {
     /**
      * OTP 검증
      * TODO 예외 던지기 수정,보완
-     * @param time 마지막으로 발급받은 시간
+     * @param publishTime 마지막으로 발급받은 시간
      * @param secretKey
      * @param code 웹에서 입력으로 들어온 OTP
      * @return

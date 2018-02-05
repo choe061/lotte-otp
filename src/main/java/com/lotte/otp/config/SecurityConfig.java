@@ -29,9 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()    // 위 ignoring 을 제외한 전체가 기본 인증페이지
-                .antMatchers("/main/**").permitAll()
-                .antMatchers("/otp/**").permitAll()
-                .anyRequest()
+                .antMatchers("/main/**")
                 .authenticated()
                 .and()
                 .csrf().disable();

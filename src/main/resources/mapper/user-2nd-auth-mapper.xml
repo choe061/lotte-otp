@@ -24,9 +24,10 @@
     </select>
 
     <select id="getUser2ndAuth" resultType="com.lotte.otp.domain.User2NdAuthVO">
-        SELECT *
-        FROM USER_2ND_AUTH
-        WHERE id=#{id}
+        SELECT a.*
+        FROM USER_2ND_AUTH AS a JOIN USER u
+        ON a.uuid = u.uuid
+        WHERE u.id=#{id}
     </select>
 
     <update id="updateLastPublishTime">
