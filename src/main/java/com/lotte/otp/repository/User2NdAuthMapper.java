@@ -16,14 +16,14 @@ public interface User2NdAuthMapper {
 
     String getUserSecretKey(@Param("kakao_user_key") String kakaoUserKey);
 
+    User2NdAuthVO getUser2ndAuth(@Param("id") String id);   //검증을하기 위해 secret_key, last_published_at 획득
+
     void updateLastPublishTime(@Param("kakao_user_key") String kakaoUserKey,
                                @Param("last_published_at") String lastPublishTime);
 
     String getLastPublishTime(@Param("kakao_user_key") String kakaoUserKey);
 
     void insertUser2ndAuth(@Param("user_2nd_auth") User2NdAuthVO user2NdAuth);
-
-    User2NdAuthVO getUser2ndAuth(@Param("uuid") int uuid);    //검증을하기 위해 secret_key, last_published_at 획득
 
 
 

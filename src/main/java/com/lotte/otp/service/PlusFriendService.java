@@ -4,18 +4,16 @@ import com.lotte.otp.domain.ChatBotStep;
 import com.lotte.otp.domain.KakaoRequestMessageVO;
 import com.lotte.otp.domain.User2NdAuthVO;
 import com.lotte.otp.domain.UserConnectionQueueVO;
-import com.lotte.otp.exception.DuplicateUserIDException;
 import com.lotte.otp.exception.GenerateOtpException;
-import com.lotte.otp.exception.TempKeyTimeOutException;
+import com.lotte.otp.exception.KeyTimeoutException;
 import com.lotte.otp.exception.UnAuthorizedUserException;
 import com.lotte.otp.repository.User2NdAuthMapper;
 import com.lotte.otp.repository.UserConnectionQueueMapper;
 import com.lotte.otp.repository.UserMapper;
 import com.lotte.otp.util.DateUtils;
 import com.lotte.otp.util.OTP;
-import com.lotte.otp.util.PlusFriendResponse;
+import com.lotte.otp.util.ChattingText;
 import com.lotte.otp.util.SecurityUtils;
-import com.sun.org.apache.bcel.internal.classfile.Unknown;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +37,6 @@ public class PlusFriendService {
     @Autowired
     private UserConnectionQueueMapper userConnectionQueueMapper;
 
-    private static final String REQUEST_OTP_BUTTON = "OTP (재)발급";
-    private static final String OTP_EXPIRATION_TIME = "OTP 만료 시간 확인";
-    private static final String LOGIN_HISTORY_BUTTON = "로그인 내역 확인";
-
     /**
      * 연동된 회원은 채팅 진행
      * 1. 발급 or 재발급
@@ -51,7 +45,7 @@ public class PlusFriendService {
      * @return
      */
     public String chat(KakaoRequestMessageVO message) {
-        if (message.getContent().equals(REQUEST_OTP_BUTTON)) {
+        if (message.getContent().equals(ChattingText.REQUEST_OTP_BUTTON)) {
             String now = DateUtils.now();
             String secretKey = user2NdAuthMapper.getUserSecretKey(message.getUser_key());
             try {
@@ -64,16 +58,25 @@ public class PlusFriendService {
                 logger.info("에러 내용 => " + e.getMessage());
                 return e.getMessage();
             }
-        } else if (message.getContent().equals(OTP_EXPIRATION_TIME)) {
+        } else if (message.getContent().equals(ChattingText.OTP_EXPIRATION_TIME_BUTTON)) {
             String publishTime = user2NdAuthMapper.getLastPublishTime(message.getUser_key());
             if (SecurityUtils.isTimeoutKey(DateUtils.convertStrToLongDate(publishTime), 1)) {
                 return "이전에 받은 OTP는 만료되었습니다. 새로운 OTP를 요청하세요.";
             }
-            return "만료 일시 : " + DateUtils.expireMin(publishTime, 1);
-        } else if (message.getContent().equals(LOGIN_HISTORY_BUTTON)) {
+            String expirationTime = DateUtils.expireMin(publishTime, 1);
+            long remainSeconds = 0;
+            try {
+                remainSeconds = DateUtils.remainSeconds(expirationTime);
+            } catch (KeyTimeoutException kte) {
+                return "이전에 받은 OTP는 만료되었습니다. 새로운 OTP를 요청하세요.";
+            }
+            return "만료 일시 : " + expirationTime +
+                    "\n현재 OTP는 " + remainSeconds + "초 남았습니다.";
+        } else if (message.getContent().equals(ChattingText.LOGIN_HISTORY_BUTTON)) {
             //TODO USER_IP 테이블 데이터 확인
+            return "개발해야함!";
         }
-        return PlusFriendResponse.NO_MATCHING[(int)(Math.random() * 10) % 3];
+        return ChattingText.NO_MATCHING[(int)(Math.random() * 10) % 3];
     }
 
     /**
@@ -95,7 +98,7 @@ public class PlusFriendService {
             user2NdAuthMapper.insertUser2ndAuth(user2NdAuth);
             userConnectionQueueMapper.deleteTempKey(userConnection.getId());    //등록에 성공하면 커넥션큐테이블의 데이터를 삭제
             return ChatBotStep.SUCCESS.getMessage();
-        } catch (UnAuthorizedUserException | TempKeyTimeOutException e) {
+        } catch (UnAuthorizedUserException | KeyTimeoutException e) {
             logger.info("OTP 연동에 실패했습니다.\n" +
                     "에러 내용 => " + e.getMessage());
             return "OTP 연동에 실패했습니다.";
@@ -124,7 +127,7 @@ public class PlusFriendService {
         logger.info("현재 시간 => " + now + ", 발급 시간 => " + userConnection.getPublished_at());
         logger.info("키 시간 차이 => " + (requestTime - publishTime));
         if (SecurityUtils.isTimeoutKey(publishTime, 5)) {
-            throw new TempKeyTimeOutException();
+            throw new KeyTimeoutException();
         }
         return userConnection;
     }

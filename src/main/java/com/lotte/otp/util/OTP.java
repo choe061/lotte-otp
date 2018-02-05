@@ -53,19 +53,20 @@ public class OTP {
      * @return
      * @throws GenerateOtpException
      */
-    public static String create(long time, String secretKey) throws GenerateOtpException {
-        return String.format("%06d", create(secretKey, time / DISTANCE));
+    public static String create(long publishTime, String secretKey) throws GenerateOtpException {
+        return String.format("%06d", create(secretKey, publishTime / DISTANCE));
     }
 
     /**
      * OTP 검증
      * TODO 예외 던지기 수정,보완
+     * @param time 마지막으로 발급받은 시간
      * @param secretKey
      * @param code 웹에서 입력으로 들어온 OTP
      * @return
      * @throws GenerateOtpException
      */
-    public static boolean vertify(long time, String secretKey, String code) throws GenerateOtpException {
-        return create(time, secretKey).equals(code);
+    public static boolean vertify(long publishTime, String secretKey, String code) throws GenerateOtpException {
+        return create(publishTime, secretKey).equals(code);
     }
 }

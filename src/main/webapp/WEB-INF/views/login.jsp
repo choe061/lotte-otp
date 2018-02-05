@@ -54,6 +54,9 @@
                 <label for="otp">OTP :</label>
                 <input type="text" name="otp" placeholder="otp" class="form-control" id="otp">
               </div>
+              <div class="form-group" style="display: none">
+                <input type="text" name="otp-id" class="form-control" id="otp-id">
+              </div>
               <input type="submit" value="인증">
             </form>
           </div>

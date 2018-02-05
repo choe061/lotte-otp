@@ -23,6 +23,12 @@
         WHERE kakao_user_key=#{kakao_user_key}
     </select>
 
+    <select id="getUser2ndAuth" resultType="com.lotte.otp.domain.User2NdAuthVO">
+        SELECT *
+        FROM USER_2ND_AUTH
+        WHERE id=#{id}
+    </select>
+
     <update id="updateLastPublishTime">
         UPDATE USER_2ND_AUTH
         SET last_published_at=#{last_published_at}

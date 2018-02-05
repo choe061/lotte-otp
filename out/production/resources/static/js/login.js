@@ -18,6 +18,21 @@ var requestLogin = function (id, pw) {
     });
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var printLogo = function () {
     console.log(
         "%c   __       _____  __________  __________  ___________           \

@@ -1,8 +1,10 @@
 package com.lotte.otp.service;
 
+import com.lotte.otp.domain.User2NdAuthVO;
 import com.lotte.otp.repository.User2NdAuthMapper;
 import com.lotte.otp.repository.UserConnectionQueueMapper;
 import com.lotte.otp.util.DateUtils;
+import com.lotte.otp.util.OTP;
 import com.lotte.otp.util.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,5 +49,18 @@ public class User2NdAuthService {
         logger.info("Distribute key date => " + DateUtils.now());
         userConnectionQueueMapper.insertTempKey(id, tempKey, DateUtils.now());
         return tempKey;
+    }
+
+    public boolean authenticateOtp(String id, String otp) {
+        User2NdAuthVO user2NdAuth = user2NdAuthMapper.getUser2ndAuth(id);
+        boolean result = OTP.vertify(
+                DateUtils.convertStrToLongDate(user2NdAuth.getLast_published_at()),
+                user2NdAuth.getSecret_key(),
+                otp
+                );
+        if (result && SecurityUtils.isTimeoutKey(DateUtils.convertStrToLongDate(user2NdAuth.getLast_published_at()), 1)) {
+            return true;
+        }
+        return false;
     }
 }
