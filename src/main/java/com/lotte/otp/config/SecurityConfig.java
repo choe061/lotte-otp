@@ -23,13 +23,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         // 메인페이지 : css나 js 같은것들도 여기에 포함시켜준다.
-        web.ignoring().antMatchers("/user", "/sign-up", "/login", "/otp");
+        web.ignoring().antMatchers("/css/**", "/js/**", "/images/**", "/user", "/sign-up", "/login", "/otp");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()    // 위 ignoring 을 제외한 전체가 기본 인증페이지
-                .antMatchers("/main/**")
+                .antMatchers("/main/**").permitAll()
+                .antMatchers("/otp/**").permitAll()
+                .anyRequest()
                 .authenticated()
                 .and()
                 .csrf().disable();

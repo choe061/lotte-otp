@@ -67,4 +67,11 @@ public class OtpApplicationTests {
 		logger.info("Time => " + str);
 		logger.info("long Time => " + DateUtils.convertStrToLongDate(str));
 	}
+
+	@Test
+	public void tokenizeText() {
+		String text = "choe061/123123";
+		String[] keys = text.split("/");
+		logger.info(String.valueOf(keys[0]) + " " + keys[1]);
+	}
 }

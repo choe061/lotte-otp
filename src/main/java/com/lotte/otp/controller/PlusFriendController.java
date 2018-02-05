@@ -46,7 +46,11 @@ public class PlusFriendController {
             String responseMessage = plusFriendService.chat(message);
             response = new KakaoResponseMessageVO(
                     new KakaoMessageVO(responseMessage),
-                    new KakaoKeyboardVO("buttons", new String[]{"OTP (재)발급", "지난 로그인 내역 확인"})
+                    new KakaoKeyboardVO("buttons", new String[]{
+                            ChattingText.REQUEST_OTP_BUTTON,
+                            ChattingText.OTP_EXPIRATION_TIME_BUTTON,
+                            ChattingText.LOGIN_HISTORY_BUTTON
+                    })
             );
         } else {
             //세션 확인 -> 순서 정의

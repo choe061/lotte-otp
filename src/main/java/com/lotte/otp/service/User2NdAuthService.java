@@ -36,7 +36,7 @@ public class User2NdAuthService {
     }
 
     public boolean isUser2NdAuthWithUserKey(String kakaoUserKey) {
-        int user = user2NdAuthMapper.findUser2NdAuthWithID(kakaoUserKey);
+        int user = user2NdAuthMapper.findUser2NdAuthWithUserKey(kakaoUserKey);
         if (user >= EXIST_USER_AUTH) {
             return true;
         }

@@ -17,7 +17,7 @@
         WHERE kakao_user_key=#{kakao_user_key}
     </select>
     
-    <select id="getUserSecretKey">
+    <select id="getUserSecretKey" resultType="java.lang.String">
         SELECT secret_key
         FROM USER_2ND_AUTH
         WHERE kakao_user_key=#{kakao_user_key}
@@ -35,7 +35,7 @@
         WHERE kakao_user_key=#{kakao_user_key}
     </update>
 
-    <select id="getLastPublishTime">
+    <select id="getLastPublishTime" resultType="java.lang.String">
         SELECT last_published_at
         FROM USER_2ND_AUTH
         WHERE kakao_user_key=#{kakao_user_key}
