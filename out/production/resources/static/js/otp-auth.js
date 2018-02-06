@@ -15,7 +15,7 @@ var getOTPConnectStatus = function (id) {
             }
         },
         error: function (request, status, error) {
-            alert("error : "+status+". "+error);
+            alert("otp error : "+status+". "+error);
         }
     });
 };

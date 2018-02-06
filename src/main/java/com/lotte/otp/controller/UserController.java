@@ -72,9 +72,7 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST
             , consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<HashMap<String, Boolean>> login(HttpSession httpSession, @RequestBody UserVO user) {
-        httpSession.setAttribute("first-certification", true);
-        httpSession.setMaxInactiveInterval(5 * 60);
-        
+
         logger.info(user.getId()+", "+user.getPw());
         HashMap<String, Boolean> result = new HashMap<>();
         ResponseEntity<HashMap<String, Boolean>> responseEntity = null;
@@ -82,6 +80,10 @@ public class UserController {
         UserAuthStatus authStatus = userService.login(user.getId(), user.getPw());
 
         if (authStatus == UserAuthStatus.OK) {
+            httpSession.setAttribute("id", user.getId());
+            httpSession.setAttribute("first-certification", true);
+            httpSession.setMaxInactiveInterval(5 * 60);
+
             result.put("result", true);
             responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
         } else {

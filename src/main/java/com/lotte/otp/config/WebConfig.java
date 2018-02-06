@@ -26,6 +26,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
         registry.addInterceptor(otpInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/user/**", "/kakaoApi/**", "/sign-up", "/login");
+                .excludePathPatterns("/user/**", "/kakaoApi/**", "/sign-up", "/login", "/otp/**");
     }
 }

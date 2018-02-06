@@ -13,7 +13,7 @@ var requestLogin = function (id, pw) {
             getOTPConnectStatus(id);
         },
         error: function (request, status, error) {
-            alert("error : "+status+". "+error);
+            alert("로그인 오류 발생");
         }
     });
 };
