@@ -87,15 +87,23 @@ public class PlusFriendService {
      * @return ChatBotStep.SUCCESS.getMessage() or 실패 메시지
      */
     public String connectWebService(KakaoRequestMessageVO message) {
+        UserConnectionQueueVO userConnection = tokenizeText(message.getContent());
+        if (userConnection == null) {
+            logger.info("OTP 연동에 실패했습니다.\n" +
+                    "에러 내용 => 토크나이징 실패");
+            return "잘못된 입력입니다.\n" +
+                    ChatBotStep.REQUEST_INFO.getMessage();
+        }
+
         try {
-            UserConnectionQueueVO userConnection = null;
-            try {
-                userConnection = vertifyUserMatching(message.getContent());
-            } catch (KeyTimeoutException kte) {
-                logger.info("OTP 연동에 실패했습니다.\n" +
-                        "에러 내용 => " + kte.getMessage());
-                return "임시 Key의 제한시간이 만료되었습니다. 키를 다시 발급받으세요.";
-            }
+            userConnection = vertifyUserMatching(userConnection);
+        } catch (KeyTimeoutException kte) {
+            logger.info("OTP 연동에 실패했습니다.\n" +
+                    "에러 내용 => " + kte.getMessage());
+            return "임시 Key의 제한시간이 만료되었습니다. 키를 다시 발급받으세요.";
+        }
+
+        try {
             User2NdAuthVO user2NdAuth = new User2NdAuthVO(
                     userMapper.getUUID(userConnection.getId()),
                     SecurityUtils.generateSecretKey(),
@@ -112,19 +120,28 @@ public class PlusFriendService {
         }
     }
 
+    private UserConnectionQueueVO tokenizeText(String text) {
+        UserConnectionQueueVO tokens = null;
+        try {
+            tokens = SecurityUtils.tokenizeText(text);
+        } catch (Exception e) {
+            return null;
+        }
+        return tokens;
+    }
+
     /**
      * 1) 유저 + tempKey + 키 만료일시 => 모두 만족, OK
      * 2) 유저가 등록되지 않은 경우 =>
      * 3) temp_key가 일치하지 않는 경우 => UNAUTHORIZED
      * 4) 만료일시가 지난 경우 => TIME_OUT
-     * @param text ex) choe061/123123
+     * @param userConnectionQueue
      * @return
      */
-    private UserConnectionQueueVO vertifyUserMatching(String text) {
-        UserConnectionQueueVO tokens = SecurityUtils.tokenizeText(text);
-        UserConnectionQueueVO userConnection = userConnectionQueueMapper.getUserConnection(tokens.getId());
+    private UserConnectionQueueVO vertifyUserMatching(UserConnectionQueueVO userConnectionQueue) {
+        UserConnectionQueueVO userConnection = userConnectionQueueMapper.getUserConnection(userConnectionQueue.getId());
 
-        if (userConnection.getTemp_key() != tokens.getTemp_key()) {
+        if (userConnection.getTemp_key() != userConnectionQueue.getTemp_key()) {
             throw new UnAuthorizedUserException();
         }
 

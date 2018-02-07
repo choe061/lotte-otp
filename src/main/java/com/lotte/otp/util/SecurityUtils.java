@@ -57,7 +57,7 @@ public class SecurityUtils {
         return false;
     }
 
-    public static UserConnectionQueueVO tokenizeText(String text) {
+    public static UserConnectionQueueVO tokenizeText(String text) throws Exception {
         String[] keys = text.split("/");
         return new UserConnectionQueueVO(keys[0], Integer.parseInt(keys[1]));
     }
