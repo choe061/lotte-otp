@@ -51,10 +51,18 @@ public class User2NdAuthController {
         String os = SecurityUtils.getOS(agent);
 
         logger.info("ID => " + id + ", OTP => " + otp + ", IP => " + ip + ", Browser => " + browser + ", OS => " + os);
-        if (user2NdAuthService.authenticateOtp(id, otp)) {
+
+        if (httpSession.getAttribute("otp-certification") != null) {
             httpSession.setAttribute("otp-certification", true);
             httpSession.setMaxInactiveInterval(60 * 60);
-            return new ModelAndView("redirect:/main");
+            return new ModelAndView("redirect:/main/home");
+        }
+
+        if (user2NdAuthService.authenticateOtp(id, otp)) {
+            logger.info("2차 인증 성공");
+            httpSession.setAttribute("otp-certification", true);
+            httpSession.setMaxInactiveInterval(60 * 60);
+            return new ModelAndView("redirect:/main/home");
         }
         return new ModelAndView("redirect:/login");
     }

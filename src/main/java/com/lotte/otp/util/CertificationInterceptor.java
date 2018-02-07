@@ -28,13 +28,5 @@ public class CertificationInterceptor extends HandlerInterceptorAdapter {
             httpSession.setMaxInactiveInterval(5 * 60); //1차 로그인 세션 보관 시간은 5분
             return true;
         }
-//        logger.info("First Certification Session => " + firstCertification);
-//        if (firstCertification) {
-//            httpSession.setMaxInactiveInterval(5 * 60); //1차 로그인 세션 보관 시간은 5분
-//            return true;
-//        } else {
-//            response.sendRedirect("/login");
-//            return false;
-//        }
     }
 }

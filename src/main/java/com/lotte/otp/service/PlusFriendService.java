@@ -58,7 +58,7 @@ public class PlusFriendService {
                 logger.info("에러 내용 => " + e.getMessage());
                 return e.getMessage();
             }
-        } else if (message.getContent().equals(ChattingText.OTP_EXPIRATION_TIME_BUTTON)) {
+        } else if (message.getContent().equals(ChattingText.OTP_EXPIRATION_TIME_BUTTON)) {  //가장 최초 버튼 누를 경우 NullPointerException 처리
             String publishTime = user2NdAuthMapper.getLastPublishTime(message.getUser_key());
             if (SecurityUtils.isTimeoutKey(DateUtils.convertStrToLongDate(publishTime), 1)) {
                 return "이전에 받은 OTP는 만료되었습니다. 새로운 OTP를 요청하세요.";

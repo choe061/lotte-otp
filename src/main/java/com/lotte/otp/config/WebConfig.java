@@ -22,10 +22,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(interceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/user/**", "/kakaoApi/**", "/sign-up", "/login");
+                .excludePathPatterns("/user/**", "/kakaoApi/**", "/sign-up", "/login", "/vendor/**", "/test");
 
         registry.addInterceptor(otpInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/user/**", "/kakaoApi/**", "/sign-up", "/login", "/otp/**");
+                .excludePathPatterns("/user/**", "/kakaoApi/**", "/sign-up", "/login", "/otp/**", "/vendor/**", "/test");
     }
 }

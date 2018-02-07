@@ -11,9 +11,9 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/main")
 public class MainController {
 
-    @RequestMapping(value = "")
-    public ModelAndView home() {
-        return new ModelAndView("home");
+    @RequestMapping(value = "/history")
+    public ModelAndView history() {
+        return new ModelAndView("history");
     }
 
     @RequestMapping(value = "/main")

@@ -7,10 +7,10 @@ var getOTPConnectStatus = function (id) {
         dataType: "json",
         success: function (data, status, xhr) {
             if (xhr.status === 200) {           //OTP 연동 회원
-                $('#otpInputDialog').modal('show');
+                $('#otp-input-dialog').modal('show');
                 $('#otp-id').val($('#id').val());
             } else if (xhr.status === 203) {    //OTP 미연동 회원
-                $('#otpConnectDialog').modal('show');
+                $('#otp-connect-dialog').modal('show');
                 $('#temp-key').text(data.temp_key);
             }
         },

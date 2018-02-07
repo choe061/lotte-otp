@@ -16,7 +16,7 @@ public class UserValidator {
                 || StringUtils.isEmpty(user.getId())) {
             return false;
         }
-        if (user.getId().length() <= 6 || user.getId().length() >= 20) {
+        if (user.getId().length() < 5 || user.getId().length() >= 20) {
             return false;
         }
         if (StringUtils.isBlank(user.getPw()) || StringUtils.isEmpty(user.getPw())) {

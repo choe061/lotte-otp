@@ -32,21 +32,3 @@ var isValidId = function (id) {
     var pattern = new RegExp("^[a-zA-Z][a-zA-Z0-9]{5,19}$");
     return pattern.test(id);
 };
-
-var showOtpDialog = function (id) {
-    $.ajax({
-        url: "/to-do/"+id,
-        method: "GET",
-        type: "json",
-        success: function(data) {
-            console.log(data.title);
-            $("#myModal").modal("show");
-            $("#m-title").val(data.title);
-            $("#m-detail").val(data.detail);
-            $("#m-updated-at").val(data.updated_at);
-            $("#m-location").val(data.location);
-        }, error: function(req, status, error) {
-            console.log(error+", "+id);
-        }
-    });
-}

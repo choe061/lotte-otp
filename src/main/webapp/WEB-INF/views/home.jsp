@@ -11,6 +11,7 @@
     <title>Home</title>
   </head>
   <body>
-    <h1>HOME</h1>
+    <h1>로그인 결과</h1>
+    <p>${sessionScope.id} 님께서 로그인</p>
   </body>
 </html>

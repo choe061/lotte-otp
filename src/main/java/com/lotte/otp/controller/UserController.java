@@ -57,7 +57,7 @@ public class UserController {
         if (userService.createUser(user)) {
             return new ModelAndView("redirect:/login", HttpStatus.CREATED);
         } else {
-            return new ModelAndView("/sign-up", HttpStatus.BAD_REQUEST);
+            return new ModelAndView("redirect:/sign-up", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -77,6 +77,12 @@ public class UserController {
         HashMap<String, Boolean> result = new HashMap<>();
         ResponseEntity<HashMap<String, Boolean>> responseEntity = null;
 
+        if (httpSession.getAttribute("first-certification") != null) {  //세션이 있는 경우 그냥 패스
+            result.put("result", true);
+            responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
+            return responseEntity;
+        }
+
         UserAuthStatus authStatus = userService.login(user.getId(), user.getPw());
 
         if (authStatus == UserAuthStatus.OK) {
@@ -91,6 +97,12 @@ public class UserController {
             responseEntity = new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
         }
         return responseEntity;
+    }
+
+    @RequestMapping(value = "/history", method = RequestMethod.GET)
+    public ModelAndView myConnectionHistory(HttpSession httpSession) {
+
+        return new ModelAndView();
     }
 
 }

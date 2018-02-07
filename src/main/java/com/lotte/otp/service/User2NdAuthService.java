@@ -58,7 +58,7 @@ public class User2NdAuthService {
                 user2NdAuth.getSecret_key(),
                 otp
                 );
-        if (result && SecurityUtils.isTimeoutKey(DateUtils.convertStrToLongDate(user2NdAuth.getLast_published_at()), 1)) {
+        if (result && !SecurityUtils.isTimeoutKey(DateUtils.convertStrToLongDate(user2NdAuth.getLast_published_at()), 1)) {
             return true;
         }
         return false;
