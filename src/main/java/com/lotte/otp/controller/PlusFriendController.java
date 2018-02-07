@@ -46,7 +46,7 @@ public class PlusFriendController {
     @RequestMapping(value = "/message", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public KakaoResponseMessageVO message(@RequestBody KakaoRequestMessageVO message) {
         KakaoResponseMessageVO response = null;
-        if (user2NdAuthService.isUser2NdAuthWithUserKey(message.getUser_key())) {
+        if (user2NdAuthService.isUser2NdAuthWithUserKey(message.getUser_key())) {   //연동이 되어있는 회원의 경우
             String responseMessage = plusFriendService.chat(message);
             response = new KakaoResponseMessageVO(
                     new KakaoMessageVO(responseMessage),
@@ -56,8 +56,7 @@ public class PlusFriendController {
                             ChattingText.LOGIN_HISTORY_BUTTON
                     })
             );
-        } else {
-            //세션 확인 -> 순서 정의
+        } else {        //연동이 되지 않은 회원의 경우
             String step = String.valueOf(chatRedisService.getStep(message.getUser_key()));
             logger.info(message.getUser_key() + " Session => " + step);
             if (ChatBotStep.valueOf(step) == ChatBotStep.NO_BASE
@@ -80,17 +79,18 @@ public class PlusFriendController {
                 );
                 chatRedisService.nextStep(message.getUser_key());
             } else if (ChatBotStep.valueOf(step) == ChatBotStep.SUCCESS) {          //입력으로 ID/temp_key가 들어옴
-                //ID/temp_key가 제대로 되었는지 확인하는 절차 추가
-
                 String responseMessage = plusFriendService.connectWebService(message);
-                response = new KakaoResponseMessageVO(
-                        new KakaoMessageVO(responseMessage),
-                        new KakaoKeyboardVO("buttons", new String[]{
-                                ChattingText.REQUEST_OTP_BUTTON,
-                                ChattingText.OTP_EXPIRATION_TIME_BUTTON,
-                                ChattingText.LOGIN_HISTORY_BUTTON})
-                );
-                //완전히 등록 되었는지 확인 후 등록 실패 시 Step 낮추기 + 아이디 재입력 멘트
+                if (responseMessage.equals(ChatBotStep.SUCCESS.getMessage())) {
+                    response = new KakaoResponseMessageVO(
+                            new KakaoMessageVO(responseMessage),
+                            new KakaoKeyboardVO("buttons", new String[]{
+                                    ChattingText.REQUEST_OTP_BUTTON,
+                                    ChattingText.OTP_EXPIRATION_TIME_BUTTON,
+                                    ChattingText.LOGIN_HISTORY_BUTTON})
+                    );
+                } else {    //Exception이 발생한 경우
+                    response = new KakaoResponseMessageVO(new KakaoMessageVO(responseMessage));
+                }
             }
         }
         logger.info("REQUEST Message : " + message.getUser_key() + ", " + message.getContent() + ", " + message.getType());

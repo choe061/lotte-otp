@@ -1,10 +1,10 @@
 package com.lotte.otp;
 
-import com.lotte.otp.domain.ChatBotSession;
-import com.lotte.otp.domain.ChatBotStep;
-import com.lotte.otp.domain.UserConnectionQueueVO;
-import com.lotte.otp.domain.UserConnectionStatus;
+import com.lotte.otp.domain.*;
+import com.lotte.otp.repository.UserConnectionHistoryMapper;
 import com.lotte.otp.repository.UserConnectionQueueMapper;
+import com.lotte.otp.repository.UserMapper;
+import com.lotte.otp.service.UserService;
 import com.lotte.otp.util.DateUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -28,7 +29,13 @@ public class OtpApplicationTests {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
+	private UserService userService;
+	@Autowired
+	private UserMapper userMapper;
+	@Autowired
 	private UserConnectionQueueMapper userConnectionQueueMapper;
+	@Autowired
+	private UserConnectionHistoryMapper userConnectionHistoryMapper;
 	@Autowired
 	private ChatBotSession chatBotSession;
 
@@ -73,5 +80,19 @@ public class OtpApplicationTests {
 		String text = "choe061/123123";
 		String[] keys = text.split("/");
 		logger.info(String.valueOf(keys[0]) + " " + keys[1]);
+	}
+
+	@Test
+	public void getAllConnectionHistoryWithId() {
+		ArrayList<UserConnectionHistoryVO> history = userConnectionHistoryMapper.getAllConnectionHistoryWithId("choe061");
+		logger.info(String.valueOf(history));
+	}
+
+	@Test
+	public void serviceAllConnectionHistoryWithId() {
+		ArrayList<UserConnectionHistoryVO> serviceHistory = userService.getAllConnectionHistoryWithId("choe061");
+		ArrayList<UserConnectionHistoryVO> history = userConnectionHistoryMapper.getAllConnectionHistoryWithId("choe061");
+		logger.info("Service => " + serviceHistory);
+		logger.info(String.valueOf(history));
 	}
 }

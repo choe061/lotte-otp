@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lotte.otp.repository.UserConnectionHistoryMapper">
+
+    <insert id="insertConnectionHistory">
+        INSERT INTO
+        USER_CONNECTION_HISTORY (uuid, ip, os, browser, accessed_at, success)
+        VALUES (#{connection_hisoty.uuid}, #{connection_hisoty.ip}, #{connection_hisoty.os},
+         #{connection_hisoty.browser}, #{connection_hisoty.accessed_at}, #{connection_hisoty.success})
+    </insert>
+
+    <!-- 최근 3개 접속 이력 조회 -->
+    <select id="getConnectionHistory" resultType="hashmap">
+        SELECT h.*
+        FROM USER_CONNECTION_HISTORY AS h JOIN USER_2ND_AUTH AS a
+        ON h.uuid = a.uuid
+        WHERE a.kakao_user_key=#{kakao_user_key}
+        ORDER BY h.accessed_at DESC
+        LIMIT 3
+    </select>
+
+    <!-- 모든 접속 이력 조회(최신순 정렬) -->
+    <select id="getAllConnectionHistory" resultType="hashmap">
+        SELECT h.*
+        FROM USER_CONNECTION_HISTORY AS h JOIN USER_2ND_AUTH AS a
+        ON h.uuid = a.uuid
+        WHERE a.id=#{id}
+        ORDER BY h.accessed_at DESC
+    </select>
+
+    <!-- 최근 3개 접속 이력 조회 -->
+    <select id="getConnectionHistoryWithId" resultType="hashmap">
+        SELECT h.*
+        FROM USER_CONNECTION_HISTORY AS h JOIN USER AS u
+        ON h.uuid = u.uuid
+        WHERE u.id=#{id}
+        ORDER BY h.accessed_at DESC
+        LIMIT 3
+    </select>
+
+    <!-- 모든 접속 이력 조회(최신순 정렬) -->
+    <select id="getAllConnectionHistoryWithId" resultType="hashmap">
+        SELECT h.*
+        FROM USER_CONNECTION_HISTORY AS h JOIN USER AS u
+        ON h.uuid = u.uuid
+        WHERE u.id=#{id}
+        ORDER BY h.accessed_at DESC
+    </select>
+
+</mapper>

@@ -1,8 +1,10 @@
 package com.lotte.otp.service;
 
 import com.lotte.otp.domain.UserAuthStatus;
+import com.lotte.otp.domain.UserConnectionHistoryVO;
 import com.lotte.otp.domain.UserVO;
 import com.lotte.otp.exception.DuplicateUserIDException;
+import com.lotte.otp.repository.UserConnectionHistoryMapper;
 import com.lotte.otp.repository.UserMapper;
 import com.lotte.otp.util.DateUtils;
 import com.lotte.otp.util.SecurityUtils;
@@ -12,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 
 /**
  * Created by choi on 2018. 1. 26. PM 4:00.
@@ -23,6 +27,8 @@ public class UserService {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private UserConnectionHistoryMapper userConnectionHistoryMapper;
     private static final int EXIST_USER = 1;
 
     /**
@@ -68,6 +74,19 @@ public class UserService {
         } else {
             return UserAuthStatus.UNAUTHORIZED;
         }
+    }
+
+    public void insertConnectionHistory(String id, UserConnectionHistoryVO history) {
+        history.setUuid(userMapper.getUUID(id));
+        userConnectionHistoryMapper.insertConnectionHistory(history);
+    }
+
+    public ArrayList<UserConnectionHistoryVO> getAllConnectionHistoryWithId(String id) {
+        return userConnectionHistoryMapper.getAllConnectionHistoryWithId(id);
+    }
+
+    public ArrayList<UserConnectionHistoryVO> getConnectionHistoryWithId(String id) {
+        return userConnectionHistoryMapper.getConnectionHistoryWithId(id);
     }
 
 }

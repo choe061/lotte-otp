@@ -24,25 +24,31 @@
     <link href="../vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
     <!-- Custom styles for this template-->
     <link href="../css/sb-admin.css" rel="stylesheet">
+    <style>
+      .dropdown-menu{
+        right: 0 !important;
+        left: initial !important;
+      }
+    </style>
   </head>
   <body class="fixed-nav sticky-footer bg-dark" id="page-top">
 
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-      <a class="navbar-brand" href="/home">LOTTE.com</a>
+      <a class="navbar-brand" href="/main">LOTTE.com</a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
           <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="/main">
               <i class="fa fa-fw fa-dashboard"></i>
               <span class="nav-link-text">Main</span>
             </a>
           </li>
           <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-            <a class="nav-link" href="tables.html">
+            <a class="nav-link" href="#">
               <i class="fa fa-fw fa-table"></i>
               <span class="nav-link-text">나의 접속이력</span>
             </a>
@@ -58,7 +64,7 @@
         <ul class="navbar-nav ml-auto">
           <!-- 알림창, 최근 로그인 접속 정보 3개 넣기 -->
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle mr-lg-auto" id="alertsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class="fa fa-fw fa-bell"></i>
               <span class="d-lg-none">Alerts
                 <span class="badge badge-pill badge-warning">6 New</span>
@@ -68,36 +74,43 @@
               </span>
             </a>
             <div class="dropdown-menu" aria-labelledby="alertsDropdown">
-              <h6 class="dropdown-header">New Alerts:</h6>
+              <h6 class="dropdown-header">새로운 알림</h6>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">
+              <%--<a class="dropdown-item" href="#">
                 <span class="text-success">
-                  <strong>
-                    <i class="fa fa-long-arrow-up fa-fw"></i>Status Update</strong>
+                  <strong>접속 성공</strong>
                 </span>
-                <span class="small float-right text-muted">11:21 AM</span>
-                <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
+                <span class="small float-right text-muted">${myHistory.accessed_at}</span>
+                <div class="dropdown-message small">${myHistory.accessed_at}</div>
               </a>
-              <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#">
                 <span class="text-danger">
-                  <strong>
-                    <i class="fa fa-long-arrow-down fa-fw"></i>Status Update</strong>
+                  <strong>접속 실패</strong>
                 </span>
-                <span class="small float-right text-muted">11:21 AM</span>
-                <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
+                <span class="small float-right text-muted">${myHistory.accessed_at}</span>
+                <div class="dropdown-message small">${myHistory.accessed_at}</div>
               </a>
+              <c:forEach items="${myHistory}" var="myHistory">
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">
+                  <c:choose>
+                    <c:when test="${myHistory.success}">
+                      <span class="text-success">
+                        <strong><i class="fa fa-long-arrow-up fa-fw"></i>접속 성공awefawefawefawefawefawef</strong>
+                      </span>
+                    </c:when>
+                    <c:otherwise>
+                      <span class="text-danger">
+                        <strong><i class="fa fa-long-arrow-up fa-fw"></i>접속 실패</strong>
+                      </span>
+                    </c:otherwise>
+                  </c:choose>
+                  <span class="small float-right text-muted">${myHistory.accessed_at}</span>
+                  <div class="dropdown-message small">${myHistory.accessed_at}</div>
+                </a>
+              </c:forEach>--%>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">
-                <span class="text-success">
-                  <strong>
-                    <i class="fa fa-long-arrow-up fa-fw"></i>Status Update</strong>
-                </span>
-                <span class="small float-right text-muted">11:21 AM</span>
-                <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item small" href="#">View all alerts</a>
+              <a class="dropdown-item small" href="#">모든 접속 이력 조회</a>
             </div>
           </li>
           <li class="nav-item">
@@ -126,121 +139,50 @@
               <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Position</th>
-                  <th>Office</th>
-                  <th>Age</th>
-                  <th>Start date</th>
-                  <th>Salary</th>
+                  <th>id</th>
+                  <th>IP Address</th>
+                  <th>OS</th>
+                  <th>Browser</th>
+                  <th>Date</th>
+                  <th>Ok or Fail</th>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
-                  <th>Name</th>
-                  <th>Position</th>
-                  <th>Office</th>
-                  <th>Age</th>
-                  <th>Start date</th>
-                  <th>Salary</th>
+                  <th>id</th>
+                  <th>IP Address</th>
+                  <th>OS</th>
+                  <th>Browser</th>
+                  <th>Date</th>
+                  <th>Ok or Fail</th>
                 </tr>
                 </tfoot>
                 <tbody>
-                <tr>
-                  <td>Tiger Nixon</td>
-                  <td>System Architect</td>
-                  <td>Edinburgh</td>
-                  <td>61</td>
-                  <td>2011/04/25</td>
-                  <td>$320,800</td>
-                </tr>
-                <tr>
-                  <td>Garrett Winters</td>
-                  <td>Accountant</td>
-                  <td>Tokyo</td>
-                  <td>63</td>
-                  <td>2011/07/25</td>
-                  <td>$170,750</td>
-                </tr>
-                <tr>
-                  <td>Ashton Cox</td>
-                  <td>Junior Technical Author</td>
-                  <td>San Francisco</td>
-                  <td>66</td>
-                  <td>2009/01/12</td>
-                  <td>$86,000</td>
-                </tr>
-                <tr>
-                  <td>Cedric Kelly</td>
-                  <td>Senior Javascript Developer</td>
-                  <td>Edinburgh</td>
-                  <td>22</td>
-                  <td>2012/03/29</td>
-                  <td>$433,060</td>
-                </tr>
-                <tr>
-                  <td>Airi Satou</td>
-                  <td>Accountant</td>
-                  <td>Tokyo</td>
-                  <td>33</td>
-                  <td>2008/11/28</td>
-                  <td>$162,700</td>
-                </tr>
-                <tr>
-                  <td>Brielle Williamson</td>
-                  <td>Integration Specialist</td>
-                  <td>New York</td>
-                  <td>61</td>
-                  <td>2012/12/02</td>
-                  <td>$372,000</td>
-                </tr>
-                <tr>
-                  <td>Herrod Chandler</td>
-                  <td>Sales Assistant</td>
-                  <td>San Francisco</td>
-                  <td>59</td>
-                  <td>2012/08/06</td>
-                  <td>$137,500</td>
-                </tr>
-                <tr>
-                  <td>Rhona Davidson</td>
-                  <td>Integration Specialist</td>
-                  <td>Tokyo</td>
-                  <td>55</td>
-                  <td>2010/10/14</td>
-                  <td>$327,900</td>
-                </tr>
-                <tr>
-                  <td>Colleen Hurst</td>
-                  <td>Javascript Developer</td>
-                  <td>San Francisco</td>
-                  <td>39</td>
-                  <td>2009/09/15</td>
-                  <td>$205,500</td>
-                </tr>
-                <tr>
-                  <td>Sonya Frost</td>
-                  <td>Software Engineer</td>
-                  <td>Edinburgh</td>
-                  <td>23</td>
-                  <td>2008/12/13</td>
-                  <td>$103,600</td>
-                </tr>
-                <tr>
-                  <td>Jena Gaines</td>
-                  <td>Office Manager</td>
-                  <td>London</td>
-                  <td>30</td>
-                  <td>2008/12/19</td>
-                  <td>$90,560</td>
-                </tr>
-                <tr>
-                  <td>Quinn Flynn</td>
-                  <td>Support Lead</td>
-                  <td>Edinburgh</td>
-                  <td>22</td>
-                  <td>2013/03/03</td>
-                  <td>$342,000</td>
-                </tr>
+                  <c:forEach items="${myHistory}" var="myHistory">
+                    <tr>
+                      <td>${myHistory.id}</td>
+                      <td>${myHistory.ip}</td>
+                      <td>${myHistory.os}</td>
+                      <td>${myHistory.browser}</td>
+                      <td>${myHistory.accessed_at}</td>
+                      <c:choose>
+                        <c:when test="${myHistory.success}">
+                          <td>
+                            <span class="text-success">
+                              <strong>성공</strong>
+                            </span>
+                          </td>
+                        </c:when>
+                        <c:otherwise>
+                          <td>
+                            <span class="text-danger">
+                              <strong>실패</strong>
+                            </span>
+                          </td>
+                        </c:otherwise>
+                      </c:choose>
+                    </tr>
+                  </c:forEach>
                 </tbody>
               </table>
             </div>

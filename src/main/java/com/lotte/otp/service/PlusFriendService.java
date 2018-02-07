@@ -88,7 +88,14 @@ public class PlusFriendService {
      */
     public String connectWebService(KakaoRequestMessageVO message) {
         try {
-            UserConnectionQueueVO userConnection = vertifyUserMatching(message.getContent());
+            UserConnectionQueueVO userConnection = null;
+            try {
+                userConnection = vertifyUserMatching(message.getContent());
+            } catch (KeyTimeoutException kte) {
+                logger.info("OTP 연동에 실패했습니다.\n" +
+                        "에러 내용 => " + kte.getMessage());
+                return "임시 Key의 제한시간이 만료되었습니다. 키를 다시 발급받으세요.";
+            }
             User2NdAuthVO user2NdAuth = new User2NdAuthVO(
                     userMapper.getUUID(userConnection.getId()),
                     SecurityUtils.generateSecretKey(),
@@ -98,10 +105,10 @@ public class PlusFriendService {
             user2NdAuthMapper.insertUser2ndAuth(user2NdAuth);
             userConnectionQueueMapper.deleteTempKey(userConnection.getId());    //등록에 성공하면 커넥션큐테이블의 데이터를 삭제
             return ChatBotStep.SUCCESS.getMessage();
-        } catch (UnAuthorizedUserException | KeyTimeoutException e) {
+        } catch (UnAuthorizedUserException uue) {
             logger.info("OTP 연동에 실패했습니다.\n" +
-                    "에러 내용 => " + e.getMessage());
-            return "OTP 연동에 실패했습니다.";
+                    "에러 내용 => " + uue.getMessage());
+            return "OTP 연동에 실패했습니다. 사용자 정보를 다시 입력해주세요.";
         }
     }
 

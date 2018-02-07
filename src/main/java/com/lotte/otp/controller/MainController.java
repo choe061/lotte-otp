@@ -11,13 +11,13 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value = "/main")
 public class MainController {
 
+    @RequestMapping()
+    public ModelAndView home() {
+        return new ModelAndView("main");
+    }
+
     @RequestMapping(value = "/history")
     public ModelAndView history() {
         return new ModelAndView("history");
-    }
-
-    @RequestMapping(value = "/main")
-    public ModelAndView main() {
-        return new ModelAndView("sign-up");
     }
 }
