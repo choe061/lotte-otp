@@ -45,7 +45,9 @@ public class PlusFriendController {
      */
     @RequestMapping(value = "/message", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public KakaoResponseMessageVO message(@RequestBody KakaoRequestMessageVO message) {
-        KakaoResponseMessageVO response = null;
+        KakaoResponseMessageVO response = new KakaoResponseMessageVO(
+                new KakaoMessageVO("현재 기능이 정상적으로 작동하지 않습니다. 관리자 채팅으로 문의주세요.")
+        );
         if (user2NdAuthService.isUser2NdAuthWithUserKey(message.getUser_key())) {   //연동이 되어있는 회원의 경우
             String responseMessage = plusFriendService.chat(message);
             response = new KakaoResponseMessageVO(
@@ -90,6 +92,7 @@ public class PlusFriendController {
                     );
                 } else {    //Exception이 발생한 경우
                     response = new KakaoResponseMessageVO(new KakaoMessageVO(responseMessage));
+                    //TODO 상태를 다시 REQUEST_INFO로 되돌리는 코드 작성하기
                 }
             }
         }

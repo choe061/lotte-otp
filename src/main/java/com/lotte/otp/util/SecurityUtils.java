@@ -1,10 +1,14 @@
 package com.lotte.otp.util;
 
+import com.lotte.otp.domain.BlockUserVO;
 import com.lotte.otp.domain.UserConnectionQueueVO;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.mindrot.jbcrypt.BCrypt;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
+import java.util.Enumeration;
 
 /**
  * Created by choi on 2018. 1. 30. PM 10:19.
@@ -66,7 +70,27 @@ public class SecurityUtils {
         return RandomStringUtils.randomAlphanumeric(255);
     }
 
-    public static String getBrowser(String agent) {
+    public static String getClientIP(HttpServletRequest request) {
+        String ip = request.getHeader("X-FORWARDED-FOR");
+        if (ip == null) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null) {
+            ip = request.getHeader("HTTP_CLIENT_IP");
+        }
+        if (ip == null) {
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+        }
+        if (ip == null) {
+            ip = request.getRemoteAddr();
+        }
+        return ip;
+    }
+
+    public static String getClientBrowser(String agent) {
         String browser = null;
         if (agent != null) {
             if (agent.indexOf("Trident") > -1) {
@@ -84,7 +108,7 @@ public class SecurityUtils {
         return browser;
     }
 
-    public static String getOS(String agent) {
+    public static String getClientOS(String agent) {
         String os = null;
         if(agent.indexOf("NT 6.0") != -1) os = "Windows Vista/Server 2008";
         else if(agent.indexOf("NT 5.2") != -1) os = "Windows Server 2003";
@@ -100,6 +124,34 @@ public class SecurityUtils {
         else if(agent.indexOf("Macintosh") != -1) os = "Macintosh";
         else os = "";
         return os;
+    }
+
+    public static void clearSession(HttpSession httpSession) {
+        //세션에 저장된 모든 데이터를 지움
+        Enumeration attNames = httpSession.getAttributeNames();
+        while(attNames.hasMoreElements()){
+            String name = attNames.nextElement().toString();
+            httpSession.removeAttribute(name);
+        }
+        httpSession.invalidate();
+    }
+
+    public static boolean blockUserIp(HttpSession httpSession, BlockUserVO attemptUser) {
+        BlockUserVO blockUser = (BlockUserVO) httpSession.getAttribute("attempt");
+        if (blockUser.getId().equals(attemptUser.getId())
+                && blockUser.getIp().equals(attemptUser.getIp())) {
+            int count = blockUser.getCount() + 1;
+            blockUser.setCount(count);
+            httpSession.setAttribute("attempt", blockUser);
+            if (count >= 5) {
+                return true;
+            }
+        } else {
+            blockUser.setCount(0);
+            httpSession.setAttribute("attempt", blockUser);
+            return false;
+        }
+        return false;
     }
 
 }

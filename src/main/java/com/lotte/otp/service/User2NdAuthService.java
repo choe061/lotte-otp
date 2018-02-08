@@ -1,6 +1,8 @@
 package com.lotte.otp.service;
 
+import com.lotte.otp.domain.BlockUserVO;
 import com.lotte.otp.domain.User2NdAuthVO;
+import com.lotte.otp.repository.BlockUserMapper;
 import com.lotte.otp.repository.User2NdAuthMapper;
 import com.lotte.otp.repository.UserConnectionQueueMapper;
 import com.lotte.otp.util.DateUtils;
@@ -24,6 +26,8 @@ public class User2NdAuthService {
     private User2NdAuthMapper user2NdAuthMapper;
     @Autowired
     private UserConnectionQueueMapper userConnectionQueueMapper;
+    @Autowired
+    private BlockUserMapper blockUserMapper;
 
     private static final int EXIST_USER_AUTH = 1;
 
@@ -59,6 +63,18 @@ public class User2NdAuthService {
                 otp
                 );
         if (result && !SecurityUtils.isTimeoutKey(DateUtils.convertStrToLongDate(user2NdAuth.getLast_published_at()), 1)) {
+            return true;
+        }
+        return false;
+    }
+
+    public void blockUserIp(BlockUserVO blockUser) {
+        blockUserMapper.blockUserIp(blockUser);
+    }
+
+    public boolean getBlockUserIp(String id, String ip) {
+        int block = blockUserMapper.getBlockUserIp(id, ip);
+        if (block >= 1) {
             return true;
         }
         return false;

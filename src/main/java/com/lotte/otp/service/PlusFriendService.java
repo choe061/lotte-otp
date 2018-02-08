@@ -97,13 +97,6 @@ public class PlusFriendService {
 
         try {
             userConnection = vertifyUserMatching(userConnection);
-        } catch (KeyTimeoutException kte) {
-            logger.info("OTP 연동에 실패했습니다.\n" +
-                    "에러 내용 => " + kte.getMessage());
-            return "임시 Key의 제한시간이 만료되었습니다. 키를 다시 발급받으세요.";
-        }
-
-        try {
             User2NdAuthVO user2NdAuth = new User2NdAuthVO(
                     userMapper.getUUID(userConnection.getId()),
                     SecurityUtils.generateSecretKey(),
@@ -113,10 +106,17 @@ public class PlusFriendService {
             user2NdAuthMapper.insertUser2ndAuth(user2NdAuth);
             userConnectionQueueMapper.deleteTempKey(userConnection.getId());    //등록에 성공하면 커넥션큐테이블의 데이터를 삭제
             return ChatBotStep.SUCCESS.getMessage();
-        } catch (UnAuthorizedUserException uue) {
+        } catch (KeyTimeoutException | UnAuthorizedUserException e) {
             logger.info("OTP 연동에 실패했습니다.\n" +
-                    "에러 내용 => " + uue.getMessage());
-            return "OTP 연동에 실패했습니다. 사용자 정보를 다시 입력해주세요.";
+                    "에러 내용 => " + e.getMessage());
+            String responseMessage = "";
+            if (e.getErrorCode() == 401) {          //UnAuthorizedUserException
+                responseMessage = "잘못된 정보 입력으로 OTP 연동에 실패했습니다. 사용자 정보를 다시 입력해주세요.";
+            } else if (e.getErrorCode() == 408) {   //KeyTimeoutException
+                responseMessage = "임시 키의 제한시간이 만료되어 OTP 연동에 실패했습니다. 키를 다시 발급받으세요.\n" +
+                        "(임시 키의 만료시간은 5분입니다.)";
+            }
+            return responseMessage;
         }
     }
 

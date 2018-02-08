@@ -61,7 +61,6 @@
         </form>
         <div class="text-center">
           <a class="d-block small mt-3" href="login">로그인 페이지</a>
-          <a class="d-block small" href="forgot-password.html">Forgot Password?</a>
         </div>
       </div>
     </div>

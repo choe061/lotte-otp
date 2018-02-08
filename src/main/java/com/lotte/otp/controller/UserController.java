@@ -6,6 +6,7 @@ import com.lotte.otp.domain.UserVO;
 import com.lotte.otp.exception.DuplicateUserIDException;
 import com.lotte.otp.service.User2NdAuthService;
 import com.lotte.otp.service.UserService;
+import com.lotte.otp.util.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 
 /**
@@ -108,6 +110,12 @@ public class UserController {
                 = userService.getAllConnectionHistoryWithId(String.valueOf(httpSession.getAttribute("id")));
         modelAndView.addObject("myHistory", connectionHistory);
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public ModelAndView logout(HttpSession httpSession) {
+        SecurityUtils.clearSession(httpSession);
+        return new ModelAndView("redirect:/login");
     }
 
 }

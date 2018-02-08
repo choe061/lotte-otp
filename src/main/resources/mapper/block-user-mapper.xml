@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lotte.otp.repository.BlockUserMapper">
+
+    <insert id="blockUserIp" parameterType="com.lotte.otp.domain.BlockUserVO">
+        INSERT INTO BLOCK_USER(id, ip, block_date)
+        VALUES (#{user.id}, #{user.ip}, #{user.block_date})
+    </insert>
+
+    <!-- 동일한 IP주소를 기준으로 가져옴 -->
+    <select id="getBlockUserIp" resultType="com.lotte.otp.domain.BlockUserVO">
+        SELECT COUNT(id)
+        FROM BLOCK_USER
+        WHERE id=#{id} AND ip=#{ip}
+    </select>
+
+</mapper>

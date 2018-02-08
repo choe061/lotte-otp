@@ -124,37 +124,37 @@
     <div class="content-wrapper">
       <div class="container-fluid">
         <!-- Breadcrumbs-->
-        <ol class="breadcrumb">
+        <%--<ol class="breadcrumb">
           <li class="breadcrumb-item">
             <a href="#">Dashboard</a>
           </li>
           <li class="breadcrumb-item active">Tables</li>
-        </ol>
+        </ol>--%>
         <!-- Example DataTables Card-->
         <div class="card mb-3">
           <div class="card-header">
-            <i class="fa fa-table"></i> Data Table Example</div>
+            <i class="fa fa-table"></i> ${sessionScope.id} 님의 접속이력</div>
           <div class="card-body">
             <div class="table-responsive">
               <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                 <tr>
-                  <th>id</th>
+                  <th>No.</th>
                   <th>IP Address</th>
                   <th>OS</th>
                   <th>Browser</th>
                   <th>Date</th>
-                  <th>Ok or Fail</th>
+                  <th>Result</th>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
-                  <th>id</th>
+                  <th>No.</th>
                   <th>IP Address</th>
                   <th>OS</th>
                   <th>Browser</th>
                   <th>Date</th>
-                  <th>Ok or Fail</th>
+                  <th>Result</th>
                 </tr>
                 </tfoot>
                 <tbody>
@@ -216,7 +216,7 @@
             <div class="modal-body">로그아웃을 누르면 세션이 종료됩니다.</div>
             <div class="modal-footer">
               <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-              <a class="btn btn-primary" href="login.html">로그아웃</a>
+              <a class="btn btn-primary" href="/user/logout">로그아웃</a>
             </div>
           </div>
         </div>
@@ -231,8 +231,8 @@
     <script src="../vendor/datatables/jquery.dataTables.js"></script>
     <script src="../vendor/datatables/dataTables.bootstrap4.js"></script>
     <!-- Custom scripts for all pages-->
-    <script src="../js/sb-admin.min.js"></script>
+    <script src="../vendor/sb-admin.min.js"></script>
     <!-- Custom scripts for this page-->
-    <script src="../js/sb-admin-datatables.min.js"></script>
+    <script src="../vendor/sb-admin-datatables.min.js"></script>
   </body>
 </html>
