@@ -45,7 +45,7 @@
             </a>
           </li>
           <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-            <a class="nav-link" href="/user/history">
+            <a class="nav-link" href="/menu/history">
               <i class="fa fa-fw fa-table"></i>
               <span class="nav-link-text">나의 접속이력</span>
             </a>

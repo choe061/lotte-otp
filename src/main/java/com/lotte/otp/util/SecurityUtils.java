@@ -136,7 +136,7 @@ public class SecurityUtils {
         httpSession.invalidate();
     }
 
-    public static boolean blockUserIp(HttpSession httpSession, BlockUserVO attemptUser) {
+    public static boolean isBlockUserIp(HttpSession httpSession, BlockUserVO attemptUser) {
         BlockUserVO blockUser = (BlockUserVO) httpSession.getAttribute("attempt");
         if (blockUser.getId().equals(attemptUser.getId())
                 && blockUser.getIp().equals(attemptUser.getIp())) {

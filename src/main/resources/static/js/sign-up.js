@@ -29,6 +29,6 @@ var duplicateId = function (id) {
 };
 
 var isValidId = function (id) {
-    var pattern = new RegExp("^[a-zA-Z][a-zA-Z0-9]{5,19}$");
+    var pattern = new RegExp("^[a-zA-Z][a-zA-Z0-9]{5,19}$");    //ID의 첫번째 글자는 반드시 영문으로 시작 이후는 영문+숫자 조합
     return pattern.test(id);
 };

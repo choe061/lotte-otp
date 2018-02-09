@@ -69,19 +69,16 @@
           <h4 class="modal-title" id="exampleModalLabel">OTP 2차 인증</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
-        <form action="/otp/auth" method="get">
+        <form action="" method="get">
           <div class="modal-body">
             <div class="form-group">
               <label for="otp" class="control-label">OTP :</label>
               <input type="text" class="form-control" name="otp" id="otp" placeholder="OTP를 입력하세요">
             </div>
-            <div class="form-group" style="display: none">
-              <input type="text" name="otp-id" class="form-control" id="otp-id">
-            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-            <input type="submit" class="btn btn-primary" id="otp-submit" value="인증하기">
+            <input type="button" class="btn btn-primary" id="otp-submit" value="인증하기">
           </div>
         </form>
       </div>
@@ -131,7 +128,20 @@
           $('#login_submit_button').on('click', function () {
               var id = $('#id').val();
               var pw = $('#pw').val();
-              requestLogin(id, pw);
+              if (isCheckInputBox(id, pw)) {
+                  requestLogin(id, pw);
+              } else {
+                  alert("ID, PW를 다시 입력하세요.");
+              }
+          });
+
+          $('#otp-submit').on('click', function () {
+              var otp = $('#otp').val();
+              if (isCheckOTP(otp)) {
+                  request2NdAuth(otp);
+              } else {
+                  alert("OTP 입력이 올바르지 않습니다.")
+              }
           });
       });
   </script>

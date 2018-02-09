@@ -76,7 +76,7 @@ public class PlusFriendService {
             //TODO USER_IP 테이블 데이터 확인
             return "개발해야함!";
         }
-        return ChattingText.NO_MATCHING[(int)(Math.random() * 10) % 3];
+        return ChattingText.NO_MATCHING[(int)(Math.random() * 10) % ChattingText.NO_MATCHING.length];
     }
 
     /**

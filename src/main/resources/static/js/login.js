@@ -1,3 +1,11 @@
+var isCheckInputBox = function (id, pw) {
+    var idPattern = new RegExp("^[a-zA-Z][a-zA-Z0-9]{5,19}$");
+    var pwPattern = new RegExp("^[a-zA-Z0-9]{5,29}$");
+    if (idPattern.test(id) && pwPattern.test(pw)) {
+        return true;
+    }
+    return false;
+};
 
 var requestLogin = function (id, pw) {
     $.ajax({
@@ -13,7 +21,7 @@ var requestLogin = function (id, pw) {
             getOTPConnectStatus(id);
         },
         error: function (request, status, error) {
-            alert("로그인 오류 발생");
+            alert("ID와 PW가 틀렸습니다.");
         }
     });
 };
