@@ -69,15 +69,12 @@ public class UserController {
      * 200 : 정상 응답                          OK - OTP입력 팝업
      * 203 : 1차 로그인은 성공이지만, OTP 미연동 회원 NO_CONTENT - OTP연동 팝업(qrcode 게시 등)
      * 401 : ID/PW - 1차 로그인 실패             UNAUTHORIZED - 다시 입력
-     * 404 : ID가 없음                         NOT_FOUND - 다시 입력, 401과 같음...
      * @param user
      * @return
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST
             , consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<HashMap<String, Boolean>> login(HttpSession httpSession, @RequestBody UserVO user) {
-
-        logger.info(user.getId()+", "+user.getPw());
         HashMap<String, Boolean> result = new HashMap<>();
         ResponseEntity<HashMap<String, Boolean>> responseEntity = null;
 

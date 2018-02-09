@@ -36,36 +36,10 @@ public class OtpApplicationTests {
 	private UserConnectionQueueMapper userConnectionQueueMapper;
 	@Autowired
 	private UserConnectionHistoryMapper userConnectionHistoryMapper;
-	@Autowired
-	private ChatBotSession chatBotSession;
 
 	@Test
 	public void contextLoads() {
-		logger.info(String.valueOf(chatBotSession.getHttpSession("user")));
-		chatBotSession.setHttpSession("user", ChatBotStep.NO_BASE);
-		logger.info(String.valueOf(chatBotSession.getHttpSession("user")));
-	}
 
-	@Test
-	public void printDateTime() {
-		logger.info("TIME => " + DateUtils.now());
-		UserConnectionQueueVO userConnection = userConnectionQueueMapper.getUserConnection("choe061");
-		logger.info("UserConnection => " + userConnection);
-		logger.info("UserConnection Time => " + userConnection.getPublished_at());
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
-		Date date = null;
-		Date now = null;
-		try {
-			date = dateFormat.parse(userConnection.getPublished_at());
-			now = dateFormat.parse(dateFormat.format(new Date()));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		long utc = System.currentTimeMillis();
-		long publishTime = date.getTime();
-		long requestTime = now.getTime();
-		logger.info("현재 시간 => " + now + ", 발급 시간 => " + date);
-		logger.info("키 시간 차이 => " + (utc - publishTime));
 	}
 
 	@Test

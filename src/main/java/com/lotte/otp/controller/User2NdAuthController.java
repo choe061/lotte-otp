@@ -49,7 +49,6 @@ public class User2NdAuthController {
         }
     }
 
-    //프론트에서 ajax 통신으로 변경하기
     @RequestMapping(value = "/auth/{otp}", method = RequestMethod.GET
             , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Map<String, Object>> authenticateOtp(HttpSession httpSession, HttpServletRequest request
@@ -65,9 +64,7 @@ public class User2NdAuthController {
 
         if (user2NdAuthService.getBlockUserIp(id, ipAddress)) {
             responseBody.put("reason", "해당 아이디에 접근할 수 없습니다. 접속하려면 문의주세요.");
-//            return new ModelAndView("redirect:/login", responseBody);
             responseEntity = new ResponseEntity<>(responseBody, HttpStatus.NOT_ACCEPTABLE); //406
-            logger.info("차단 아이디 => " + responseEntity);
             return responseEntity;
         }
 
@@ -75,24 +72,20 @@ public class User2NdAuthController {
             if (SecurityUtils.isBlockUserIp(httpSession, new BlockUserVO(id, ipAddress))) {
                 user2NdAuthService.blockUserIp(new BlockUserVO(id, ipAddress, DateUtils.now()));
                 responseBody.put("reason", "5회연속 틀려 접근이 제한되었습니다. 접속하려면 문의주세요.");
-//                return new ModelAndView("redirect:/login", responseBody);
                 responseEntity = new ResponseEntity<>(responseBody, HttpStatus.NOT_ACCEPTABLE); //406
-                logger.info("차단 아이디 2 => " + responseEntity);
                 return responseEntity;
             }
         } else {
             httpSession.setAttribute("attempt", new BlockUserVO(id, ipAddress, 0));
         }
 
-        logger.info("ID => " + id + ", OTP => " + otp + ", IP => " + ipAddress + ", Browser => " + browser + ", OS => " + os);
+        logger.info("[OTP] ID => " + id + ", OTP => " + otp + ", IP => " + ipAddress + ", Browser => " + browser + ", OS => " + os);
         UserConnectionHistoryVO history = new UserConnectionHistoryVO(ipAddress, os, browser, DateUtils.now());
 
         if (httpSession.getAttribute("otp-certification") != null) {
             httpSession.setAttribute("otp-certification", true);
             httpSession.setMaxInactiveInterval(60 * 60);
-            //return new ModelAndView("redirect:/main");
             responseEntity = new ResponseEntity<>(responseBody, HttpStatus.OK); //200
-            logger.info("Session OK => " + responseEntity);
             return responseEntity;
         }
 
@@ -103,9 +96,7 @@ public class User2NdAuthController {
             history.setSuccess(true);
             userService.insertConnectionHistory(id, history);
             httpSession.removeAttribute("attempt");
-            //return new ModelAndView("redirect:/main");
             responseEntity = new ResponseEntity<>(responseBody, HttpStatus.OK); //200
-            logger.info("OK => " + responseEntity);
             return responseEntity;
         }
 
@@ -114,9 +105,7 @@ public class User2NdAuthController {
         userService.insertConnectionHistory(id, history);
         int count = ((BlockUserVO) httpSession.getAttribute("attempt")).getCount() + 1;
         responseBody.put("reason", "ID/OTP가 " + count + "번째 틀렸습니다. 5회연속 틀린경우 접속에 제한이 있습니다.");
-//        return new ModelAndView("redirect:/login", responseBody);
         responseEntity = new ResponseEntity<>(responseBody, HttpStatus.UNAUTHORIZED);   //401
-        logger.info("Fail => " + responseEntity);
         return responseEntity;
     }
 

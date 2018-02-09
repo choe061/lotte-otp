@@ -27,16 +27,5 @@ public class OTPCertificationInterceptor extends HandlerInterceptorAdapter {
             httpSession.setMaxInactiveInterval(60 * 60);    //2차 로그인 세션 보관 시간은 1시간
             return true;
         }
-
-//        boolean otpCertification = (boolean) httpSession.getAttribute("otp-certification");
-//        logger.info("OTP Certification Session => " + otpCertification);
-//        if (otpCertification) {
-//            httpSession.setMaxInactiveInterval(60 * 60); //2차 로그인 세션 보관 시간은 1시간
-////            httpSession.setAttribute("id", request.get);  //세션에 ID 저장 => 목적 : 1차 인증을 세션 처리하여 통과하면 2차 인증 시 자바스크립트로 id 값을 가져올 수 없다.
-//            return true;
-//        } else {
-//            response.sendRedirect("/login");
-//            return false;
-//        }
     }
 }
