@@ -16,11 +16,11 @@
   <meta name="author" content="">
   <title>Lotte.com 회원가입</title>
   <!-- Bootstrap core CSS-->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom fonts for this template-->
-  <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href="${pageContext.request.contextPath}/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
   <!-- Custom styles for this template-->
-  <link href="css/sb-admin.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/css/sb-admin.css" rel="stylesheet">
 </head>
 
 <body class="bg-dark">
@@ -69,8 +69,8 @@
   <script src="/webjars/jquery/2.1.3/dist/jquery.min.js"></script>
   <script src="/webjars/bootstrap/3.3.4/dist/js/bootstrap.min.js"></script>
   <!-- Core plugin JavaScript-->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-  <script src="js/sign-up.js"></script>
+  <script src="${pageContext.request.contextPath}/vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="${pageContext.request.contextPath}/js/sign-up.js"></script>
   <script type="text/javascript">
       $(document).ready(function() {
           $('#duplicate_button').on('click', function () {

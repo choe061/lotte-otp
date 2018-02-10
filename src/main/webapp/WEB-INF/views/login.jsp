@@ -19,13 +19,13 @@
   <title>Lotte.com 로그인</title>
   <!-- Bootstrap core CSS-->
   <%--<link href="/webjars/bootstrap/3.3.4/dist/css/bootstrap.min.css" rel="stylesheet">--%>
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom fonts for this template-->
-  <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href="${pageContext.request.contextPath}/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
   <!-- Custom styles for this template-->
-  <link href="css/sb-admin.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/css/sb-admin.css" rel="stylesheet">
 
-  <script src="js/otp-input-dialog.js"></script>
+  <script src="${pageContext.request.contextPath}/js/otp-input-dialog.js"></script>
 </head>
 
 <body class="bg-dark">
@@ -113,14 +113,14 @@
   </div>
 
   <!-- Bootstrap core JavaScript-->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="vendor/bootbox.min.js"></script>
+  <script src="${pageContext.request.contextPath}/vendor/jquery/jquery.min.js"></script>
+  <script src="${pageContext.request.contextPath}/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="${pageContext.request.contextPath}/vendor/bootbox.min.js"></script>
   <!-- Core plugin JavaScript-->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="${pageContext.request.contextPath}/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-  <script src="js/login.js"></script>
-  <script src="js/otp-auth.js"></script>
+  <script src="${pageContext.request.contextPath}/js/login.js"></script>
+  <script src="${pageContext.request.contextPath}/js/otp-auth.js"></script>
 
   <script type="text/javascript">
       printLogo();

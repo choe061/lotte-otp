@@ -5,7 +5,7 @@ import com.lotte.otp.util.OTPCertificationInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
@@ -29,5 +29,4 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/user/**", "/kakaoApi/**", "/sign-up", "/login", "/otp/**", "/vendor/**", "/test");
     }
-
 }
