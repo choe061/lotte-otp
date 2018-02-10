@@ -125,6 +125,11 @@
   <script type="text/javascript">
       printLogo();
       $(document).ready(function() {
+          <%--var session_uid = "${sessionScope.id}";--%>
+          <%--if (typeof session_uid === 'string' && session_uid !== '') {--%>
+              <%--getOTPConnectStatus(session_uid);--%>
+          <%--}--%>
+
           $('#login_submit_button').on('click', function () {
               var id = $('#id').val();
               var pw = $('#pw').val();

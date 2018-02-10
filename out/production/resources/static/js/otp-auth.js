@@ -43,8 +43,9 @@ var request2NdAuth = function (otp) {
             var json = $.parseJSON(xhr.responseText);
             if (xhr.status === 401 || xhr.status === 406) {
                 alert(json.reason);
+            } else {
+                alert("잠시후 다시 시도해주세요.");
             }
-            console.log("status : " + xhr.status + ", "+json.reason);
         }
     });
 };

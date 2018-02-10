@@ -15,12 +15,12 @@ import javax.servlet.http.HttpSession;
 public class PageController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @RequestMapping("/test")
+    @RequestMapping(value = "/test")
     public ModelAndView test() {
         return new ModelAndView("history");
     }
 
-    @RequestMapping("/sign-up")
+    @RequestMapping(value = "/sign-up")
     public ModelAndView signUp(HttpSession httpSession) {
         if (httpSession.getAttribute("first-certification") != null) {
             if (httpSession.getAttribute("otp-certification") != null) {
@@ -30,7 +30,7 @@ public class PageController {
         return new ModelAndView("sign-up");
     }
 
-    @RequestMapping("/login")
+    @RequestMapping(value = "/login")
     public ModelAndView login(HttpSession httpSession) {
         if (httpSession.getAttribute("first-certification") != null) {
             if (httpSession.getAttribute("otp-certification") != null) {

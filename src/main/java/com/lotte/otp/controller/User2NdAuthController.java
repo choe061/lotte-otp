@@ -2,6 +2,7 @@ package com.lotte.otp.controller;
 
 import com.lotte.otp.domain.BlockUserVO;
 import com.lotte.otp.domain.UserConnectionHistoryVO;
+import com.lotte.otp.service.ChatRedisService;
 import com.lotte.otp.service.User2NdAuthService;
 import com.lotte.otp.service.UserService;
 import com.lotte.otp.util.DateUtils;
@@ -32,6 +33,8 @@ public class User2NdAuthController {
     private UserService userService;
     @Autowired
     private User2NdAuthService user2NdAuthService;
+    @Autowired
+    private ChatRedisService chatRedisService;
 
     @RequestMapping(value = "/connect/{id}", method = RequestMethod.GET
             , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -42,7 +45,7 @@ public class User2NdAuthController {
             responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
             return responseEntity;
         } else {
-            int tempKey = user2NdAuthService.distributeTempkey(id);
+            int tempKey = chatRedisService.getTempKey(id);  //user2NdAuthService.distributeTempkey(id);
             result.put("temp_key", tempKey);
             responseEntity = new ResponseEntity<>(result, HttpStatus.NON_AUTHORITATIVE_INFORMATION);
             return responseEntity;

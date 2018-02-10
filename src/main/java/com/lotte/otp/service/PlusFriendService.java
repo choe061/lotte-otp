@@ -78,39 +78,6 @@ public class PlusFriendService {
             default:
                 return ChattingText.NO_MATCHING[(int)(Math.random() * 10) % ChattingText.NO_MATCHING.length];
         }
-
-//        if (message.getContent().equals(ChattingText.REQUEST_OTP_BUTTON)) {
-//            String now = DateUtils.now();
-//            String secretKey = user2NdAuthMapper.getUserSecretKey(message.getUser_key());
-//            try {
-//                String otp = OTP.create(DateUtils.convertStrToLongDate(now), secretKey);
-//                user2NdAuthMapper.updateLastPublishTime(message.getUser_key(), now);
-//                return "OTP : " + otp +
-//                        "\n발급 일시 : " + now +
-//                        "\n만료 일시 : " + DateUtils.expireMin(now, 1);
-//            } catch (GenerateOtpException e) {
-//                logger.info("에러 내용 => " + e.getMessage());
-//                return e.getMessage();
-//            }
-//        } else if (message.getContent().equals(ChattingText.OTP_EXPIRATION_TIME_BUTTON)) {  //가장 최초 버튼 누를 경우 NullPointerException 처리
-//            String publishTime = user2NdAuthMapper.getLastPublishTime(message.getUser_key());
-//            if (SecurityUtils.isTimeoutKey(DateUtils.convertStrToLongDate(publishTime), 1)) {
-//                return "이전에 받은 OTP는 만료되었습니다. 새로운 OTP를 요청하세요.";
-//            }
-//            String expirationTime = DateUtils.expireMin(publishTime, 1);
-//            long remainSeconds = 0;
-//            try {
-//                remainSeconds = DateUtils.remainSeconds(expirationTime);
-//            } catch (KeyTimeoutException kte) {
-//                return "이전에 받은 OTP는 만료되었습니다. 새로운 OTP를 요청하세요.";
-//            }
-//            return "만료 일시 : " + expirationTime +
-//                    "\n현재 OTP는 " + remainSeconds + "초 남았습니다.";
-//        } else if (message.getContent().equals(ChattingText.LOGIN_HISTORY_BUTTON)) {
-//            //TODO USER_IP 테이블 데이터 확인
-//            return "개발해야함!";
-//        }
-//        return ChattingText.NO_MATCHING[(int)(Math.random() * 10) % ChattingText.NO_MATCHING.length];
     }
 
     /**

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by choi on 2018. 1. 29. PM 2:31.
  */
 @RestController
-@RequestMapping("/kakaoApi")
+@RequestMapping(value = "/kakaoApi", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class PlusFriendController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -29,7 +29,7 @@ public class PlusFriendController {
     @Autowired
     private ChatRedisService chatRedisService;
 
-    @RequestMapping(value = "/keyboard", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/keyboard", method = RequestMethod.GET)
     public KakaoKeyboardVO getKeyboard() {
         return new KakaoKeyboardVO("buttons", new String[]{
                 ChattingText.REQUEST_OTP_BUTTON,
@@ -43,7 +43,7 @@ public class PlusFriendController {
      * @param message
      * @return
      */
-    @RequestMapping(value = "/message", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/message", method = RequestMethod.POST)
     public KakaoResponseMessageVO message(@RequestBody KakaoRequestMessageVO message) {
         KakaoResponseMessageVO response;
 
@@ -98,7 +98,7 @@ public class PlusFriendController {
                         );
                     } else {    //Exception이 발생한 경우
                         response = new KakaoResponseMessageVO(new KakaoMessageVO(responseMessage));
-                        //TODO 상태를 다시 REQUEST_INFO로 되돌리는 코드 작성하기
+                        chatRedisService.setStep(message.getUser_key(), ChatBotStep.REQUEST_INFO);
                     }
                     break;
                 default:
