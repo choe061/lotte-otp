@@ -36,6 +36,8 @@ public class PlusFriendService {
     private User2NdAuthMapper user2NdAuthMapper;
     @Autowired
     private UserConnectionQueueMapper userConnectionQueueMapper;
+    @Autowired
+    private ChatRedisService chatRedisService;
 
     /**
      * 연동된 회원은 채팅 진행
@@ -95,7 +97,7 @@ public class PlusFriendService {
         }
 
         try {
-            userConnection = vertifyUserConnection(userConnection);
+            vertifyUserConnection(userConnection);
             User2NdAuthVO user2NdAuth = new User2NdAuthVO(
                     userMapper.getUUID(userConnection.getId()),
                     SecurityUtils.generateSecretKey(),
@@ -103,7 +105,7 @@ public class PlusFriendService {
             );
             logger.info("[플친 연동 Service] Auth => " + user2NdAuth.getUuid() + ", " + user2NdAuth.getKakao_user_key() + ", " + user2NdAuth.getSecret_key());
             user2NdAuthMapper.insertUser2ndAuth(user2NdAuth);
-            userConnectionQueueMapper.deleteTempKey(userConnection.getId());
+//            userConnectionQueueMapper.deleteTempKey(userConnection.getId());
             return ChatBotStep.SUCCESS.getMessage();
         } catch (KeyTimeoutException | UnAuthorizedUserException e) {
             logger.info("[플친 연동 Service] OTP 연동에 실패했습니다. 에러 내용 => " + e.getMessage());
@@ -134,21 +136,26 @@ public class PlusFriendService {
      * @param userConnectionQueue
      * @return
      */
-    private UserConnectionQueueVO vertifyUserConnection(UserConnectionQueueVO userConnectionQueue) {
-        UserConnectionQueueVO userConnection = userConnectionQueueMapper.getUserConnection(userConnectionQueue.getId());
-
-        if (userConnection.getTemp_key() != userConnectionQueue.getTemp_key()) {
+    private void vertifyUserConnection(UserConnectionQueueVO userConnectionQueue) {
+        int tempKey = chatRedisService.getTempKey(userConnectionQueue.getId());
+        if (tempKey != userConnectionQueue.getTemp_key()) {
             throw new UnAuthorizedUserException();
         }
 
-        long publishTime = DateUtils.convertStrToLongDate(userConnection.getPublished_at());
-        long requestTime = new Date().getTime();
-        logger.info("[플친 연동 Service] 키 시간 차이 => " + (requestTime - publishTime) / 1000 + "초");
-        if (SecurityUtils.isTimeoutKey(publishTime, 5)) {
-            throw new KeyTimeoutException();
-        }
-
-        return userConnection;
+//        UserConnectionQueueVO userConnection = userConnectionQueueMapper.getUserConnection(userConnectionQueue.getId());
+//
+//        if (userConnection.getTemp_key() != userConnectionQueue.getTemp_key()) {
+//            throw new UnAuthorizedUserException();
+//        }
+//
+//        long publishTime = DateUtils.convertStrToLongDate(userConnection.getPublished_at());
+//        long requestTime = new Date().getTime();
+//        logger.info("[플친 연동 Service] 키 시간 차이 => " + (requestTime - publishTime) / 1000 + "초");
+//        if (SecurityUtils.isTimeoutKey(publishTime, 5)) {
+//            throw new KeyTimeoutException();
+//        }
+//
+//        return userConnection;
     }
 
 }

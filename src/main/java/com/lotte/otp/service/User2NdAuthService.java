@@ -47,13 +47,13 @@ public class User2NdAuthService {
         return false;
     }
 
-    public int distributeTempkey(String id) {
-        int tempKey = SecurityUtils.distributeTempKey();
-        userConnectionQueueMapper.deleteTempKey(id);
-        logger.info("Distribute key date => " + DateUtils.now());
-        userConnectionQueueMapper.insertTempKey(id, tempKey, DateUtils.now());
-        return tempKey;
-    }
+//    public int distributeTempkey(String id) {
+//        int tempKey = SecurityUtils.distributeTempKey();
+//        userConnectionQueueMapper.deleteTempKey(id);
+//        logger.info("Distribute key date => " + DateUtils.now());
+//        userConnectionQueueMapper.insertTempKey(id, tempKey, DateUtils.now());
+//        return tempKey;
+//    }
 
     public boolean authenticateOtp(String id, String otp) {
         User2NdAuthVO user2NdAuth = user2NdAuthMapper.getUser2ndAuth(id);

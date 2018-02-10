@@ -1,6 +1,7 @@
 package com.lotte.otp.service;
 
 import com.lotte.otp.domain.ChatBotStep;
+import com.lotte.otp.exception.KeyTimeoutException;
 import com.lotte.otp.util.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,12 +50,20 @@ public class ChatRedisService {
         redisTemplate.opsForValue().set(id, nextStep, 10, TimeUnit.MINUTES);
     }
 
-    public int getTempKey(String id) {
+    public int distributeTempKey(String id) {
         try {
             return (int) redisTemplate.opsForValue().get(id+TEMP_KEY);
         } catch (NullPointerException npe) {
             createTempKey(id);
             return (int) redisTemplate.opsForValue().get(id+TEMP_KEY);
+        }
+    }
+
+    public int getTempKey(String id) {
+        try {
+            return (int) redisTemplate.opsForValue().get(id+TEMP_KEY);
+        } catch (NullPointerException npe) {
+            throw new KeyTimeoutException();
         }
     }
 

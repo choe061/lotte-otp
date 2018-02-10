@@ -45,7 +45,7 @@ public class User2NdAuthController {
             responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
             return responseEntity;
         } else {
-            int tempKey = chatRedisService.getTempKey(id);  //user2NdAuthService.distributeTempkey(id);
+            int tempKey = chatRedisService.distributeTempKey(id);  //user2NdAuthService.distributeTempkey(id);
             result.put("temp_key", tempKey);
             responseEntity = new ResponseEntity<>(result, HttpStatus.NON_AUTHORITATIVE_INFORMATION);
             return responseEntity;
