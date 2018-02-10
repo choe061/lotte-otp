@@ -47,7 +47,7 @@ public class ChatRedisService {
     public void nextStep(String id) {
         ChatBotStep step = getStep(id);
         ChatBotStep nextStep = step.getNextStep();
-        redisTemplate.opsForValue().set(id, nextStep, 10, TimeUnit.MINUTES);
+        setStep(id, nextStep);
     }
 
     public int distributeTempKey(String id) {
@@ -69,6 +69,7 @@ public class ChatRedisService {
 
     public void createTempKey(String id) {
         int tempKey = SecurityUtils.distributeTempKey();
+        logger.info("TempKey =>>> " + tempKey);
         redisTemplate.opsForValue().set(id+TEMP_KEY, tempKey, 5, TimeUnit.MINUTES);
     }
 }

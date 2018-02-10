@@ -98,7 +98,7 @@ public class PlusFriendController {
                         );
                     } else {    //Exception이 발생한 경우
                         response = new KakaoResponseMessageVO(new KakaoMessageVO(responseMessage));
-                        chatRedisService.setStep(message.getUser_key(), ChatBotStep.REQUEST_INFO);
+//                        chatRedisService.setStep(message.getUser_key(), ChatBotStep.REQUEST_INFO);
                     }
                     break;
                 default:

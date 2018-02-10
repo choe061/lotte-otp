@@ -10,14 +10,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserConnectionQueueVO {
-    private int qid;
+public class UserConnection {
+
     private String id;
     private int temp_key;
-    private String published_at;
 
-    public UserConnectionQueueVO(String id, int temp_key) {
-        this.id = id;
-        this.temp_key = temp_key;
-    }
 }

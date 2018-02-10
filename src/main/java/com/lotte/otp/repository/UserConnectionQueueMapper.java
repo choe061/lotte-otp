@@ -1,6 +1,6 @@
 package com.lotte.otp.repository;
 
-import com.lotte.otp.domain.UserConnectionQueueVO;
+import com.lotte.otp.domain.UserConnection;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserConnectionQueueMapper {
 
-    UserConnectionQueueVO getUserConnection(@Param("id") String id);
+    UserConnection getUserConnection(@Param("id") String id);
 
     void insertTempKey(@Param("id") String id,
                        @Param("temp_key") int temp_key,

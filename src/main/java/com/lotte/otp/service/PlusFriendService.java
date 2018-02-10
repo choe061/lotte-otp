@@ -3,7 +3,7 @@ package com.lotte.otp.service;
 import com.lotte.otp.domain.ChatBotStep;
 import com.lotte.otp.domain.KakaoRequestMessageVO;
 import com.lotte.otp.domain.User2NdAuthVO;
-import com.lotte.otp.domain.UserConnectionQueueVO;
+import com.lotte.otp.domain.UserConnection;
 import com.lotte.otp.exception.GenerateOtpException;
 import com.lotte.otp.exception.KeyTimeoutException;
 import com.lotte.otp.exception.UnAuthorizedUserException;
@@ -19,8 +19,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
 
 /**
  * Created by choi on 2018. 2. 2. PM 2:04.
@@ -90,7 +88,7 @@ public class PlusFriendService {
      * @return ChatBotStep.SUCCESS.getMessage() or 실패 메시지
      */
     public String connectWebService(KakaoRequestMessageVO message) {
-        UserConnectionQueueVO userConnection = tokenizeText(message.getContent());
+        UserConnection userConnection = tokenizeText(message.getContent());
         if (userConnection == null) {
             logger.info("[플친 연동 Service] OTP 연동에 실패했습니다. 에러 내용 => 토크나이징 실패");
             return "잘못된 입력입니다.\n" + ChatBotStep.REQUEST_INFO.getMessage();
@@ -105,7 +103,6 @@ public class PlusFriendService {
             );
             logger.info("[플친 연동 Service] Auth => " + user2NdAuth.getUuid() + ", " + user2NdAuth.getKakao_user_key() + ", " + user2NdAuth.getSecret_key());
             user2NdAuthMapper.insertUser2ndAuth(user2NdAuth);
-//            userConnectionQueueMapper.deleteTempKey(userConnection.getId());
             return ChatBotStep.SUCCESS.getMessage();
         } catch (KeyTimeoutException | UnAuthorizedUserException e) {
             logger.info("[플친 연동 Service] OTP 연동에 실패했습니다. 에러 내용 => " + e.getMessage());
@@ -119,8 +116,8 @@ public class PlusFriendService {
         }
     }
 
-    private UserConnectionQueueVO tokenizeText(String text) {
-        UserConnectionQueueVO tokens = null;
+    private UserConnection tokenizeText(String text) {
+        UserConnection tokens = null;
         try {
             tokens = SecurityUtils.tokenizeText(text);
         } catch (Exception e) {
@@ -136,26 +133,11 @@ public class PlusFriendService {
      * @param userConnectionQueue
      * @return
      */
-    private void vertifyUserConnection(UserConnectionQueueVO userConnectionQueue) {
+    private void vertifyUserConnection(UserConnection userConnectionQueue) {
         int tempKey = chatRedisService.getTempKey(userConnectionQueue.getId());
         if (tempKey != userConnectionQueue.getTemp_key()) {
             throw new UnAuthorizedUserException();
         }
-
-//        UserConnectionQueueVO userConnection = userConnectionQueueMapper.getUserConnection(userConnectionQueue.getId());
-//
-//        if (userConnection.getTemp_key() != userConnectionQueue.getTemp_key()) {
-//            throw new UnAuthorizedUserException();
-//        }
-//
-//        long publishTime = DateUtils.convertStrToLongDate(userConnection.getPublished_at());
-//        long requestTime = new Date().getTime();
-//        logger.info("[플친 연동 Service] 키 시간 차이 => " + (requestTime - publishTime) / 1000 + "초");
-//        if (SecurityUtils.isTimeoutKey(publishTime, 5)) {
-//            throw new KeyTimeoutException();
-//        }
-//
-//        return userConnection;
     }
 
 }

@@ -76,7 +76,8 @@ public class UserService {
         }
     }
 
-    public void insertConnectionHistory(String id, UserConnectionHistoryVO history) {
+    public void insertConnectionHistory(boolean result, String id, UserConnectionHistoryVO history) {
+        history.setSuccess(result);
         history.setUuid(userMapper.getUUID(id));
         userConnectionHistoryMapper.insertConnectionHistory(history);
     }

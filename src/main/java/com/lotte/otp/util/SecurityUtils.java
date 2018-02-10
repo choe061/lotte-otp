@@ -1,7 +1,7 @@
 package com.lotte.otp.util;
 
 import com.lotte.otp.domain.BlockUserVO;
-import com.lotte.otp.domain.UserConnectionQueueVO;
+import com.lotte.otp.domain.UserConnection;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -61,9 +61,9 @@ public class SecurityUtils {
         return false;
     }
 
-    public static UserConnectionQueueVO tokenizeText(String text) throws Exception {
+    public static UserConnection tokenizeText(String text) throws Exception {
         String[] keys = text.split("/");
-        return new UserConnectionQueueVO(keys[0], Integer.parseInt(keys[1]));
+        return new UserConnection(keys[0], Integer.parseInt(keys[1]));
     }
 
     public static String generateSecretKey() {

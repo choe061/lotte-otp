@@ -45,7 +45,7 @@ public class User2NdAuthController {
             responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
             return responseEntity;
         } else {
-            int tempKey = chatRedisService.distributeTempKey(id);  //user2NdAuthService.distributeTempkey(id);
+            int tempKey = chatRedisService.distributeTempKey(id);
             result.put("temp_key", tempKey);
             responseEntity = new ResponseEntity<>(result, HttpStatus.NON_AUTHORITATIVE_INFORMATION);
             return responseEntity;
@@ -65,9 +65,13 @@ public class User2NdAuthController {
         String os = SecurityUtils.getClientOS(agent);
         String id = String.valueOf(httpSession.getAttribute("id"));
 
+        logger.info("[OTP] ID => " + id + ", OTP => " + otp + ", IP => " + ipAddress + ", Browser => " + browser + ", OS => " + os);
+        UserConnectionHistoryVO history = new UserConnectionHistoryVO(ipAddress, os, browser, DateUtils.now());
+
         if (user2NdAuthService.getBlockUserIp(id, ipAddress)) {
             responseBody.put("reason", "해당 아이디에 접근할 수 없습니다. 접속하려면 문의주세요.");
             responseEntity = new ResponseEntity<>(responseBody, HttpStatus.NOT_ACCEPTABLE); //406
+            userService.insertConnectionHistory(false, id, history);
             return responseEntity;
         }
 
@@ -76,14 +80,13 @@ public class User2NdAuthController {
                 user2NdAuthService.blockUserIp(new BlockUserVO(id, ipAddress, DateUtils.now()));
                 responseBody.put("reason", "5회연속 틀려 접근이 제한되었습니다. 접속하려면 문의주세요.");
                 responseEntity = new ResponseEntity<>(responseBody, HttpStatus.NOT_ACCEPTABLE); //406
+                httpSession.removeAttribute("attempt");
+                userService.insertConnectionHistory(false, id, history);
                 return responseEntity;
             }
         } else {
             httpSession.setAttribute("attempt", new BlockUserVO(id, ipAddress, 0));
         }
-
-        logger.info("[OTP] ID => " + id + ", OTP => " + otp + ", IP => " + ipAddress + ", Browser => " + browser + ", OS => " + os);
-        UserConnectionHistoryVO history = new UserConnectionHistoryVO(ipAddress, os, browser, DateUtils.now());
 
         if (httpSession.getAttribute("otp-certification") != null) {
             httpSession.setAttribute("otp-certification", true);
@@ -96,16 +99,13 @@ public class User2NdAuthController {
             logger.info("2차 인증 성공");
             httpSession.setAttribute("otp-certification", true);
             httpSession.setMaxInactiveInterval(60 * 60);
-            history.setSuccess(true);
-            userService.insertConnectionHistory(id, history);
+            userService.insertConnectionHistory(true, id, history);
             httpSession.removeAttribute("attempt");
             responseEntity = new ResponseEntity<>(responseBody, HttpStatus.OK); //200
             return responseEntity;
         }
 
-        //로그인 실패
-        history.setSuccess(false);
-        userService.insertConnectionHistory(id, history);
+        userService.insertConnectionHistory(false, id, history);
         int count = ((BlockUserVO) httpSession.getAttribute("attempt")).getCount() + 1;
         responseBody.put("reason", "ID/OTP가 " + count + "번째 틀렸습니다. 5회연속 틀린경우 접속에 제한이 있습니다.");
         responseEntity = new ResponseEntity<>(responseBody, HttpStatus.UNAUTHORIZED);   //401
