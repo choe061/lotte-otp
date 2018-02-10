@@ -28,24 +28,29 @@ var isCheckOTP = function (otp) {
     return false;
 };
 
-var request2NdAuth = function (otp) {
-    $.ajax({
-        url: "/otp/auth/"+otp,
-        method: "GET",
-        contentType : "application/json; charset=UTF-8",
-        dataType: "json",
-        success: function (data, status, xhr) {
-            if (xhr.status === 200) {
-                window.location.href = "main";
+var request2NdAuth = function () {
+    var otp = $('#otp').val();
+    if (isCheckOTP(otp)) {
+        $.ajax({
+            url: "/otp/auth/"+otp,
+            method: "GET",
+            contentType : "application/json; charset=UTF-8",
+            dataType: "json",
+            success: function (data, status, xhr) {
+                if (xhr.status === 200) {
+                    window.location.href = "main";
+                }
+            },
+            error: function (xhr, ajaxOptions, error) {
+                var json = $.parseJSON(xhr.responseText);
+                if (xhr.status === 401 || xhr.status === 406) {
+                    alert(json.reason);
+                } else {
+                    alert("잠시후 다시 시도해주세요.");
+                }
             }
-        },
-        error: function (xhr, ajaxOptions, error) {
-            var json = $.parseJSON(xhr.responseText);
-            if (xhr.status === 401 || xhr.status === 406) {
-                alert(json.reason);
-            } else {
-                alert("잠시후 다시 시도해주세요.");
-            }
-        }
-    });
+        });
+    } else {
+        alert("OTP 입력이 올바르지 않습니다.");
+    }
 };

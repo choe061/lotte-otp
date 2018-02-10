@@ -7,23 +7,29 @@ var isCheckInputBox = function (id, pw) {
     return false;
 };
 
-var requestLogin = function (id, pw) {
-    $.ajax({
-        url: "/user/login",
-        method: "POST",
-        contentType : "application/json; charset=UTF-8",
-        dataType: "json",
-        data: JSON.stringify({
-            "id": id,
-            "pw": pw
-        }),
-        success: function (responseJson, status, xhr) {
-            getOTPConnectStatus(id);
-        },
-        error: function (request, status, error) {
-            alert("ID와 PW가 틀렸습니다.");
-        }
-    });
+var requestLogin = function () {
+    var id = $('#id').val();
+    var pw = $('#pw').val();
+    if (isCheckInputBox(id, pw)) {
+        $.ajax({
+            url: "/user/login",
+            method: "POST",
+            contentType : "application/json; charset=UTF-8",
+            dataType: "json",
+            data: JSON.stringify({
+                "id": id,
+                "pw": pw
+            }),
+            success: function (responseJson, status, xhr) {
+                getOTPConnectStatus(id);
+            },
+            error: function (request, status, error) {
+                alert("ID와 PW가 틀렸습니다.");
+            }
+        });
+    } else {
+        alert("ID, PW를 다시 입력하세요.");
+    }
 };
 
 

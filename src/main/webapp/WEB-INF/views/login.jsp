@@ -24,8 +24,6 @@
   <link href="${pageContext.request.contextPath}/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
   <!-- Custom styles for this template-->
   <link href="${pageContext.request.contextPath}/css/sb-admin.css" rel="stylesheet">
-
-  <script src="${pageContext.request.contextPath}/js/otp-input-dialog.js"></script>
 </head>
 
 <body class="bg-dark">
@@ -51,7 +49,7 @@
                 <input class="form-check-input" type="checkbox"> 아이디 기억하기</label>
             </div>
           </div>
-          <button type="button" class="btn btn-primary btn-block" id="login_submit_button" >로그인</button>
+          <button type="button" class="btn btn-primary btn-block" id="login-submit-button" >로그인</button>
         </form>
         <div class="text-center">
           <a class="d-block small mt-3" href="/sign-up">회원가입</a>
@@ -61,7 +59,6 @@
   </div>
 
   <!-- OTP Input Modals -->
-  <!-- set up the modal to start hidden and fade in and out -->
   <div class="modal fade" id="otp-input-dialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -78,15 +75,14 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-            <input type="button" class="btn btn-primary" id="otp-submit" value="인증하기">
+            <input type="button" class="btn btn-primary" id="otp-submit-button" value="인증하기">
           </div>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- OTP Input Modal -->
-  <!-- set up the modal to start hidden and fade in and out -->
+  <!-- OTP Connection Modal -->
   <div class="modal fade" id="otp-connect-dialog" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -101,7 +97,7 @@
           </div>
           <div>
             <p> &bigcirc; 회원님과 카카오톡 연동을 위한 임시 키를 발급해드립니다. 플러스 친구 추가 후 안내에 따라 임시 키를 입력해주세요.</p>
-            <p> &bigcirc; 임시 키 : </p><p id="temp-key"></p>
+            <div style="display:inline"><p> &bigcirc; 임시 키 : </p><p id="temp-key"></p></div>
           </div>
         </div>
 
@@ -130,23 +126,25 @@
               <%--getOTPConnectStatus(session_uid);--%>
           <%--}--%>
 
-          $('#login_submit_button').on('click', function () {
-              var id = $('#id').val();
-              var pw = $('#pw').val();
-              if (isCheckInputBox(id, pw)) {
-                  requestLogin(id, pw);
-              } else {
-                  alert("ID, PW를 다시 입력하세요.");
+          $('#pw').keydown(function (event) {
+              if (event.keyCode === 13) {
+                  requestLogin();
               }
           });
 
-          $('#otp-submit').on('click', function () {
-              var otp = $('#otp').val();
-              if (isCheckOTP(otp)) {
-                  request2NdAuth(otp);
-              } else {
-                  alert("OTP 입력이 올바르지 않습니다.")
+          $('#otp').keydown(function (event) {
+              if (event.keyCode === 13) {
+                  request2NdAuth();
+                  return false;
               }
+          });
+
+          $('#login-submit-button').on('click', function () {
+              requestLogin();
+          });
+
+          $('#otp-submit-button').on('click', function () {
+              request2NdAuth();
           });
       });
   </script>
