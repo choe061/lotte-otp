@@ -72,14 +72,11 @@ public class PlusFriendService {
                     return "이전에 받은 OTP는 만료되었습니다. 새로운 OTP를 요청하세요.";
                 }
             case ChattingText.LOGIN_HISTORY_BUTTON:
-                ArrayList<UserConnectionHistoryVO> history = userConnectionHistoryMapper.getConnectionHistory(message.getUser_key());
-                String text = "[최근 3회 로그인 내역]";
-                for (int i = 0; i < history.size(); i++) {
-                    text += "===========================";
-                    text += "\n일시 : " + history.get(i).getAccessed_at();
-                    text += "\n접속 환경 : " + history.get(i).getOs() + " " + history.get(i).getBrowser();
-                    text += "\nIP : " + history.get(i).getIp();
-                }
+                UserConnectionHistoryVO history = userConnectionHistoryMapper.getConnectionHistory(message.getUser_key());
+                String text = "[최근 로그인 내역]";
+                text += "\n일시 : " + history.getAccessed_at();
+                text += "\n접속 환경 : " + history.getOs() + " " + history.getBrowser();
+                text += "\nIP : " + history.getIp();
                 return text;
             default:
                 return ChattingText.NO_MATCHING[(int)(Math.random() * 10) % ChattingText.NO_MATCHING.length];

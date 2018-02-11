@@ -14,11 +14,11 @@ public interface UserConnectionHistoryMapper {
 
     void insertConnectionHistory(@Param("connection_hisoty") UserConnectionHistoryVO userConnectionHistory);
 
-    ArrayList<UserConnectionHistoryVO> getConnectionHistory(@Param("kakao_user_key") String kakao_user_key);
+    UserConnectionHistoryVO getConnectionHistory(@Param("kakao_user_key") String kakao_user_key);
 
     ArrayList<UserConnectionHistoryVO> getAllConnectionHistory(@Param("kakao_user_key") String kakao_user_key);
 
-    ArrayList<UserConnectionHistoryVO> getConnectionHistoryWithId(@Param("id") String id);
+    UserConnectionHistoryVO getConnectionHistoryWithId(@Param("id") String id);
 
     ArrayList<UserConnectionHistoryVO> getAllConnectionHistoryWithId(@Param("id") String id);
 

@@ -86,7 +86,7 @@ public class UserService {
         return userConnectionHistoryMapper.getAllConnectionHistoryWithId(id);
     }
 
-    public ArrayList<UserConnectionHistoryVO> getConnectionHistoryWithId(String id) {
+    public UserConnectionHistoryVO getConnectionHistoryWithId(String id) {
         return userConnectionHistoryMapper.getConnectionHistoryWithId(id);
     }
 

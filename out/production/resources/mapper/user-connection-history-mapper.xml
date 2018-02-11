@@ -11,14 +11,14 @@
          #{connection_hisoty.browser}, #{connection_hisoty.accessed_at}, #{connection_hisoty.success})
     </insert>
 
-    <!-- 최근 3개 접속 이력 조회 -->
-    <select id="getConnectionHistory" resultType="hashmap">
+    <!-- 최근 1개 접속 이력 조회 -->
+    <select id="getConnectionHistory" resultType="com.lotte.otp.domain.UserConnectionHistoryVO">
         SELECT h.*
         FROM USER_CONNECTION_HISTORY AS h JOIN USER_2ND_AUTH AS a
         ON h.uuid = a.uuid
         WHERE a.kakao_user_key=#{kakao_user_key}
         ORDER BY h.accessed_at DESC
-        LIMIT 3
+        LIMIT 1
     </select>
 
     <!-- 모든 접속 이력 조회(최신순 정렬) -->
@@ -30,14 +30,14 @@
         ORDER BY h.accessed_at DESC
     </select>
 
-    <!-- 최근 3개 접속 이력 조회 -->
-    <select id="getConnectionHistoryWithId" resultType="hashmap">
+    <!-- 최근 1개 접속 이력 조회 -->
+    <select id="getConnectionHistoryWithId" resultType="com.lotte.otp.domain.UserConnectionHistoryVO">
         SELECT h.*
         FROM USER_CONNECTION_HISTORY AS h JOIN USER AS u
         ON h.uuid = u.uuid
         WHERE u.id=#{id}
         ORDER BY h.accessed_at DESC
-        LIMIT 3
+        LIMIT 1
     </select>
 
     <!-- 모든 접속 이력 조회(최신순 정렬) -->

@@ -73,4 +73,15 @@ public class OtpApplicationTests {
 		logger.info("Service => " + serviceHistory);
 		logger.info(String.valueOf(history));
 	}
+
+	@Test
+	public void history() {
+		UserConnectionHistoryVO history = userConnectionHistoryMapper.getConnectionHistory("dYq1wL6LmnnR");
+		logger.info(history.getAccessed_at());
+		String text = "[최근 로그인 내역]";
+		text += "\n일시 : " + history.getAccessed_at();
+		text += "\n접속 환경 : " + history.getOs() + " " + history.getBrowser();
+		text += "\nIP : " + history.getIp();
+		logger.info(text);
+	}
 }
