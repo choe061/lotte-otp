@@ -72,13 +72,13 @@ public class PlusFriendService {
                     return "이전에 받은 OTP는 만료되었습니다. 새로운 OTP를 요청하세요.";
                 }
             case ChattingText.LOGIN_HISTORY_BUTTON:
-                //TODO USER_IP 테이블 데이터 확인
                 ArrayList<UserConnectionHistoryVO> history = userConnectionHistoryMapper.getConnectionHistory(message.getUser_key());
                 String text = "[최근 3회 로그인 내역]";
-                for (UserConnectionHistoryVO userHistory : history) {
-                    text += "\n일시 : " + userHistory.getAccessed_at();
-                    text += "\n접속 환경 : " + userHistory.getOs() + " " + userHistory.getBrowser();
-                    text += "\nIP : " + userHistory.getIp();
+                for (int i = 0; i < history.size(); i++) {
+                    text += "===========================";
+                    text += "\n일시 : " + history.get(i).getAccessed_at();
+                    text += "\n접속 환경 : " + history.get(i).getOs() + " " + history.get(i).getBrowser();
+                    text += "\nIP : " + history.get(i).getIp();
                 }
                 return text;
             default:
