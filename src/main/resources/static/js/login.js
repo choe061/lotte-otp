@@ -7,7 +7,18 @@ var isCheckInputBox = function (id, pw) {
     return false;
 };
 
+var saveCookieChanges = function () {
+    var checked = $('#save-id').is(':checked');
+    if (checked) {
+        var id = $('#id').val();
+        Cookies.set('id', id, { expires: 7 });  //Save in Cookie for 7 days
+    } else {
+        Cookies.remove('id');
+    }
+};
+
 var requestLogin = function () {
+    saveCookieChanges();
     var id = $('#id').val();
     var pw = $('#pw').val();
     if (isCheckInputBox(id, pw)) {

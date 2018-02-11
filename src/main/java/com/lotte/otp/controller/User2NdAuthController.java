@@ -1,6 +1,7 @@
 package com.lotte.otp.controller;
 
 import com.lotte.otp.domain.BlockUserVO;
+import com.lotte.otp.domain.UserAuthStatus;
 import com.lotte.otp.domain.UserConnectionHistoryVO;
 import com.lotte.otp.service.ChatRedisService;
 import com.lotte.otp.service.User2NdAuthService;
@@ -41,7 +42,7 @@ public class User2NdAuthController {
     public ResponseEntity<HashMap<String,Integer>> getOTPConnectStatus(@PathVariable("id") String id) {
         HashMap<String, Integer> result = new HashMap<>();
         ResponseEntity<HashMap<String, Integer>> responseEntity = null;
-        if (user2NdAuthService.isUser2NdAuthWithID(id)) {
+        if (UserAuthStatus.CONNECTION_OTP == user2NdAuthService.isUser2NdAuthWithID(id)) {
             responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
             return responseEntity;
         } else {

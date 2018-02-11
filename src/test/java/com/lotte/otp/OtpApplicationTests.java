@@ -1,27 +1,20 @@
 package com.lotte.otp;
 
-import com.lotte.otp.domain.*;
+import com.lotte.otp.domain.UserConnectionHistoryVO;
 import com.lotte.otp.repository.UserConnectionHistoryMapper;
-import com.lotte.otp.repository.UserConnectionQueueMapper;
 import com.lotte.otp.repository.UserMapper;
 import com.lotte.otp.service.UserService;
 import com.lotte.otp.util.DateUtils;
+import com.lotte.otp.util.SecurityUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = OtpApplication.class)
@@ -33,13 +26,24 @@ public class OtpApplicationTests {
 	@Autowired
 	private UserMapper userMapper;
 	@Autowired
-	private UserConnectionQueueMapper userConnectionQueueMapper;
-	@Autowired
 	private UserConnectionHistoryMapper userConnectionHistoryMapper;
 
 	@Test
 	public void contextLoads() {
-
+		int tempKey = SecurityUtils.distributeTempKey();
+		logger.info("tempKey => " + tempKey);
+		tempKey = SecurityUtils.distributeTempKey();
+		logger.info("tempKey => " + tempKey);
+		tempKey = SecurityUtils.distributeTempKey();
+		logger.info("tempKey => " + tempKey);
+		tempKey = SecurityUtils.distributeTempKey();
+		logger.info("tempKey => " + tempKey);
+		tempKey = SecurityUtils.distributeTempKey();
+		logger.info("tempKey => " + tempKey);
+		tempKey = SecurityUtils.distributeTempKey();
+		logger.info("tempKey => " + tempKey);
+		tempKey = SecurityUtils.distributeTempKey();
+		logger.info("tempKey => " + tempKey);
 	}
 
 	@Test

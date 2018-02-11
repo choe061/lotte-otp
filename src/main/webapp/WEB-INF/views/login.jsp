@@ -46,7 +46,7 @@
           <div class="form-group">
             <div class="form-check">
               <label class="form-check-label">
-                <input class="form-check-input" type="checkbox"> 아이디 기억하기</label>
+                <input class="form-check-input" type="checkbox" id="save-id"> 아이디 기억하기</label>
             </div>
           </div>
           <button type="button" class="btn btn-primary btn-block" id="login-submit-button" >로그인</button>
@@ -117,10 +117,15 @@
 
   <script src="${pageContext.request.contextPath}/js/login.js"></script>
   <script src="${pageContext.request.contextPath}/js/otp-auth.js"></script>
+  <script src="${pageContext.request.contextPath}/js/js.cookie.js"></script>
 
   <script type="text/javascript">
       printLogo();
       $(document).ready(function() {
+          if (Cookies.get('id') !== undefined) {
+              $('#id').val(Cookies.get('id'));
+              $('#save-id').attr('checked', true);
+          }
           <%--var session_uid = "${sessionScope.id}";--%>
           <%--if (typeof session_uid === 'string' && session_uid !== '') {--%>
               <%--getOTPConnectStatus(session_uid);--%>

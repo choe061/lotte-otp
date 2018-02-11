@@ -8,11 +8,10 @@ import com.lotte.otp.exception.GenerateOtpException;
 import com.lotte.otp.exception.KeyTimeoutException;
 import com.lotte.otp.exception.UnAuthorizedUserException;
 import com.lotte.otp.repository.User2NdAuthMapper;
-import com.lotte.otp.repository.UserConnectionQueueMapper;
 import com.lotte.otp.repository.UserMapper;
+import com.lotte.otp.util.ChattingText;
 import com.lotte.otp.util.DateUtils;
 import com.lotte.otp.util.OTP;
-import com.lotte.otp.util.ChattingText;
 import com.lotte.otp.util.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,8 +31,6 @@ public class PlusFriendService {
     private UserMapper userMapper;
     @Autowired
     private User2NdAuthMapper user2NdAuthMapper;
-    @Autowired
-    private UserConnectionQueueMapper userConnectionQueueMapper;
     @Autowired
     private ChatRedisService chatRedisService;
 

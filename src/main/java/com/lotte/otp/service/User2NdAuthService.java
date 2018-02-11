@@ -2,9 +2,9 @@ package com.lotte.otp.service;
 
 import com.lotte.otp.domain.BlockUserVO;
 import com.lotte.otp.domain.User2NdAuthVO;
+import com.lotte.otp.domain.UserAuthStatus;
 import com.lotte.otp.repository.BlockUserMapper;
 import com.lotte.otp.repository.User2NdAuthMapper;
-import com.lotte.otp.repository.UserConnectionQueueMapper;
 import com.lotte.otp.util.DateUtils;
 import com.lotte.otp.util.OTP;
 import com.lotte.otp.util.SecurityUtils;
@@ -25,35 +25,25 @@ public class User2NdAuthService {
     @Autowired
     private User2NdAuthMapper user2NdAuthMapper;
     @Autowired
-    private UserConnectionQueueMapper userConnectionQueueMapper;
-    @Autowired
     private BlockUserMapper blockUserMapper;
 
     private static final int EXIST_USER_AUTH = 1;
 
-    public boolean isUser2NdAuthWithID(String id) {
+    public UserAuthStatus isUser2NdAuthWithID(String id) {
         int user = user2NdAuthMapper.findUser2NdAuthWithID(id);
         if (user >= EXIST_USER_AUTH) {
-            return true;
+            return UserAuthStatus.CONNECTION_OTP;
         }
-        return false;
+        return UserAuthStatus.UNAUTHORIZED;
     }
 
-    public boolean isUser2NdAuthWithUserKey(String kakaoUserKey) {
+    public UserAuthStatus isUser2NdAuthWithUserKey(String kakaoUserKey) {
         int user = user2NdAuthMapper.findUser2NdAuthWithUserKey(kakaoUserKey);
         if (user >= EXIST_USER_AUTH) {
-            return true;
+            return UserAuthStatus.CONNECTION_OTP;
         }
-        return false;
+        return UserAuthStatus.UNAUTHORIZED;
     }
-
-//    public int distributeTempkey(String id) {
-//        int tempKey = SecurityUtils.distributeTempKey();
-//        userConnectionQueueMapper.deleteTempKey(id);
-//        logger.info("Distribute key date => " + DateUtils.now());
-//        userConnectionQueueMapper.insertTempKey(id, tempKey, DateUtils.now());
-//        return tempKey;
-//    }
 
     public boolean authenticateOtp(String id, String otp) {
         User2NdAuthVO user2NdAuth = user2NdAuthMapper.getUser2ndAuth(id);

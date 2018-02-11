@@ -48,7 +48,7 @@ public class PlusFriendController {
         KakaoResponseMessageVO response;
 
         //연동이 되어있는 회원의 경우
-        if (user2NdAuthService.isUser2NdAuthWithUserKey(message.getUser_key())) {
+        if (UserAuthStatus.CONNECTION_OTP == user2NdAuthService.isUser2NdAuthWithUserKey(message.getUser_key())) {
             String responseMessage = plusFriendService.chat(message);
             response = new KakaoResponseMessageVO(
                     new KakaoMessageVO(responseMessage),

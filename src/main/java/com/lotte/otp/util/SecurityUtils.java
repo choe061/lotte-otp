@@ -38,11 +38,15 @@ public class SecurityUtils {
 
     /**
      * 카카오 플친과 최초 연동을 위한 임시키를 발급해주는 메소드
-     * 사용자가 입력해야 하는 임시키이기 때문에 너무 복잡하게 출력하지 않음
+     * 사용자가 입력해야 하는 임시키이기 때문에 간단한 6자리수
      * @return
      */
     public static int distributeTempKey() {
-        int tempKey = Integer.parseInt(RandomStringUtils.randomNumeric(6));
+//        int tempKey = Integer.parseInt(RandomStringUtils.randomNumeric(6));
+        int tempKey = 0;
+        for (int i = 0; i < 6; i++) {
+            tempKey += (int) (Math.random() * 10) * Math.pow(10, i);
+        }
         return tempKey;
     }
 
