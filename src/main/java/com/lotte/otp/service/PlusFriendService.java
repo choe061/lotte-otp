@@ -1,13 +1,11 @@
 package com.lotte.otp.service;
 
-import com.lotte.otp.domain.ChatBotStep;
-import com.lotte.otp.domain.KakaoRequestMessageVO;
-import com.lotte.otp.domain.User2NdAuthVO;
-import com.lotte.otp.domain.UserConnection;
+import com.lotte.otp.domain.*;
 import com.lotte.otp.exception.GenerateOtpException;
 import com.lotte.otp.exception.KeyTimeoutException;
 import com.lotte.otp.exception.UnAuthorizedUserException;
 import com.lotte.otp.repository.User2NdAuthMapper;
+import com.lotte.otp.repository.UserConnectionHistoryMapper;
 import com.lotte.otp.repository.UserMapper;
 import com.lotte.otp.util.ChattingText;
 import com.lotte.otp.util.DateUtils;
@@ -18,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 
 /**
  * Created by choi on 2018. 2. 2. PM 2:04.
@@ -33,6 +33,8 @@ public class PlusFriendService {
     private User2NdAuthMapper user2NdAuthMapper;
     @Autowired
     private ChatRedisService chatRedisService;
+    @Autowired
+    private UserConnectionHistoryMapper userConnectionHistoryMapper;
 
     /**
      * 연동된 회원은 채팅 진행
@@ -71,7 +73,14 @@ public class PlusFriendService {
                 }
             case ChattingText.LOGIN_HISTORY_BUTTON:
                 //TODO USER_IP 테이블 데이터 확인
-                return "개발해야함!";
+                ArrayList<UserConnectionHistoryVO> history = userConnectionHistoryMapper.getConnectionHistory(message.getUser_key());
+                String text = "[최근 3회 로그인 내역]";
+                for (UserConnectionHistoryVO userHistory : history) {
+                    text += "\n일시 : " + userHistory.getAccessed_at();
+                    text += "\n접속 환경 : " + userHistory.getOs() + " " + userHistory.getBrowser();
+                    text += "\nIP : " + userHistory.getIp();
+                }
+                return text;
             default:
                 return ChattingText.NO_MATCHING[(int)(Math.random() * 10) % ChattingText.NO_MATCHING.length];
         }
