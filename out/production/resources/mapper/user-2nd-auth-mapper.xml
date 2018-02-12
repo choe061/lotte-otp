@@ -32,12 +32,12 @@
 
     <update id="updateLastPublishTime">
         UPDATE USER_2ND_AUTH
-        SET last_published_at=#{last_published_at}
+        SET last_published_date=#{last_published_date}
         WHERE kakao_user_key=#{kakao_user_key}
     </update>
 
     <select id="getLastPublishTime" resultType="java.lang.String">
-        SELECT last_published_at
+        SELECT last_published_date
         FROM USER_2ND_AUTH
         WHERE kakao_user_key=#{kakao_user_key}
     </select>

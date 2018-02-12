@@ -18,21 +18,21 @@ public class UserConnectionHistoryVO {
     private String ip;
     private String os;
     private String browser;
-    private String accessed_at;
+    private String accessed_date;
     private boolean success;
 
-    public UserConnectionHistoryVO(String ip, String os, String browser, String accessed_at) {
+    public UserConnectionHistoryVO(String ip, String os, String browser, String accessed_date) {
         this.ip = ip;
         this.os = os;
         this.browser = browser;
-        this.accessed_at = accessed_at;
+        this.accessed_date = accessed_date;
     }
 
-    public UserConnectionHistoryVO(String ip, String os, String browser, String accessed_at, boolean success) {
+    public UserConnectionHistoryVO(String ip, String os, String browser, String accessed_date, boolean success) {
         this.ip = ip;
         this.os = os;
         this.browser = browser;
-        this.accessed_at = accessed_at;
+        this.accessed_date = accessed_date;
         this.success = success;
     }
 }

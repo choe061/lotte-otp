@@ -19,7 +19,7 @@ public interface User2NdAuthMapper {
     User2NdAuthVO getUser2ndAuth(@Param("id") String id);   //검증을하기 위해 secret_key, last_published_at 획득
 
     void updateLastPublishTime(@Param("kakao_user_key") String kakaoUserKey,
-                               @Param("last_published_at") String lastPublishTime);
+                               @Param("last_published_date") String lastPublishTime);
 
     String getLastPublishTime(@Param("kakao_user_key") String kakaoUserKey);
 

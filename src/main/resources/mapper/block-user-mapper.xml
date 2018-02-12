@@ -6,7 +6,7 @@
 
     <insert id="blockUserIp" parameterType="com.lotte.otp.domain.BlockUserVO">
         INSERT INTO BLOCK_USER(id, ip, block_date)
-        VALUES (#{user.id}, #{user.ip}, #{user.block_date})
+        VALUES (#{user.id}, #{user.ip}, #{user.blocked_date})
     </insert>
 
     <!-- 동일한 IP주소를 기준으로 가져옴 -->

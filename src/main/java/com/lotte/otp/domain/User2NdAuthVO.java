@@ -17,7 +17,7 @@ public class User2NdAuthVO {
     private int uuid;
     private String secret_key;
     private String kakao_user_key;
-    private String last_published_at;
+    private String last_published_date;
 
     public User2NdAuthVO(int auth_id, int uuid, String secret_key) {
         this.auth_id = auth_id;

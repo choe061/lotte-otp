@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,6 +16,7 @@ import java.util.concurrent.TimeUnit;
  * Created by choi on 2018. 2. 3. PM 5:44.
  */
 @Service
+@Transactional
 public class ChatRedisService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private static final String TEMP_KEY = "_tempkey";

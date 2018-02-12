@@ -2,6 +2,7 @@ package com.lotte.otp.controller;
 
 import com.lotte.otp.domain.UserConnectionHistoryVO;
 import com.lotte.otp.service.UserService;
+import com.lotte.otp.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

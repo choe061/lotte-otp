@@ -15,7 +15,7 @@ public class BlockUserVO {
     private String id;
     private String ip;
     private int count;
-    private String block_date;
+    private String blocked_date;
 
     public BlockUserVO(String id, String ip) {
         this.id = id;
@@ -28,16 +28,16 @@ public class BlockUserVO {
         this.count = count;
     }
 
-    public BlockUserVO(String id, String ip, String block_date) {
+    public BlockUserVO(String id, String ip, String blocked_date) {
         this.id = id;
         this.ip = ip;
-        this.block_date = block_date;
+        this.blocked_date = blocked_date;
     }
 
-    public BlockUserVO(int b_id, String id, String ip, String block_date) {
+    public BlockUserVO(int b_id, String id, String ip, String blocked_date) {
         this.b_id = b_id;
         this.id = id;
         this.ip = ip;
-        this.block_date = block_date;
+        this.blocked_date = blocked_date;
     }
 }
