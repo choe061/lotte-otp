@@ -3,6 +3,7 @@ package com.lotte.otp;
 import com.lotte.otp.domain.UserConnectionHistoryVO;
 import com.lotte.otp.repository.UserConnectionHistoryMapper;
 import com.lotte.otp.repository.UserMapper;
+import com.lotte.otp.service.UserService;
 import com.lotte.otp.service.UserServiceImpl;
 import com.lotte.otp.util.DateUtils;
 import com.lotte.otp.util.OTP;
@@ -27,7 +28,7 @@ public class OtpApplicationTests {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
-	private UserServiceImpl userService;
+	private UserService userService;
 	@Autowired
 	private UserMapper userMapper;
 	@Autowired

@@ -164,7 +164,7 @@
                       <td>${myHistory.ip}</td>
                       <td>${myHistory.os}</td>
                       <td>${myHistory.browser}</td>
-                      <td>${fn:substringBefore(myHistory.accessed_at, '.')}</td>
+                      <td>${fn:substringBefore(myHistory.accessed_date, '.')}</td>
                       <c:choose>
                         <c:when test="${myHistory.success}">
                           <td>
@@ -187,7 +187,7 @@
               </table>
             </div>
           </div>
-          <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+          <div class="card-footer small text-muted">Updated at 11:59 PM</div>
         </div>
       </div>
       <!-- /.container-fluid-->
