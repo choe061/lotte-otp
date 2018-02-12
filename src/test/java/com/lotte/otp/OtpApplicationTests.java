@@ -82,9 +82,9 @@ public class OtpApplicationTests {
 	@Test
 	public void history() {
 		UserConnectionHistoryVO history = userConnectionHistoryMapper.getConnectionHistory("dYq1wL6LmnnR");
-		logger.info(DateUtils.splitTime(history.getAccessed_at()));
+		logger.info(DateUtils.splitTime(history.getAccessed_date()));
 		String text = "[최근 로그인 내역]";
-		text += "\n일시 : " + history.getAccessed_at();
+		text += "\n일시 : " + history.getAccessed_date();
 		text += "\n접속 환경 : " + history.getOs() + " " + history.getBrowser();
 		text += "\nIP : " + history.getIp();
 		logger.info(text);

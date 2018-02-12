@@ -7,6 +7,7 @@ import com.lotte.otp.exception.DuplicateUserIDException;
 import com.lotte.otp.service.User2NdAuthService;
 import com.lotte.otp.service.UserService;
 import com.lotte.otp.util.SecurityUtils;
+import com.lotte.otp.util.UserValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,9 @@ public class UserController {
     @RequestMapping(value = "/sign-up", method = RequestMethod.POST
             , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ModelAndView signUp(UserVO user) {
+        if (UserValidator.isValidationUserInfo(user)) {
+            return new ModelAndView("redirect:/sign-up", HttpStatus.NO_CONTENT);
+        }
         if (userService.createUser(user)) {
             return new ModelAndView("redirect:/login", HttpStatus.CREATED);
         } else {
