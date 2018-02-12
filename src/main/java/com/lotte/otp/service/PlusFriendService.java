@@ -49,7 +49,7 @@ public class PlusFriendService {
                 String now = DateUtils.now();
                 String secretKey = user2NdAuthMapper.getUserSecretKey(message.getUser_key());
                 try {
-                    String otp = OTP.create(DateUtils.convertStrToLongDate(now), secretKey);
+                    String otp = OTP.create(DateUtils.convertStringDateToLongDate(now), secretKey);
                     user2NdAuthMapper.updateLastPublishTime(message.getUser_key(), now);
                     return "OTP : " + otp +
                             "\n발급 일시 : " + now +
@@ -60,13 +60,13 @@ public class PlusFriendService {
                 }
             case ChattingText.OTP_EXPIRATION_TIME_BUTTON:
                 String publishTime = user2NdAuthMapper.getLastPublishTime(message.getUser_key());
-                if (SecurityUtils.isTimeoutKey(DateUtils.convertStrToLongDate(publishTime), 1)) {
+                if (SecurityUtils.isTimeoutKey(DateUtils.convertStringDateToLongDate(publishTime), 1)) {
                     return "이전에 받은 OTP는 만료되었습니다. 새로운 OTP를 요청하세요.";
                 }
                 String expirationTime = DateUtils.expireMin(publishTime, 1);
 
                 try {
-                    long remainSeconds = DateUtils.remainSeconds(expirationTime);
+                    int remainSeconds = DateUtils.remainSeconds(expirationTime);
                     return "만료 일시 : " + expirationTime + "\n현재 OTP는 " + remainSeconds + "초 남았습니다.";
                 } catch (KeyTimeoutException kte) {
                     return "이전에 받은 OTP는 만료되었습니다. 새로운 OTP를 요청하세요.";

@@ -48,7 +48,6 @@ public class OTP {
 
     /**
      * OTP 생성
-     * TODO 예외 던지기 수정,보완
      * @param secretKey
      * @return
      * @throws GenerateOtpException
@@ -59,7 +58,6 @@ public class OTP {
 
     /**
      * OTP 검증
-     * TODO 예외 던지기 수정,보완
      * @param publishTime 마지막으로 발급받은 시간
      * @param secretKey
      * @param code 웹에서 입력으로 들어온 OTP

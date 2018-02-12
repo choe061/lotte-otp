@@ -97,7 +97,7 @@
           </div>
           <div>
             <p> &bigcirc; 회원님과 카카오톡 연동을 위한 임시 키를 발급해드립니다. 플러스 친구 추가 후 안내에 따라 임시 키를 입력해주세요.</p>
-            <div style="display:inline"><p> &bigcirc; 임시 키 : </p><p id="temp-key"></p></div>
+            <div style="display:inline"><p> &bigcirc; 임시 키(만료시간 5분) : </p><p id="temp-key"></p></div>
           </div>
         </div>
 

@@ -164,7 +164,7 @@
                       <td>${myHistory.ip}</td>
                       <td>${myHistory.os}</td>
                       <td>${myHistory.browser}</td>
-                      <td>${myHistory.accessed_at}</td>
+                      <td>${fn:substringBefore(myHistory.accessed_at, '.')}</td>
                       <c:choose>
                         <c:when test="${myHistory.success}">
                           <td>

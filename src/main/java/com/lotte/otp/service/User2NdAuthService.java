@@ -48,11 +48,11 @@ public class User2NdAuthService {
     public boolean authenticateOtp(String id, String otp) {
         User2NdAuthVO user2NdAuth = user2NdAuthMapper.getUser2ndAuth(id);
         boolean result = OTP.vertify(
-                DateUtils.convertStrToLongDate(user2NdAuth.getLast_published_at()),
+                DateUtils.convertStringDateToLongDate(user2NdAuth.getLast_published_at()),
                 user2NdAuth.getSecret_key(),
                 otp
                 );
-        if (result && !SecurityUtils.isTimeoutKey(DateUtils.convertStrToLongDate(user2NdAuth.getLast_published_at()), 1)) {
+        if (result && !SecurityUtils.isTimeoutKey(DateUtils.convertStringDateToLongDate(user2NdAuth.getLast_published_at()), 1)) {
             return true;
         }
         return false;
