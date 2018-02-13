@@ -58,7 +58,7 @@ public class UserController {
     @RequestMapping(value = "/sign-up", method = RequestMethod.POST
             , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ModelAndView signUp(UserVO user) {
-        if (UserValidator.isValidationUserInfo(user)) {
+        if (!UserValidator.isValidationUserInfo(user)) {
             return new ModelAndView("redirect:/sign-up", HttpStatus.NO_CONTENT);
         }
         if (userService.createUser(user)) {

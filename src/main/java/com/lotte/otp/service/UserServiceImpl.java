@@ -54,16 +54,12 @@ public class UserServiceImpl implements UserService {
             logger.info(e.getMessage());
             return false;
         }
-        if (UserValidator.isValidationUserInfo(user)) {
-            String encodingPW = SecurityUtils.passwordEncoder(user.getPw());
-            logger.info("PW - " + encodingPW);
-            user.setPw(encodingPW);
-            user.setCreated_date(DateUtils.now());
-            userMapper.createUser(user);
-            return true;
-        } else {
-            return false;
-        }
+        String encodingPW = SecurityUtils.passwordEncoder(user.getPw());
+        logger.info("PW - " + encodingPW);
+        user.setPw(encodingPW);
+        user.setCreated_date(DateUtils.now());
+        userMapper.createUser(user);
+        return true;
     }
 
     @Override

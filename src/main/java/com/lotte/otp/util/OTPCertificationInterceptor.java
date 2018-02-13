@@ -23,7 +23,7 @@ public class OTPCertificationInterceptor extends HandlerInterceptorAdapter {
             response.sendRedirect("/login");
             return false;
         } else {
-            logger.info("OTP Certification Session => " + httpSession.getAttribute("otp-certification"));
+//            logger.info("OTP Certification Session => " + httpSession.getAttribute("otp-certification"));
             httpSession.setMaxInactiveInterval(60 * 60);    //2차 로그인 세션 보관 시간은 1시간
             return true;
         }
