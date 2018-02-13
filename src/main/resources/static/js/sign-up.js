@@ -13,8 +13,8 @@ var duplicateId = function (id) {
                 alert("사용 가능한 아이디 입니다.");
                 console.log("%cSuccess%c!!!", "color: blue", "color: red");
             },
-            error: function (request, status, error) {
-                if (status === 409) {
+            error: function (xhr, ajaxOptions, error) {
+                if (xhr.status === 409) {
                     alert("이미 존재하는 아이디입니다!")
                 } else {
                     alert("다시 시도해주세요.");
