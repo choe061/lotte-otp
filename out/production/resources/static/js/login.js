@@ -1,5 +1,5 @@
 var isCheckInputBox = function (id, pw) {
-    var idPattern = new RegExp("^[a-zA-Z][a-zA-Z0-9]{5,19}$");
+    var idPattern = new RegExp("^[a-zA-Z][a-zA-Z0-9]{4,20}$");
     var pwPattern = new RegExp("^[a-zA-Z0-9]{5,29}$");
     if (idPattern.test(id) && pwPattern.test(pw)) {
         return true;
