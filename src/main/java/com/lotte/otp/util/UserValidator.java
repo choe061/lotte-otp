@@ -31,4 +31,14 @@ public class UserValidator {
         return true;
     }
 
+    public static boolean isLoginInfo(UserVO user) {
+        if (StringUtils.isBlank(user.getId()) || StringUtils.isEmpty(user.getId())) {
+            return false;
+        }
+        if (StringUtils.isBlank(user.getPw()) || StringUtils.isEmpty(user.getPw())) {
+            return false;
+        }
+        return true;
+    }
+
 }

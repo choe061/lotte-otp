@@ -81,6 +81,12 @@ public class UserController {
         HashMap<String, Boolean> result = new HashMap<>();
         ResponseEntity<HashMap<String, Boolean>> responseEntity = null;
 
+        if (!UserValidator.isLoginInfo(user)) {
+            result.put("result", false);
+            responseEntity = new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
+            return responseEntity;
+        }
+
         if (httpSession.getAttribute("first-certification") != null) {  //세션이 있는 경우 그냥 패스
             result.put("result", true);
             responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
