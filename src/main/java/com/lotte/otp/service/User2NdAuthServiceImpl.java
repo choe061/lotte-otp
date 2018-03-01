@@ -4,6 +4,7 @@ import com.lotte.otp.domain.BlockUserVO;
 import com.lotte.otp.domain.User2NdAuthVO;
 import com.lotte.otp.domain.UserAuthStatus;
 import com.lotte.otp.repository.BlockUserMapper;
+import com.lotte.otp.repository.BlockUserRepository;
 import com.lotte.otp.repository.User2NdAuthMapper;
 import com.lotte.otp.util.DateUtils;
 import com.lotte.otp.util.OTP;
@@ -25,6 +26,8 @@ public class User2NdAuthServiceImpl implements User2NdAuthService {
     private User2NdAuthMapper user2NdAuthMapper;
     @Autowired
     private BlockUserMapper blockUserMapper;
+    @Autowired
+    private BlockUserRepository blockUserRepository;
 
     private static final int EXIST_USER_AUTH = 1;
 

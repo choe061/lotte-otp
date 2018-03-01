@@ -73,14 +73,6 @@ public class OtpApplicationTests {
 	}
 
 	@Test
-	public void serviceAllConnectionHistoryWithId() {
-		ArrayList<UserConnectionHistoryVO> serviceHistory = userService.getAllConnectionHistoryWithId("choe061");
-		ArrayList<UserConnectionHistoryVO> history = userConnectionHistoryMapper.getAllConnectionHistoryWithId("choe061");
-		logger.info("Service => " + serviceHistory);
-		logger.info(String.valueOf(history));
-	}
-
-	@Test
 	public void history() {
 		UserConnectionHistoryVO history = userConnectionHistoryMapper.getConnectionHistory("dYq1wL6LmnnR");
 		logger.info(DateUtils.splitTime(history.getAccessed_date()));
