@@ -70,7 +70,7 @@ public class UserController {
 
     /**
      * 200 : 정상 응답                          OK - OTP입력 팝업
-     * 203 : 1차 로그인은 성공이지만, OTP 미연동 회원 NO_CONTENT - OTP연동 팝업(qrcode 게시 등)
+     * 204 : 1차 로그인은 성공이지만, OTP 미연동 회원 NO_CONTENT - OTP연동 팝업(qrcode 게시 등)
      * 401 : ID/PW - 1차 로그인 실패             UNAUTHORIZED - 다시 입력
      * @param user
      * @return
