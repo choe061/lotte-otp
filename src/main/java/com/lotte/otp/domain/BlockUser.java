@@ -34,8 +34,17 @@ public class BlockUser implements Serializable {
     @Column(name = "blocked_date", nullable = false)
     private Date blocked_date;
 
+    @Transient
+    private int count;
+
     public BlockUser(String userId, String userIp) {
         this.userId = userId;
         this.userIp = userIp;
+    }
+
+    public BlockUser(String userId, String userIp, int count) {
+        this.userId = userId;
+        this.userIp = userIp;
+        this.count = count;
     }
 }

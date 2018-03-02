@@ -1,6 +1,6 @@
 package com.lotte.otp.controller;
 
-import com.lotte.otp.domain.BlockUserVO;
+import com.lotte.otp.domain.BlockUser;
 import com.lotte.otp.domain.UserAuthStatus;
 import com.lotte.otp.domain.UserConnectionHistoryVO;
 import com.lotte.otp.service.ChatRedisService;
@@ -79,8 +79,8 @@ public class User2NdAuthController {
         }
 
         if (httpSession.getAttribute("attempt") != null) {
-            if (SecurityUtils.isBlockUserIp(httpSession, new BlockUserVO(id, ipAddress))) {
-                user2NdAuthService.blockUserIp(new BlockUserVO(id, ipAddress, DateUtils.now()));
+            if (SecurityUtils.isBlockUserIp(httpSession, new BlockUser(id, ipAddress))) {
+                user2NdAuthService.blockUserIp(new BlockUser(id, ipAddress));
                 responseBody.put("reason", "5회연속 틀려 접근이 제한되었습니다. 접속하려면 문의주세요.");
                 responseEntity = new ResponseEntity<>(responseBody, HttpStatus.NOT_ACCEPTABLE); //406
                 httpSession.removeAttribute("attempt");
@@ -88,7 +88,7 @@ public class User2NdAuthController {
                 return responseEntity;
             }
         } else {
-            httpSession.setAttribute("attempt", new BlockUserVO(id, ipAddress, 0));
+            httpSession.setAttribute("attempt", new BlockUser(id, ipAddress, 0));
         }
 
         if (httpSession.getAttribute("otp-certification") != null) {
@@ -109,7 +109,7 @@ public class User2NdAuthController {
         }
 
         userService.insertConnectionHistory(false, id, history);
-        int count = ((BlockUserVO) httpSession.getAttribute("attempt")).getCount() + 1;
+        int count = ((BlockUser) httpSession.getAttribute("attempt")).getCount() + 1;
         responseBody.put("reason", "ID/OTP가 " + count + "번째 틀렸습니다. 5회연속 틀린경우 접속에 제한이 있습니다.");
         responseEntity = new ResponseEntity<>(responseBody, HttpStatus.UNAUTHORIZED);   //401
         return responseEntity;

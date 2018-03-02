@@ -1,9 +1,8 @@
 package com.lotte.otp.service;
 
-import com.lotte.otp.domain.BlockUserVO;
+import com.lotte.otp.domain.BlockUser;
 import com.lotte.otp.domain.User2NdAuthVO;
 import com.lotte.otp.domain.UserAuthStatus;
-import com.lotte.otp.repository.BlockUserMapper;
 import com.lotte.otp.repository.BlockUserRepository;
 import com.lotte.otp.repository.User2NdAuthMapper;
 import com.lotte.otp.util.DateUtils;
@@ -13,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by choi on 2018. 1. 29. AM 10:12.
@@ -24,8 +22,6 @@ public class User2NdAuthServiceImpl implements User2NdAuthService {
 
     @Autowired
     private User2NdAuthMapper user2NdAuthMapper;
-    @Autowired
-    private BlockUserMapper blockUserMapper;
     @Autowired
     private BlockUserRepository blockUserRepository;
 
@@ -64,14 +60,14 @@ public class User2NdAuthServiceImpl implements User2NdAuthService {
     }
 
     @Override
-    public void blockUserIp(BlockUserVO blockUser) {
-        blockUserMapper.blockUserIp(blockUser);
+    public void blockUserIp(BlockUser blockUser) {
+        blockUserRepository.save(blockUser);
     }
 
     @Override
     public boolean getBlockUserIp(String id, String ip) {
-        int block = blockUserMapper.getBlockUserIp(id, ip);
-        if (block >= 1) {
+        BlockUser blockUser = blockUserRepository.findByUserIdAndUserIp(id, ip);
+        if (blockUser != null) {
             return true;
         }
         return false;

@@ -30,13 +30,13 @@ public class BlockUserRepositoryTest {
     }
 
     @Test
-    public void findBlockUserByUserId() {
+    public void findByUserId() {
         BlockUser blockUser = blockUserRepository.findByUserId("tester");
         logger.info(String.valueOf(blockUser));
     }
 
     @Test
-    public void findBlockUserByUserIdAndUserIp() {
+    public void findByUserIdAndUserIp() {
         BlockUser blockUser = blockUserRepository.findByUserIdAndUserIp("tester", "123.1.0.123");
         logger.info(String.valueOf(blockUser));
     }

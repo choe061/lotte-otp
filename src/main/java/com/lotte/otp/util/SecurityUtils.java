@@ -1,6 +1,6 @@
 package com.lotte.otp.util;
 
-import com.lotte.otp.domain.BlockUserVO;
+import com.lotte.otp.domain.BlockUser;
 import com.lotte.otp.domain.UserConnection;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.mindrot.jbcrypt.BCrypt;
@@ -140,10 +140,10 @@ public class SecurityUtils {
         httpSession.invalidate();
     }
 
-    public static boolean isBlockUserIp(HttpSession httpSession, BlockUserVO attemptUser) {
-        BlockUserVO blockUser = (BlockUserVO) httpSession.getAttribute("attempt");
-        if (blockUser.getId().equals(attemptUser.getId())
-                && blockUser.getIp().equals(attemptUser.getIp())) {
+    public static boolean isBlockUserIp(HttpSession httpSession, BlockUser attemptUser) {
+        BlockUser blockUser = (BlockUser) httpSession.getAttribute("attempt");
+        if (blockUser.getUserId().equals(attemptUser.getUserId())
+                && blockUser.getUserIp().equals(attemptUser.getUserIp())) {
             int count = blockUser.getCount() + 1;
             blockUser.setCount(count);
             httpSession.setAttribute("attempt", blockUser);

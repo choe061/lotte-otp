@@ -53,48 +53,6 @@ public class OtpApplicationTests {
 	}
 
 	@Test
-	public void testTime() {
-		String str = DateUtils.now();
-		logger.info("Time => " + str);
-		logger.info("long Time => " + DateUtils.convertStringDateToLongDate(str));
-	}
-
-	@Test
-	public void tokenizeText() {
-		String text = "choe061/123123";
-		String[] keys = text.split("/");
-		logger.info(String.valueOf(keys[0]) + " " + keys[1]);
-	}
-
-	@Test
-	public void getAllConnectionHistoryWithId() {
-		ArrayList<UserConnectionHistoryVO> history = userConnectionHistoryMapper.getAllConnectionHistoryWithId("choe061");
-		logger.info(String.valueOf(history));
-	}
-
-	@Test
-	public void history() {
-		UserConnectionHistoryVO history = userConnectionHistoryMapper.getConnectionHistory("dYq1wL6LmnnR");
-		logger.info(DateUtils.splitTime(history.getAccessed_date()));
-		String text = "[최근 로그인 내역]";
-		text += "\n일시 : " + history.getAccessed_date();
-		text += "\n접속 환경 : " + history.getOs() + " " + history.getBrowser();
-		text += "\nIP : " + history.getIp();
-		logger.info(text);
-	}
-
-	@Test
-	public void otp() {
-		long time = DateUtils.convertStringDateToLongDate(DateUtils.now());
-		String otp1 = OTP.create(time, "abcdefg123456");
-		String otp2 = OTP.create(time, "abcdefg123456");
-		String otp3 = OTP.create(time, "123456abcdefg");
-		logger.info("OTP1 => " + otp1);
-		logger.info("OTP2 => " + otp2);
-		logger.info("OTP3 => " + otp3);
-	}
-
-	@Test
 	public void dateTest() {
 		Calendar calendar = Calendar.getInstance(Locale.KOREA);
 		logger.info(String.valueOf(DateUtils.now()));
