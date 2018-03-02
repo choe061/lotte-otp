@@ -6,7 +6,7 @@ import com.lotte.otp.exception.KeyTimeoutException;
 import com.lotte.otp.exception.UnAuthorizedUserException;
 import com.lotte.otp.repository.User2NdAuthMapper;
 import com.lotte.otp.repository.UserConnectionHistoryMapper;
-import com.lotte.otp.repository.UserMapper;
+import com.lotte.otp.repository.UserRepository;
 import com.lotte.otp.util.ChattingText;
 import com.lotte.otp.util.DateUtils;
 import com.lotte.otp.util.OTP;
@@ -24,7 +24,7 @@ public class PlusFriendServiceImpl implements PlusFriendService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private UserMapper userMapper;
+    private UserRepository userRepository;
     @Autowired
     private User2NdAuthMapper user2NdAuthMapper;
     @Autowired
@@ -98,7 +98,7 @@ public class PlusFriendServiceImpl implements PlusFriendService {
         try {
             vertifyUserConnection(userConnection);
             User2NdAuthVO user2NdAuth = new User2NdAuthVO(
-                    userMapper.getUUID(userConnection.getId()),
+                    userRepository.findById(userConnection.getId()).getUuid(),
                     SecurityUtils.generateSecretKey(),
                     message.getUser_key()
             );

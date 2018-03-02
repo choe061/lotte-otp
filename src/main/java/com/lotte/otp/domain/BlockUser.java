@@ -11,11 +11,11 @@ import java.util.Date;
 /**
  * Created by choi on 2018. 3. 1. PM 7:46.
  */
-@Data
 @Entity
+@Table(name = "BLOCK_USER")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "BLOCK_USER")
 public class BlockUser implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -31,7 +31,7 @@ public class BlockUser implements Serializable {
     private String userIp;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "blocked_date", nullable = false)
+    @Column(name = "blocked_date", insertable=false, updatable=false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Date blocked_date;
 
     @Transient

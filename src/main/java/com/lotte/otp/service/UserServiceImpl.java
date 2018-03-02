@@ -1,19 +1,16 @@
 package com.lotte.otp.service;
 
+import com.lotte.otp.domain.User;
 import com.lotte.otp.domain.UserAuthStatus;
 import com.lotte.otp.domain.UserConnectionHistoryVO;
-import com.lotte.otp.domain.UserVO;
 import com.lotte.otp.exception.DuplicateUserIDException;
 import com.lotte.otp.repository.UserConnectionHistoryMapper;
-import com.lotte.otp.repository.UserMapper;
-import com.lotte.otp.util.DateUtils;
+import com.lotte.otp.repository.UserRepository;
 import com.lotte.otp.util.SecurityUtils;
-import com.lotte.otp.util.UserValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
@@ -25,10 +22,9 @@ public class UserServiceImpl implements UserService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private UserMapper userMapper;
+    private UserRepository userRepository;
     @Autowired
     private UserConnectionHistoryMapper userConnectionHistoryMapper;
-    private static final int EXIST_USER = 1;
 
     /**
      * 중복된 ID가 없으면 true 리턴
@@ -39,15 +35,15 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean duplicateUserId(String userId) {
-        int user = userMapper.duplicateUserId(userId);
-        if (user == EXIST_USER) {
+        User user = userRepository.findById(userId);
+        if (user != null) {
             throw new DuplicateUserIDException();
         }
         return true;
     }
 
     @Override
-    public boolean createUser(UserVO user) {
+    public boolean createUser(User user) {
         try {
             duplicateUserId(user.getId());
         } catch (DuplicateUserIDException e) {
@@ -57,14 +53,13 @@ public class UserServiceImpl implements UserService {
         String encodingPW = SecurityUtils.passwordEncoder(user.getPw());
         logger.info("PW - " + encodingPW);
         user.setPw(encodingPW);
-        user.setCreated_date(DateUtils.now());
-        userMapper.createUser(user);
+        userRepository.save(user);
         return true;
     }
 
     @Override
     public UserAuthStatus login(String id, String pw) {
-        UserVO user = userMapper.login(id);
+        User user = userRepository.findById(id);
         logger.info("User INFO - " + user.getId() + ", " + user.getPw());
         logger.info(String.valueOf(SecurityUtils.isValidationPassword(pw, user.getPw())));
         if (SecurityUtils.isValidationPassword(pw, user.getPw())) {
@@ -76,8 +71,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void insertConnectionHistory(boolean result, String id, UserConnectionHistoryVO history) {
+        int uuid = userRepository.findById(id).getUuid();
+        history.setUuid(uuid);
         history.setSuccess(result);
-        history.setUuid(userMapper.getUUID(id));
         userConnectionHistoryMapper.insertConnectionHistory(history);
     }
 

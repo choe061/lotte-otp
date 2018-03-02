@@ -1,5 +1,6 @@
 package com.lotte.otp.service;
 
+import com.lotte.otp.domain.User;
 import com.lotte.otp.domain.UserAuthStatus;
 import com.lotte.otp.domain.UserConnectionHistoryVO;
 import com.lotte.otp.domain.UserVO;
@@ -13,7 +14,7 @@ public interface UserService {
     @Transactional(readOnly = true)
     boolean duplicateUserId(String userId);
 
-    boolean createUser(UserVO user);
+    boolean createUser(User user);
 
     @Transactional(readOnly = true)
     UserAuthStatus login(String id, String pw);

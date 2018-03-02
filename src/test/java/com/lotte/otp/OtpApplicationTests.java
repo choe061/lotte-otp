@@ -1,12 +1,8 @@
 package com.lotte.otp;
 
-import com.lotte.otp.domain.UserConnectionHistoryVO;
 import com.lotte.otp.repository.UserConnectionHistoryMapper;
-import com.lotte.otp.repository.UserMapper;
 import com.lotte.otp.service.UserService;
-import com.lotte.otp.service.UserServiceImpl;
 import com.lotte.otp.util.DateUtils;
-import com.lotte.otp.util.OTP;
 import com.lotte.otp.util.SecurityUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +14,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -29,8 +24,6 @@ public class OtpApplicationTests {
 
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private UserMapper userMapper;
 	@Autowired
 	private UserConnectionHistoryMapper userConnectionHistoryMapper;
 

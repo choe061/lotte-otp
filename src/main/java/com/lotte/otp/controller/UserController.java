@@ -1,5 +1,6 @@
 package com.lotte.otp.controller;
 
+import com.lotte.otp.domain.User;
 import com.lotte.otp.domain.UserAuthStatus;
 import com.lotte.otp.domain.UserConnectionHistoryVO;
 import com.lotte.otp.domain.UserVO;
@@ -57,7 +58,7 @@ public class UserController {
 
     @RequestMapping(value = "/sign-up", method = RequestMethod.POST
             , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ModelAndView signUp(UserVO user) {
+    public ModelAndView signUp(User user) {
         if (!UserValidator.isValidationUserInfo(user)) {
             return new ModelAndView("redirect:/sign-up", HttpStatus.NO_CONTENT);
         }
