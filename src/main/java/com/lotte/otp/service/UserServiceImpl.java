@@ -76,6 +76,7 @@ public class UserServiceImpl implements UserService {
         history.setUuid(uuid);
         history.setSuccess(result);
         userConnectionHistoryRepository.save(history);
+        logger.info("로그인 이력 => " + String.valueOf(history));
     }
 
     @Transactional

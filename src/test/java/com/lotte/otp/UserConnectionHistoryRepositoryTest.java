@@ -42,4 +42,10 @@ public class UserConnectionHistoryRepositoryTest {
         UserConnectionHistory history = userConnectionHistoryRepository.findTopByID("choe061");
         logger.info(String.valueOf(history));
     }
+
+    @Test
+    public void findTopByKakaoUserKey() {
+        UserConnectionHistory history = userConnectionHistoryRepository.findTopByKakaoUserKey("dYq1wL6LmnnR");
+        logger.info(String.valueOf(history));
+    }
 }

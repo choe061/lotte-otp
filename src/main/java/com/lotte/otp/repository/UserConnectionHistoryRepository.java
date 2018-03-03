@@ -14,7 +14,7 @@ public interface UserConnectionHistoryRepository extends JpaRepository<UserConne
 
     @Query(value = "SELECT h.* " +
             "FROM USER_CONNECTION_HISTORY AS h JOIN USER_2ND_AUTH AS a " +
-            "ON h.uuid = a.uuid\n" +
+            "ON h.uuid = a.user_uuid\n" +
             "WHERE a.kakao_user_key=?1 " +
             "ORDER BY h.accessed_date DESC LIMIT 1",
             nativeQuery = true

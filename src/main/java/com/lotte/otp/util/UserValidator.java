@@ -1,7 +1,6 @@
 package com.lotte.otp.util;
 
 import com.lotte.otp.domain.User;
-import com.lotte.otp.domain.UserVO;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -32,7 +31,7 @@ public class UserValidator {
         return true;
     }
 
-    public static boolean isLoginInfo(UserVO user) {
+    public static boolean isLoginInfo(User user) {
         if (StringUtils.isBlank(user.getId()) || StringUtils.isEmpty(user.getId())) {
             return false;
         }

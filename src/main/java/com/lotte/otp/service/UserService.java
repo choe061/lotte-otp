@@ -3,10 +3,8 @@ package com.lotte.otp.service;
 import com.lotte.otp.domain.User;
 import com.lotte.otp.domain.UserAuthStatus;
 import com.lotte.otp.domain.UserConnectionHistory;
-import com.lotte.otp.domain.UserConnectionHistoryVO;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Transactional

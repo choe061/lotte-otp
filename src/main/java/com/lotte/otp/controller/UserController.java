@@ -3,7 +3,6 @@ package com.lotte.otp.controller;
 import com.lotte.otp.domain.User;
 import com.lotte.otp.domain.UserAuthStatus;
 import com.lotte.otp.domain.UserConnectionHistory;
-import com.lotte.otp.domain.UserVO;
 import com.lotte.otp.exception.DuplicateUserIDException;
 import com.lotte.otp.service.User2NdAuthService;
 import com.lotte.otp.service.UserService;
@@ -78,7 +77,7 @@ public class UserController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST
             , consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<HashMap<String, Boolean>> login(HttpSession httpSession, @RequestBody UserVO user) {
+    public ResponseEntity<HashMap<String, Boolean>> login(HttpSession httpSession, @RequestBody User user) {
         HashMap<String, Boolean> result = new HashMap<>();
         ResponseEntity<HashMap<String, Boolean>> responseEntity = null;
 
