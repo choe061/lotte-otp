@@ -26,7 +26,7 @@ public class UserConnectionHistory implements Serializable {
     @Column(name = "id", updatable = false, nullable = false, length = 11)
     private int id;
 
-    @Transient
+    @Column(name = "uuid", updatable = false, nullable = false, length = 11)
     private int uuid;
 
     @Column(name = "ip", updatable = false, nullable = false, length = 15)
