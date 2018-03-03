@@ -1,11 +1,11 @@
 package com.lotte.otp.service;
 
 import com.lotte.otp.domain.BlockUser;
-import com.lotte.otp.domain.User2NdAuthVO;
+import com.lotte.otp.domain.User2NdAuth;
 import com.lotte.otp.domain.UserAuthStatus;
 import com.lotte.otp.repository.BlockUserRepository;
-import com.lotte.otp.repository.User2NdAuthMapper;
-import com.lotte.otp.util.DateUtils;
+import com.lotte.otp.repository.User2NdAuthRepository;
+import com.lotte.otp.repository.UserRepository;
 import com.lotte.otp.util.OTP;
 import com.lotte.otp.util.SecurityUtils;
 import org.slf4j.Logger;
@@ -21,16 +21,16 @@ public class User2NdAuthServiceImpl implements User2NdAuthService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private User2NdAuthMapper user2NdAuthMapper;
-    @Autowired
     private BlockUserRepository blockUserRepository;
-
-    private static final int EXIST_USER_AUTH = 1;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private User2NdAuthRepository user2NdAuthRepository;
 
     @Override
     public UserAuthStatus isUser2NdAuthWithID(String id) {
-        int user = user2NdAuthMapper.findUser2NdAuthWithID(id);
-        if (user >= EXIST_USER_AUTH) {
+        User2NdAuth user2NdAuth = userRepository.findById(id).getUser2NdAuth();
+        if (user2NdAuth != null) {
             return UserAuthStatus.CONNECTION_OTP;
         }
         return UserAuthStatus.UNAUTHORIZED;
@@ -38,8 +38,8 @@ public class User2NdAuthServiceImpl implements User2NdAuthService {
 
     @Override
     public UserAuthStatus isUser2NdAuthWithUserKey(String kakaoUserKey) {
-        int user = user2NdAuthMapper.findUser2NdAuthWithUserKey(kakaoUserKey);
-        if (user >= EXIST_USER_AUTH) {
+        User2NdAuth user2NdAuth = user2NdAuthRepository.findByKakaoUserKey(kakaoUserKey);
+        if (user2NdAuth != null) {
             return UserAuthStatus.CONNECTION_OTP;
         }
         return UserAuthStatus.UNAUTHORIZED;
@@ -47,13 +47,13 @@ public class User2NdAuthServiceImpl implements User2NdAuthService {
 
     @Override
     public boolean authenticateOtp(String id, String otp) {
-        User2NdAuthVO user2NdAuth = user2NdAuthMapper.getUser2ndAuth(id);
+        User2NdAuth user2NdAuth = userRepository.findById(id).getUser2NdAuth();
         boolean result = OTP.vertify(
-                DateUtils.convertStringDateToLongDate(user2NdAuth.getLast_published_date()),
-                user2NdAuth.getSecret_key(),
+                user2NdAuth.getLastPublishedDate().getTime(),
+                user2NdAuth.getSecretKey(),
                 otp
         );
-        if (result && !SecurityUtils.isTimeoutKey(DateUtils.convertStringDateToLongDate(user2NdAuth.getLast_published_date()), 1)) {
+        if (result && !SecurityUtils.isTimeoutKey(user2NdAuth.getLastPublishedDate(), 1)) {
             return true;
         }
         return false;

@@ -3,10 +3,13 @@ package com.lotte.otp.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by choi on 2018. 3. 2. PM 2:08.
@@ -14,6 +17,7 @@ import java.util.Date;
 @Entity
 @Table(name = "USER")
 @Data
+@ToString(exclude = {"user2NdAuth", "userConnectionHistories"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements Serializable {
@@ -36,6 +40,13 @@ public class User implements Serializable {
 
     @Transient
     private String pw2;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    private User2NdAuth user2NdAuth;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "uuid")
+    private List<UserConnectionHistory> userConnectionHistories = new ArrayList<>();
 
     public User(String id, String pw) {
         this.id = id;

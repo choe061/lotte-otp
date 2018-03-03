@@ -1,11 +1,12 @@
 package com.lotte.otp.util;
 
-import com.lotte.otp.domain.UserConnectionHistoryVO;
 import com.lotte.otp.exception.KeyTimeoutException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by choi on 2018. 2. 4. PM 5:39.
@@ -38,9 +39,9 @@ public class DateUtils {
      * @param min
      * @return
      */
-    public static String expireMin(String now, int min) {
+    public static String expireMin(Date now, int min) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(DateUtils.convertStringDateToLongDate(now));
+        calendar.setTimeInMillis(now.getTime());
         calendar.add(Calendar.MINUTE, min);
         return dateFormat.format(calendar.getTime());
     }

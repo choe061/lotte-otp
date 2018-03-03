@@ -1,6 +1,5 @@
 package com.lotte.otp;
 
-import com.lotte.otp.repository.UserConnectionHistoryMapper;
 import com.lotte.otp.service.UserService;
 import com.lotte.otp.util.DateUtils;
 import com.lotte.otp.util.SecurityUtils;
@@ -24,8 +23,6 @@ public class OtpApplicationTests {
 
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private UserConnectionHistoryMapper userConnectionHistoryMapper;
 
 	@Test
 	public void contextLoads() {

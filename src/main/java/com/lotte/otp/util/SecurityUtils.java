@@ -52,14 +52,14 @@ public class SecurityUtils {
 
     /**
      * Key가 발급된 시간으로부터 만료시간이 지났는지 아닌지 확인해주는 메서드
-     * @param publishTime 키 발급 시간
+     * @param publishedDate 키 발급 시간
      * @param expirationMin 키 만료 시간(분 단위)
      * @return
      */
-    public static boolean isTimeoutKey(long publishTime, int expirationMin) {
+    public static boolean isTimeoutKey(Date publishedDate, int expirationMin) {
         Date now = new Date();
         long requestTime = now.getTime();
-        if (requestTime - publishTime > expirationMin * 60 * 1000) {
+        if (requestTime - publishedDate.getTime() > expirationMin * 60 * 1000) {
             return true;
         }
         return false;

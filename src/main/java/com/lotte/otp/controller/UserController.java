@@ -2,7 +2,7 @@ package com.lotte.otp.controller;
 
 import com.lotte.otp.domain.User;
 import com.lotte.otp.domain.UserAuthStatus;
-import com.lotte.otp.domain.UserConnectionHistoryVO;
+import com.lotte.otp.domain.UserConnectionHistory;
 import com.lotte.otp.domain.UserVO;
 import com.lotte.otp.exception.DuplicateUserIDException;
 import com.lotte.otp.service.User2NdAuthService;
@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by choi on 2018. 1. 26. PM 2:57.
@@ -113,7 +113,7 @@ public class UserController {
     @RequestMapping(value = "/history", method = RequestMethod.GET)
     public ModelAndView myConnectionHistory(HttpSession httpSession) {
         ModelAndView modelAndView = new ModelAndView("history");
-        ArrayList<UserConnectionHistoryVO> connectionHistory
+        List<UserConnectionHistory> connectionHistory
                 = userService.getAllConnectionHistoryWithId(String.valueOf(httpSession.getAttribute("id")));
         modelAndView.addObject("myHistory", connectionHistory);
         return modelAndView;

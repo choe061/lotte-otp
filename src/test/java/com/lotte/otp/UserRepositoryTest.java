@@ -23,7 +23,7 @@ public class UserRepositoryTest {
     private UserRepository userRepository;
 
     @Test
-    public void findByid() {
+    public void findById() {
         User user = userRepository.findById("choe061");
         logger.info(String.valueOf(user));
     }

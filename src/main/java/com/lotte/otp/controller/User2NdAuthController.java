@@ -2,6 +2,7 @@ package com.lotte.otp.controller;
 
 import com.lotte.otp.domain.BlockUser;
 import com.lotte.otp.domain.UserAuthStatus;
+import com.lotte.otp.domain.UserConnectionHistory;
 import com.lotte.otp.domain.UserConnectionHistoryVO;
 import com.lotte.otp.service.ChatRedisService;
 import com.lotte.otp.service.User2NdAuthService;
@@ -69,7 +70,7 @@ public class User2NdAuthController {
         String id = String.valueOf(httpSession.getAttribute("id"));
 
         logger.info("[OTP] ID => " + id + ", OTP => " + otp + ", IP => " + ipAddress + ", Browser => " + browser + ", OS => " + os);
-        UserConnectionHistoryVO history = new UserConnectionHistoryVO(ipAddress, os, browser, DateUtils.now());
+        UserConnectionHistory history = new UserConnectionHistory(ipAddress, os, browser);
 
         if (user2NdAuthService.getBlockUserIp(id, ipAddress)) {
             responseBody.put("reason", "해당 아이디에 접근할 수 없습니다. 접속하려면 문의주세요.");

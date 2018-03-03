@@ -4,8 +4,8 @@ import com.lotte.otp.domain.*;
 import com.lotte.otp.exception.GenerateOtpException;
 import com.lotte.otp.exception.KeyTimeoutException;
 import com.lotte.otp.exception.UnAuthorizedUserException;
-import com.lotte.otp.repository.User2NdAuthMapper;
-import com.lotte.otp.repository.UserConnectionHistoryMapper;
+import com.lotte.otp.repository.User2NdAuthRepository;
+import com.lotte.otp.repository.UserConnectionHistoryRepository;
 import com.lotte.otp.repository.UserRepository;
 import com.lotte.otp.util.ChattingText;
 import com.lotte.otp.util.DateUtils;
@@ -15,6 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 /**
  * Created by choi on 2018. 2. 2. PM 2:04.
@@ -26,11 +28,11 @@ public class PlusFriendServiceImpl implements PlusFriendService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private User2NdAuthMapper user2NdAuthMapper;
+    private User2NdAuthRepository user2NdAuthRepository;
+    @Autowired
+    private UserConnectionHistoryRepository userConnectionHistoryRepository;
     @Autowired
     private ChatRedisService chatRedisService;
-    @Autowired
-    private UserConnectionHistoryMapper userConnectionHistoryMapper;
 
     /**
      * 연동된 회원은 채팅 진행
@@ -44,23 +46,25 @@ public class PlusFriendServiceImpl implements PlusFriendService {
         switch (message.getContent()) {
             case ChattingText.REQUEST_OTP_BUTTON:
                 String now = DateUtils.now();
-                String secretKey = user2NdAuthMapper.getUserSecretKey(message.getUser_key());
+                User2NdAuth user2NdAuth = user2NdAuthRepository.findByKakaoUserKey(message.getUser_key());
+                String secretKey = user2NdAuth.getSecretKey();
                 try {
-                    String otp = OTP.create(DateUtils.convertStringDateToLongDate(now), secretKey);
-                    user2NdAuthMapper.updateLastPublishTime(message.getUser_key(), now);
+                    String otp = OTP.create(new Date().getTime(), secretKey);
+                    user2NdAuth.setLastPublishedDate(new Date());
+                    user2NdAuthRepository.save(user2NdAuth);
                     return "OTP : " + otp +
                             "\n발급 일시 : " + now +
-                            "\n만료 일시 : " + DateUtils.expireMin(now, 1);
+                            "\n만료 일시 : " + DateUtils.expireMin(new Date(), 1);
                 } catch (GenerateOtpException e) {
                     logger.info("에러 내용 => " + e.getMessage());
                     return e.getMessage();
                 }
             case ChattingText.OTP_EXPIRATION_TIME_BUTTON:
-                String publishTime = user2NdAuthMapper.getLastPublishTime(message.getUser_key());
-                if (SecurityUtils.isTimeoutKey(DateUtils.convertStringDateToLongDate(publishTime), 1)) {
+                Date publishedDate = user2NdAuthRepository.findByKakaoUserKey(message.getUser_key()).getLastPublishedDate();
+                if (SecurityUtils.isTimeoutKey(publishedDate, 1)) {
                     return "이전에 받은 OTP는 만료되었습니다. 새로운 OTP를 요청하세요.";
                 }
-                String expirationTime = DateUtils.expireMin(publishTime, 1);
+                String expirationTime = DateUtils.expireMin(publishedDate, 1);
 
                 try {
                     int remainSeconds = DateUtils.remainSeconds(expirationTime);
@@ -69,9 +73,9 @@ public class PlusFriendServiceImpl implements PlusFriendService {
                     return "이전에 받은 OTP는 만료되었습니다. 새로운 OTP를 요청하세요.";
                 }
             case ChattingText.LOGIN_HISTORY_BUTTON:
-                UserConnectionHistoryVO history = userConnectionHistoryMapper.getConnectionHistory(message.getUser_key());
+                UserConnectionHistory history = userConnectionHistoryRepository.findTopByKakaoUserKey(message.getUser_key());
                 String text = "[최근 로그인 내역]";
-                text += "\n일시 : " + DateUtils.splitTime(history.getAccessed_date());
+                text += "\n일시 : " + history.getAccessed_date();
                 text += "\n접속 환경 : " + history.getOs() + " " + history.getBrowser();
                 text += "\nIP : " + history.getIp();
                 return text;
@@ -97,13 +101,13 @@ public class PlusFriendServiceImpl implements PlusFriendService {
 
         try {
             vertifyUserConnection(userConnection);
-            User2NdAuthVO user2NdAuth = new User2NdAuthVO(
+            User2NdAuth user2NdAuth = new User2NdAuth(
                     userRepository.findById(userConnection.getId()).getUuid(),
                     SecurityUtils.generateSecretKey(),
                     message.getUser_key()
             );
-            logger.info("[플친 연동 Service] Auth => " + user2NdAuth.getUuid() + ", " + user2NdAuth.getKakao_user_key() + ", " + user2NdAuth.getSecret_key());
-            user2NdAuthMapper.insertUser2ndAuth(user2NdAuth);
+            logger.info("[플친 연동 Service] Auth => " + user2NdAuth.getUuid() + ", " + user2NdAuth.getKakaoUserKey() + ", " + user2NdAuth.getSecretKey());
+            user2NdAuthRepository.save(user2NdAuth);
             return ChatBotStep.SUCCESS.getMessage();
         } catch (KeyTimeoutException | UnAuthorizedUserException e) {
             logger.info("[플친 연동 Service] OTP 연동에 실패했습니다. 에러 내용 => " + e.getMessage());

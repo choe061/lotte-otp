@@ -2,9 +2,9 @@ package com.lotte.otp.service;
 
 import com.lotte.otp.domain.User;
 import com.lotte.otp.domain.UserAuthStatus;
-import com.lotte.otp.domain.UserConnectionHistoryVO;
+import com.lotte.otp.domain.UserConnectionHistory;
 import com.lotte.otp.exception.DuplicateUserIDException;
-import com.lotte.otp.repository.UserConnectionHistoryMapper;
+import com.lotte.otp.repository.UserConnectionHistoryRepository;
 import com.lotte.otp.repository.UserRepository;
 import com.lotte.otp.util.SecurityUtils;
 import org.slf4j.Logger;
@@ -12,7 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * Created by choi on 2018. 1. 26. PM 4:00.
@@ -24,7 +25,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private UserConnectionHistoryMapper userConnectionHistoryMapper;
+    private UserConnectionHistoryRepository userConnectionHistoryRepository;
 
     /**
      * 중복된 ID가 없으면 true 리턴
@@ -70,21 +71,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void insertConnectionHistory(boolean result, String id, UserConnectionHistoryVO history) {
+    public void insertConnectionHistory(boolean result, String id, UserConnectionHistory history) {
         int uuid = userRepository.findById(id).getUuid();
         history.setUuid(uuid);
         history.setSuccess(result);
-        userConnectionHistoryMapper.insertConnectionHistory(history);
+        userConnectionHistoryRepository.save(history);
+    }
+
+    @Transactional
+    @Override
+    public List<UserConnectionHistory> getAllConnectionHistoryWithId(String id) {
+        return userRepository.findById(id).getUserConnectionHistories();
     }
 
     @Override
-    public ArrayList<UserConnectionHistoryVO> getAllConnectionHistoryWithId(String id) {
-        return userConnectionHistoryMapper.getAllConnectionHistoryWithId(id);
-    }
-
-    @Override
-    public UserConnectionHistoryVO getConnectionHistoryWithId(String id) {
-        return userConnectionHistoryMapper.getConnectionHistoryWithId(id);
+    public UserConnectionHistory getConnectionHistoryWithId(String id) {
+        return userConnectionHistoryRepository.findTopByID(id);
     }
 
 }
