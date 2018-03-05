@@ -11,12 +11,7 @@ public class UserValidator {
     private UserValidator() {}
 
     public static boolean isValidationUserInfo(User user) {
-        if (!StringUtils.isAlphanumeric(user.getId())
-                || StringUtils.isBlank(user.getId())
-                || StringUtils.isEmpty(user.getId())) {
-            return false;
-        }
-        if (user.getId().length() < 5 || user.getId().length() > 20) {
+        if (!isValidationId(user.getId())) {
             return false;
         }
         if (StringUtils.isBlank(user.getPw()) || StringUtils.isEmpty(user.getPw())) {
@@ -31,11 +26,20 @@ public class UserValidator {
         return true;
     }
 
-    public static boolean isLoginInfo(User user) {
+    public static boolean isValidationLoginInfo(User user) {
         if (StringUtils.isBlank(user.getId()) || StringUtils.isEmpty(user.getId())) {
             return false;
         }
         if (StringUtils.isBlank(user.getPw()) || StringUtils.isEmpty(user.getPw())) {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean isValidationId(String id) {
+        if (!StringUtils.isAlphanumeric(id)
+                || StringUtils.isEmpty(id) || StringUtils.isBlank(id)
+                || id.length() < 5 || id.length() > 20) {
             return false;
         }
         return true;

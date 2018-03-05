@@ -4,20 +4,17 @@ import com.lotte.otp.domain.User;
 import com.lotte.otp.repository.UserRepository;
 import com.lotte.otp.util.SecurityUtils;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 /**
  * Created by choi on 2018. 3. 2. PM 2:39.
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = OtpApplication.class)
-public class UserRepositoryTest {
-    private static final Logger logger = LoggerFactory.getLogger(UserRepositoryTest.class);
+public class UserRepositoryTest extends OtpApplicationTests {
 
     @Autowired
     private UserRepository userRepository;
@@ -25,16 +22,18 @@ public class UserRepositoryTest {
     @Test
     public void findById() {
         User user = userRepository.findById("choe061");
-        logger.info(String.valueOf(user));
+//        logger.info(String.valueOf(user));
+        assertThat(user, is(notNullValue(User.class)));
     }
 
     @Test
     public void addUser() {
-        User userInfo = new User(
+        User beforeSaveUser = new User(
                 "testId",
                 SecurityUtils.passwordEncoder("123123")
         );
-        User user = userRepository.save(userInfo);
-        logger.info(String.valueOf(user));
+        User afterSaveUser = userRepository.save(beforeSaveUser);
+//        logger.info(String.valueOf(user));
+        assertThat(afterSaveUser.getId(), equalTo(beforeSaveUser.getId()));
     }
 }

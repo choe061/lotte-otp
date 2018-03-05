@@ -7,6 +7,7 @@ import com.lotte.otp.service.ChatRedisService;
 import com.lotte.otp.service.User2NdAuthService;
 import com.lotte.otp.service.UserService;
 import com.lotte.otp.util.SecurityUtils;
+import com.lotte.otp.util.UserValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +42,13 @@ public class User2NdAuthController {
     @RequestMapping(value = "/connect/{id}", method = RequestMethod.GET
             , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<HashMap<String,Integer>> getOTPConnectStatus(@PathVariable("id") String id) {
+        if (!UserValidator.isValidationId(id)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         HashMap<String, Integer> result = new HashMap<>();
         ResponseEntity<HashMap<String, Integer>> responseEntity = null;
+
         if (UserAuthStatus.CONNECTION_OTP == user2NdAuthService.isUser2NdAuthWithID(id)) {
             responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
             return responseEntity;

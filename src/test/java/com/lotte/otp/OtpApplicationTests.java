@@ -16,10 +16,13 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = OtpApplication.class)
-public class OtpApplicationTests {
-	private final Logger logger = LoggerFactory.getLogger(getClass());
+public abstract class OtpApplicationTests {
+	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private UserService userService;

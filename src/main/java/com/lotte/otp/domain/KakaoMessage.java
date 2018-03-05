@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class KakaoMessage {
     private String text;
-    private KakaoMessageButtonVO message_button;
+    private KakaoMessageButton message_button;
 
     public KakaoMessage(String text) {
         this.text = text;

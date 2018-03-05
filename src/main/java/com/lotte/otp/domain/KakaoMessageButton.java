@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class KakaoMessageButtonVO {
+public class KakaoMessageButton {
 
     private String label;
     private String url;

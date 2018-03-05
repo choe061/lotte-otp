@@ -41,8 +41,13 @@ public class UserController {
 
     @RequestMapping(value = "/duplicate/{id}", method = RequestMethod.GET)
     public ResponseEntity<HashMap<String, Boolean>> duplicateUserID(@PathVariable("id") String id) {
+        if (!UserValidator.isValidationId(id)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         HashMap<String, Boolean> result = new HashMap<>();
         ResponseEntity<HashMap<String, Boolean>> responseEntity = null;
+
         try {
             userService.duplicateUserId(id);
             result.put("result", true);
@@ -81,7 +86,7 @@ public class UserController {
         HashMap<String, Boolean> result = new HashMap<>();
         ResponseEntity<HashMap<String, Boolean>> responseEntity = null;
 
-        if (!UserValidator.isLoginInfo(user)) {
+        if (!UserValidator.isValidationLoginInfo(user)) {
             result.put("result", false);
             responseEntity = new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
             return responseEntity;
