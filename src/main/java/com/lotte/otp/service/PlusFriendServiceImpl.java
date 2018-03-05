@@ -42,7 +42,7 @@ public class PlusFriendServiceImpl implements PlusFriendService {
      * @return
      */
     @Override
-    public String chat(KakaoRequestMessageVO message) {
+    public String chat(KakaoRequestMessage message) {
         switch (message.getContent()) {
             case ChattingText.REQUEST_OTP_BUTTON:
                 String now = DateUtils.now();
@@ -92,7 +92,7 @@ public class PlusFriendServiceImpl implements PlusFriendService {
      * @return ChatBotStep.SUCCESS.getMessage() or 실패 메시지
      */
     @Override
-    public String connectWebService(KakaoRequestMessageVO message) {
+    public String connectWebService(KakaoRequestMessage message) {
         UserConnection userConnection = tokenizeText(message.getContent());
         if (userConnection == null) {
             logger.info("[플친 연동 Service] OTP 연동에 실패했습니다. 에러 내용 => 토크나이징 실패");

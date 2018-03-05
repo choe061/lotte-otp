@@ -10,12 +10,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class KakaoResponseMessageVO {
+public class KakaoResponseMessage {
 
-    private KakaoMessageVO message;
-    private KakaoKeyboardVO keyboard;
+    private KakaoMessage message;
+    private KakaoKeyboard keyboard;
 
-    public KakaoResponseMessageVO(KakaoMessageVO message) {
+    public KakaoResponseMessage(KakaoMessage message) {
         this.message = message;
     }
 }

@@ -5,13 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Created by choi on 2018. 1. 29. PM 3:13.
+ * Created by choi on 2018. 1. 29. PM 2:56.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class KakaoRequestMessageVO {
-    private String user_key;
+public class KakaoKeyboard {
     private String type;
-    private String content;
+    private String[] buttons;
 }

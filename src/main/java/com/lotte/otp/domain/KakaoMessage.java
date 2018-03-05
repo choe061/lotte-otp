@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class KakaoMessageVO {
+public class KakaoMessage {
     private String text;
     private KakaoMessageButtonVO message_button;
 
-    public KakaoMessageVO(String text) {
+    public KakaoMessage(String text) {
         this.text = text;
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -75,6 +76,7 @@ public class UserServiceImpl implements UserService {
         int uuid = userRepository.findById(id).getUuid();
         history.setUuid(uuid);
         history.setSuccess(result);
+        history.setAccessed_date(new Date());
         userConnectionHistoryRepository.save(history);
         logger.info("로그인 이력 => " + String.valueOf(history));
     }

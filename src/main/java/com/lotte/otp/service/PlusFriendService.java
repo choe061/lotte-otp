@@ -1,10 +1,10 @@
 package com.lotte.otp.service;
 
-import com.lotte.otp.domain.KakaoRequestMessageVO;
+import com.lotte.otp.domain.KakaoRequestMessage;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public interface PlusFriendService {
-    String chat(KakaoRequestMessageVO message);
-    String connectWebService(KakaoRequestMessageVO message);
+    String chat(KakaoRequestMessage message);
+    String connectWebService(KakaoRequestMessage message);
 }

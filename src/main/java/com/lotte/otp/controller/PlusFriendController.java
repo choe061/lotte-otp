@@ -30,8 +30,8 @@ public class PlusFriendController {
     private ChatRedisService chatRedisService;
 
     @RequestMapping(value = "/keyboard", method = RequestMethod.GET)
-    public KakaoKeyboardVO getKeyboard() {
-        return new KakaoKeyboardVO("buttons", new String[]{
+    public KakaoKeyboard getKeyboard() {
+        return new KakaoKeyboard("buttons", new String[]{
                 ChattingText.REQUEST_OTP_BUTTON,
                 ChattingText.OTP_EXPIRATION_TIME_BUTTON,
                 ChattingText.LOGIN_HISTORY_BUTTON
@@ -44,15 +44,15 @@ public class PlusFriendController {
      * @return
      */
     @RequestMapping(value = "/message", method = RequestMethod.POST)
-    public KakaoResponseMessageVO message(@RequestBody KakaoRequestMessageVO message) {
-        KakaoResponseMessageVO response;
+    public KakaoResponseMessage message(@RequestBody KakaoRequestMessage message) {
+        KakaoResponseMessage response;
 
         //연동이 되어있는 회원의 경우
         if (UserAuthStatus.CONNECTION_OTP == user2NdAuthService.isUser2NdAuthWithUserKey(message.getUser_key())) {
             String responseMessage = plusFriendService.chat(message);
-            response = new KakaoResponseMessageVO(
-                    new KakaoMessageVO(responseMessage),
-                    new KakaoKeyboardVO("buttons", new String[]{
+            response = new KakaoResponseMessage(
+                    new KakaoMessage(responseMessage),
+                    new KakaoKeyboard("buttons", new String[]{
                             ChattingText.REQUEST_OTP_BUTTON,
                             ChattingText.OTP_EXPIRATION_TIME_BUTTON,
                             ChattingText.LOGIN_HISTORY_BUTTON
@@ -69,9 +69,9 @@ public class PlusFriendController {
 
             switch (ChatBotStep.valueOf(step)) {
                 case NO_BASE:
-                    response = new KakaoResponseMessageVO(
-                            new KakaoMessageVO(ChatBotStep.NO_BASE.getMessage()),
-                            new KakaoKeyboardVO("buttons", new String[]{ChattingText.REGIST_ID_BUTTON})
+                    response = new KakaoResponseMessage(
+                            new KakaoMessage(ChatBotStep.NO_BASE.getMessage()),
+                            new KakaoKeyboard("buttons", new String[]{ChattingText.REGIST_ID_BUTTON})
                     );
 
                     if (message.getContent().equals("아이디 등록") || message.getContent().equals(ChattingText.REGIST_ID_BUTTON)) {
@@ -79,8 +79,8 @@ public class PlusFriendController {
                     }
                     break;
                 case REQUEST_INFO:
-                    response = new KakaoResponseMessageVO(
-                            new KakaoMessageVO(ChatBotStep.REQUEST_INFO.getMessage())
+                    response = new KakaoResponseMessage(
+                            new KakaoMessage(ChatBotStep.REQUEST_INFO.getMessage())
                     );
 
                     chatRedisService.nextStep(message.getUser_key());
@@ -88,23 +88,23 @@ public class PlusFriendController {
                 case SUCCESS:
                     String responseMessage = plusFriendService.connectWebService(message);
                     if (responseMessage.equals(ChatBotStep.SUCCESS.getMessage())) {
-                        response = new KakaoResponseMessageVO(
-                                new KakaoMessageVO(responseMessage),
-                                new KakaoKeyboardVO("buttons", new String[]{
+                        response = new KakaoResponseMessage(
+                                new KakaoMessage(responseMessage),
+                                new KakaoKeyboard("buttons", new String[]{
                                         ChattingText.REQUEST_OTP_BUTTON,
                                         ChattingText.OTP_EXPIRATION_TIME_BUTTON,
                                         ChattingText.LOGIN_HISTORY_BUTTON
                                 })
                         );
                     } else {    //Exception이 발생한 경우
-                        response = new KakaoResponseMessageVO(new KakaoMessageVO(responseMessage));
+                        response = new KakaoResponseMessage(new KakaoMessage(responseMessage));
 //                        chatRedisService.setStep(message.getUser_key(), ChatBotStep.REQUEST_INFO);
                     }
                     break;
                 default:
                     logger.error("[카카오 플러스친구] => ChatBotStep is Null");
-                    response = new KakaoResponseMessageVO(
-                            new KakaoMessageVO("현재 기능이 정상적으로 작동하지 않습니다. 관리자 채팅으로 문의주세요.")
+                    response = new KakaoResponseMessage(
+                            new KakaoMessage("현재 기능이 정상적으로 작동하지 않습니다. 관리자 채팅으로 문의주세요.")
                     );
                     break;
             }
