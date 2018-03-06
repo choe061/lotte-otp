@@ -2,9 +2,12 @@ package com.lotte.otp;
 
 import com.lotte.otp.domain.User;
 import com.lotte.otp.repository.UserRepository;
+import com.lotte.otp.util.DateUtils;
 import com.lotte.otp.util.SecurityUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDateTime;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -35,5 +38,10 @@ public class UserRepositoryTest extends OtpApplicationTests {
         User afterSaveUser = userRepository.save(beforeSaveUser);
         logger.info(String.valueOf(afterSaveUser));
         assertThat(afterSaveUser.getId(), equalTo(beforeSaveUser.getId()));
+    }
+
+    @Test
+    public void datetime() {
+        logger.info(DateUtils.formatDateTime(DateUtils.currentDateTime(LocalDateTime.now())));
     }
 }

@@ -55,8 +55,8 @@ public class PlusFriendServiceImpl implements PlusFriendService {
                     user2NdAuth.setLastPublishedDate(currentDateTime);
                     user2NdAuthRepository.save(user2NdAuth);
                     return "OTP : " + otp +
-                            "\n발급 일시 : " + currentDateTime +
-                            "\n만료 일시 : " + DateUtils.expireMin(currentDateTime, 1);
+                            "\n발급 일시 : " + DateUtils.formatDateTime(currentDateTime) +
+                            "\n만료 일시 : " + DateUtils.formatDateTime(DateUtils.expireMin(currentDateTime, 1));
                 } catch (GenerateOtpException e) {
                     logger.info("에러 내용 => " + e.getMessage());
                     return e.getMessage();
@@ -72,14 +72,14 @@ public class PlusFriendServiceImpl implements PlusFriendService {
                 try {
                     int remainSeconds = DateUtils.remainSeconds(publishedDateTime);
                     LocalDateTime expirationTime = DateUtils.expireMin(publishedDateTime, 1);
-                    return "만료 일시 : " + expirationTime + "\n현재 OTP는 " + remainSeconds + "초 남았습니다.";
+                    return "만료 일시 : " + DateUtils.formatDateTime(expirationTime) + "\n현재 OTP는 " + remainSeconds + "초 남았습니다.";
                 } catch (KeyTimeoutException kte) {
                     return "이전에 받은 OTP는 만료되었습니다. 새로운 OTP를 요청하세요.";
                 }
             case ChattingText.LOGIN_HISTORY_BUTTON:
                 UserConnectionHistory history = userConnectionHistoryRepository.findTopByKakaoUserKey(message.getUser_key());
                 String text = "[최근 로그인 내역]";
-                text += "\n일시 : " + history.getAccessed_date();
+                text += "\n일시 : " + DateUtils.formatDateTime(history.getAccessed_date());
                 text += "\n접속 환경 : " + history.getOs() + " " + history.getBrowser();
                 text += "\nIP : " + history.getIp();
                 return text;

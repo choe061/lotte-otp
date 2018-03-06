@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
@@ -18,8 +19,9 @@ public class DateUtils {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
     private static final ZoneId ZONE_SEOUL = ZoneId.of("Asia/Seoul");
 
-    public static String splitTime(String date) {
-        return date.substring(0, date.length() - 2);
+    public static String formatDateTime(LocalDateTime localDateTime) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일 H시 m분 s초");
+        return localDateTime.format(dateTimeFormatter);
     }
 
     public static String now() {
@@ -77,7 +79,7 @@ public class DateUtils {
     }
 
     public static int remainSeconds(LocalDateTime expiration) {
-        LocalDateTime currentTime = LocalDateTime.now();
+        LocalDateTime currentTime = DateUtils.currentDateTime(LocalDateTime.now());
         long remainTime = currentTime.until(expiration, ChronoUnit.SECONDS);
         if (remainTime < 0) {
             throw new KeyTimeoutException();
