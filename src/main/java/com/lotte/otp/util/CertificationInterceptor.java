@@ -19,12 +19,10 @@ public class CertificationInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession httpSession = request.getSession();
-        //boolean firstCertification = (boolean) httpSession.getAttribute("first-certification");
         if (httpSession.getAttribute("first-certification") == null) {
             response.sendRedirect("/login");
             return false;
         } else {
-//            logger.info("First Certification Session => " + httpSession.getAttribute("first-certification"));
             httpSession.setMaxInactiveInterval(5 * 60); //1차 로그인 세션 보관 시간은 5분
             return true;
         }

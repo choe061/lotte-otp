@@ -71,7 +71,7 @@ public class BlockUserRepositoryTest extends OtpApplicationTests {
 
     @Test
     public void addBlockUser() {
-        BlockUser blockUser = blockUserRepository.save(new BlockUser("asdasd123", "127.0.0.1"));
+        BlockUser blockUser = blockUserRepository.save(new BlockUser("chbk92", "127.0.0.1"));
         assertThat(blockUser, is(notNullValue(BlockUser.class)));
     }
 }

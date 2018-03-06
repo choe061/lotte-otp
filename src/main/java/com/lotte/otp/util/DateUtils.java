@@ -2,21 +2,16 @@ package com.lotte.otp.util;
 
 import com.lotte.otp.exception.KeyTimeoutException;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by choi on 2018. 2. 4. PM 5:39.
  */
 public class DateUtils {
-    private static final ZoneId ZONE_SEOUL = ZoneId.of("Asia/Seoul");
+    public static final ZoneId ZONE_SEOUL = ZoneId.of("Asia/Seoul");
 
     public static String formatDateTime(LocalDateTime localDateTime) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일 H시 m분 s초");

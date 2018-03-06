@@ -13,9 +13,3 @@ cache:
     - '$HOME/.gradle'
 
 script: "./gradlew clean build"
-
-# CI 실행 완료시 메일로 알람
-notifications:
-  email:
-    recipients:
-      - qjarbs111@gmail.com

@@ -6,7 +6,6 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
 
 /**
  * Created by choi on 2018. 2. 4. AM 1:20.
