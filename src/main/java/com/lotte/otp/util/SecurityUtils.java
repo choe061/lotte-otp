@@ -61,13 +61,9 @@ public class SecurityUtils {
     public static boolean isTimeoutKey(LocalDateTime publishedDate, int expirationMin) {
         LocalDateTime expirationDateTime = publishedDate.plusMinutes(expirationMin);
         LocalDateTime currentDateTime = DateUtils.currentDateTime(LocalDateTime.now());
-        return currentDateTime.isBefore(expirationDateTime);
-//        Date now = new Date();
-//        long requestTime = now.getTime();
-//        if (requestTime - publishedDate.getTime() > expirationMin * 60 * 1000) {
-//            return true;
-//        }
-//        return false;
+        LoggerFactory.getLogger(SecurityUtils.class).info("만료시간 => " + DateUtils.formatDateTime(expirationDateTime));
+        LoggerFactory.getLogger(SecurityUtils.class).info("현재시간 => " + DateUtils.formatDateTime(currentDateTime));
+        return currentDateTime.isAfter(expirationDateTime);
     }
 
     public static UserConnection tokenizeText(String text) throws Exception {

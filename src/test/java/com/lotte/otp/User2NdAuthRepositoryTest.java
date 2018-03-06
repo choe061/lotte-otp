@@ -4,14 +4,13 @@ import com.lotte.otp.domain.User;
 import com.lotte.otp.domain.User2NdAuth;
 import com.lotte.otp.repository.User2NdAuthRepository;
 import com.lotte.otp.repository.UserRepository;
-import com.lotte.otp.util.DateUtils;
+import com.lotte.otp.service.User2NdAuthService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
@@ -21,6 +20,8 @@ import static org.junit.Assert.assertThat;
  */
 public class User2NdAuthRepositoryTest extends OtpApplicationTests {
 
+    @Autowired
+    private User2NdAuthService user2NdAuthService;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -70,5 +71,10 @@ public class User2NdAuthRepositoryTest extends OtpApplicationTests {
 
         assertThat(beforeDate, not(equalTo(afterDate)));
 //        logger.info("변경 후 => " + user2NdAuth.getLastPublishedDate());
+    }
+
+    @Test
+    public void authenticateOtp() {
+        logger.info(String.valueOf(user2NdAuthService.authenticateOtp("choe061", "920154")));
     }
 }
