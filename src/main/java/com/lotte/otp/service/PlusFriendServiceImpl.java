@@ -70,8 +70,8 @@ public class PlusFriendServiceImpl implements PlusFriendService {
                 }
 
                 try {
-                    int remainSeconds = DateUtils.remainSeconds(publishedDateTime);
                     LocalDateTime expirationTime = DateUtils.expireMin(publishedDateTime, 1);
+                    int remainSeconds = DateUtils.remainSeconds(expirationTime);
                     return "만료 일시 : " + DateUtils.formatDateTime(expirationTime) + "\n현재 OTP는 " + remainSeconds + "초 남았습니다.";
                 } catch (KeyTimeoutException kte) {
                     return "이전에 받은 OTP는 만료되었습니다. 새로운 OTP를 요청하세요.";

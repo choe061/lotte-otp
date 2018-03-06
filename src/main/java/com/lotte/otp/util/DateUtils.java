@@ -47,8 +47,9 @@ public class DateUtils {
      * @return
      */
     public static int remainSeconds(LocalDateTime expiration) {
-        LocalDateTime currentTime = DateUtils.currentDateTime(LocalDateTime.now());
-        long remainTime = expiration.until(currentTime, ChronoUnit.SECONDS);
+        long expirationTime = convertToLong(expiration);
+        long currentTime = convertToLong(currentDateTime(LocalDateTime.now()));
+        long remainTime = (expirationTime - currentTime) / 1000;
         if (remainTime < 0) {
             throw new KeyTimeoutException();
         }
