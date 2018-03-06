@@ -4,6 +4,7 @@ import com.lotte.otp.domain.BlockUser;
 import com.lotte.otp.domain.UserConnection;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.mindrot.jbcrypt.BCrypt;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -60,7 +61,7 @@ public class SecurityUtils {
     public static boolean isTimeoutKey(LocalDateTime publishedDate, int expirationMin) {
         LocalDateTime expirationDateTime = publishedDate.plusMinutes(expirationMin);
         LocalDateTime currentDateTime = DateUtils.currentDateTime(LocalDateTime.now());
-        return currentDateTime.isAfter(expirationDateTime);
+        return currentDateTime.isBefore(expirationDateTime);
 //        Date now = new Date();
 //        long requestTime = now.getTime();
 //        if (requestTime - publishedDate.getTime() > expirationMin * 60 * 1000) {

@@ -44,4 +44,9 @@ public class UserRepositoryTest extends OtpApplicationTests {
     public void datetime() {
         logger.info(DateUtils.formatDateTime(DateUtils.currentDateTime(LocalDateTime.now())));
     }
+
+    @Test
+    public void keyTimeout() {
+        logger.info(String.valueOf(SecurityUtils.isTimeoutKey(DateUtils.currentDateTime(LocalDateTime.now().minusSeconds(10)), 1)));
+    }
 }
