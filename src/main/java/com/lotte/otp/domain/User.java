@@ -1,15 +1,17 @@
 package com.lotte.otp.domain;
 
+import com.lotte.otp.config.LocalDateTimePersistenceConverter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,9 +20,10 @@ import java.util.List;
 @Entity
 @Table(name = "USER")
 @Data
-@ToString(exclude = {"user2NdAuth", "userConnectionHistories"})
+@ToString(exclude = {"user2NdAuth", "userConnectionHistories", "pw", "pw2"})
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -36,9 +39,9 @@ public class User implements Serializable {
     private String pw;
 
     @CreatedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_date", insertable=false, updatable=false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private Date created_date;
+    @Convert(converter = LocalDateTimePersistenceConverter.class)
+    @Column(name = "created_date", updatable=false)
+    private LocalDateTime created_date;
 
     @Transient
     private String pw2;
@@ -55,7 +58,7 @@ public class User implements Serializable {
         this.pw = pw;
     }
 
-    public User(String id, String pw, Date created_date) {
+    public User(String id, String pw, LocalDateTime created_date) {
         this.id = id;
         this.pw = pw;
         this.created_date = created_date;

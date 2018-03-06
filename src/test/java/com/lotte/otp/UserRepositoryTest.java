@@ -21,8 +21,8 @@ public class UserRepositoryTest extends OtpApplicationTests {
 
     @Test
     public void findById() {
-        User user = userRepository.findById("choe061");
-//        logger.info(String.valueOf(user));
+        User user = userRepository.findById("test22");
+        logger.info(String.valueOf(user));
         assertThat(user, is(notNullValue(User.class)));
     }
 
@@ -33,7 +33,7 @@ public class UserRepositoryTest extends OtpApplicationTests {
                 SecurityUtils.passwordEncoder("123123")
         );
         User afterSaveUser = userRepository.save(beforeSaveUser);
-//        logger.info(String.valueOf(user));
+        logger.info(String.valueOf(afterSaveUser));
         assertThat(afterSaveUser.getId(), equalTo(beforeSaveUser.getId()));
     }
 }

@@ -39,7 +39,7 @@ public class UserValidator {
     public static boolean isValidationId(String id) {
         if (!StringUtils.isAlphanumeric(id)
                 || StringUtils.isEmpty(id) || StringUtils.isBlank(id)
-                || id.length() < 5 || id.length() > 20) {
+                || id.length() < 5 || id.length() > 15) {
             return false;
         }
         return true;
