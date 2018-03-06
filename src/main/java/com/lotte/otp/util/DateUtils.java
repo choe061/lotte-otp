@@ -26,6 +26,10 @@ public class DateUtils {
         return dateFormat.format(new Date());
     }
 
+    public static LocalDateTime currentDateTime(LocalDateTime localDateTime) {
+        return localDateTime.atZone(ZONE_SEOUL).withZoneSameInstant(ZONE_SEOUL).toLocalDateTime();
+    }
+
     public static long convertToLong(LocalDateTime localDateTime) {
         return Date.from(localDateTime.atZone(ZONE_SEOUL).withZoneSameInstant(ZONE_SEOUL).toInstant()).getTime();
     }

@@ -59,7 +59,7 @@ public class SecurityUtils {
      */
     public static boolean isTimeoutKey(LocalDateTime publishedDate, int expirationMin) {
         LocalDateTime expirationDateTime = publishedDate.plusMinutes(expirationMin);
-        LocalDateTime currentDateTime = LocalDateTime.now();
+        LocalDateTime currentDateTime = DateUtils.currentDateTime(LocalDateTime.now());
         return currentDateTime.isAfter(expirationDateTime);
 //        Date now = new Date();
 //        long requestTime = now.getTime();
