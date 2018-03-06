@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -45,29 +46,32 @@ public class PlusFriendServiceImpl implements PlusFriendService {
     public String chat(KakaoRequestMessage message) {
         switch (message.getContent()) {
             case ChattingText.REQUEST_OTP_BUTTON:
-                String now = DateUtils.now();
+                LocalDateTime currentDateTime = LocalDateTime.now();
                 User2NdAuth user2NdAuth = user2NdAuthRepository.findByKakaoUserKey(message.getUser_key());
                 String secretKey = user2NdAuth.getSecretKey();
+
                 try {
-                    String otp = OTP.create(new Date().getTime(), secretKey);
-                    user2NdAuth.setLastPublishedDate(new Date());
+                    String otp = OTP.create(DateUtils.convertToLong(currentDateTime), secretKey);
+                    user2NdAuth.setLastPublishedDate(currentDateTime);
                     user2NdAuthRepository.save(user2NdAuth);
                     return "OTP : " + otp +
-                            "\n발급 일시 : " + now +
-                            "\n만료 일시 : " + DateUtils.expireMin(new Date(), 1);
+                            "\n발급 일시 : " + currentDateTime +
+                            "\n만료 일시 : " + DateUtils.expireMin(currentDateTime, 1);
                 } catch (GenerateOtpException e) {
                     logger.info("에러 내용 => " + e.getMessage());
                     return e.getMessage();
                 }
             case ChattingText.OTP_EXPIRATION_TIME_BUTTON:
-                Date publishedDate = user2NdAuthRepository.findByKakaoUserKey(message.getUser_key()).getLastPublishedDate();
-                if (SecurityUtils.isTimeoutKey(publishedDate, 1)) {
+                LocalDateTime publishedDateTime
+                        = user2NdAuthRepository.findByKakaoUserKey(message.getUser_key()).getLastPublishedDate();
+
+                if (SecurityUtils.isTimeoutKey(publishedDateTime, 1)) {
                     return "이전에 받은 OTP는 만료되었습니다. 새로운 OTP를 요청하세요.";
                 }
-                String expirationTime = DateUtils.expireMin(publishedDate, 1);
 
                 try {
-                    int remainSeconds = DateUtils.remainSeconds(expirationTime);
+                    int remainSeconds = DateUtils.remainSeconds(publishedDateTime);
+                    LocalDateTime expirationTime = DateUtils.expireMin(publishedDateTime, 1);
                     return "만료 일시 : " + expirationTime + "\n현재 OTP는 " + remainSeconds + "초 남았습니다.";
                 } catch (KeyTimeoutException kte) {
                     return "이전에 받은 OTP는 만료되었습니다. 새로운 OTP를 요청하세요.";

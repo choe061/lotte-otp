@@ -6,6 +6,7 @@ import com.lotte.otp.domain.UserAuthStatus;
 import com.lotte.otp.repository.BlockUserRepository;
 import com.lotte.otp.repository.User2NdAuthRepository;
 import com.lotte.otp.repository.UserRepository;
+import com.lotte.otp.util.DateUtils;
 import com.lotte.otp.util.OTP;
 import com.lotte.otp.util.SecurityUtils;
 import org.slf4j.Logger;
@@ -49,7 +50,7 @@ public class User2NdAuthServiceImpl implements User2NdAuthService {
     public boolean authenticateOtp(String id, String otp) {
         User2NdAuth user2NdAuth = userRepository.findById(id).getUser2NdAuth();
         boolean result = OTP.vertify(
-                user2NdAuth.getLastPublishedDate().getTime(),
+                DateUtils.convertToLong(user2NdAuth.getLastPublishedDate()),
                 user2NdAuth.getSecretKey(),
                 otp
         );

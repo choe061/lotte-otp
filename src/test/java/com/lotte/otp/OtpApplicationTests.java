@@ -45,15 +45,4 @@ public abstract class OtpApplicationTests {
 		logger.info("tempKey => " + tempKey);
 	}
 
-	@Test
-	public void dateTest() {
-		Calendar calendar = Calendar.getInstance(Locale.KOREA);
-		logger.info(String.valueOf(DateUtils.now()));
-		long time = DateUtils.convertStringDateToLongDate(DateUtils.now());
-		long l = calendar.getTimeInMillis();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
-		String d = dateFormat.format(new Date(l));
-		logger.info("l : " + d);
-		logger.info("t : " + time);
-	}
 }

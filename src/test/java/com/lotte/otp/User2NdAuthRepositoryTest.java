@@ -4,11 +4,13 @@ import com.lotte.otp.domain.User;
 import com.lotte.otp.domain.User2NdAuth;
 import com.lotte.otp.repository.User2NdAuthRepository;
 import com.lotte.otp.repository.UserRepository;
+import com.lotte.otp.util.DateUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -60,11 +62,11 @@ public class User2NdAuthRepositoryTest extends OtpApplicationTests {
     public void successUpdateLastPublishedDate() {
         User2NdAuth user2NdAuth = user2NdAuthRepository.findByKakaoUserKey("dYq1wL6LmnnR");
 //        logger.info("변경 전 => " + user2NdAuth.getLastPublishedDate());
-        Date beforeDate = user2NdAuth.getLastPublishedDate();
+        LocalDateTime beforeDate = user2NdAuth.getLastPublishedDate();
 
-        user2NdAuth.setLastPublishedDate(new Date());
+        user2NdAuth.setLastPublishedDate(LocalDateTime.now());
         user2NdAuth = user2NdAuthRepository.save(user2NdAuth);
-        Date afterDate = user2NdAuth.getLastPublishedDate();
+        LocalDateTime afterDate = user2NdAuth.getLastPublishedDate();
 
         assertThat(beforeDate, not(equalTo(afterDate)));
 //        logger.info("변경 후 => " + user2NdAuth.getLastPublishedDate());

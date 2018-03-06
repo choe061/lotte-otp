@@ -4,6 +4,9 @@ import com.lotte.otp.exception.KeyTimeoutException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -12,8 +15,8 @@ import java.util.Locale;
  * Created by choi on 2018. 2. 4. PM 5:39.
  */
 public class DateUtils {
-
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+    private static final ZoneId ZONE_SEOUL = ZoneId.of("Asia/Seoul");
 
     public static String splitTime(String date) {
         return date.substring(0, date.length() - 2);
@@ -21,6 +24,10 @@ public class DateUtils {
 
     public static String now() {
         return dateFormat.format(new Date());
+    }
+
+    public static long convertToLong(LocalDateTime localDateTime) {
+        return Date.from(localDateTime.atZone(ZONE_SEOUL).withZoneSameInstant(ZONE_SEOUL).toInstant()).getTime();
     }
 
     public static long convertStringDateToLongDate(String strDate) {
@@ -46,6 +53,10 @@ public class DateUtils {
         return dateFormat.format(calendar.getTime());
     }
 
+    public static LocalDateTime expireMin(LocalDateTime currentDateTime, int min) {
+        return currentDateTime.plusMinutes(min);
+    }
+
     /**
     * 남은 초를 반환
      * @param expiration
@@ -55,6 +66,15 @@ public class DateUtils {
         long expirationTime = DateUtils.convertStringDateToLongDate(expiration);
         long currentTime = DateUtils.convertStringDateToLongDate(DateUtils.now());
         long remainTime = (expirationTime - currentTime) / 1000;
+        if (remainTime < 0) {
+            throw new KeyTimeoutException();
+        }
+        return (int) remainTime;
+    }
+
+    public static int remainSeconds(LocalDateTime expiration) {
+        LocalDateTime currentTime = LocalDateTime.now();
+        long remainTime = currentTime.until(expiration, ChronoUnit.SECONDS);
         if (remainTime < 0) {
             throw new KeyTimeoutException();
         }

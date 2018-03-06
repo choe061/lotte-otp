@@ -7,6 +7,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Enumeration;
 
@@ -54,15 +55,18 @@ public class SecurityUtils {
      * Key가 발급된 시간으로부터 만료시간이 지났는지 아닌지 확인해주는 메서드
      * @param publishedDate 키 발급 시간
      * @param expirationMin 키 만료 시간(분 단위)
-     * @return
+     * @return true - 만료, false - 유효
      */
-    public static boolean isTimeoutKey(Date publishedDate, int expirationMin) {
-        Date now = new Date();
-        long requestTime = now.getTime();
-        if (requestTime - publishedDate.getTime() > expirationMin * 60 * 1000) {
-            return true;
-        }
-        return false;
+    public static boolean isTimeoutKey(LocalDateTime publishedDate, int expirationMin) {
+        LocalDateTime expirationDateTime = publishedDate.plusMinutes(expirationMin);
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        return currentDateTime.isAfter(expirationDateTime);
+//        Date now = new Date();
+//        long requestTime = now.getTime();
+//        if (requestTime - publishedDate.getTime() > expirationMin * 60 * 1000) {
+//            return true;
+//        }
+//        return false;
     }
 
     public static UserConnection tokenizeText(String text) throws Exception {

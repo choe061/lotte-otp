@@ -1,13 +1,16 @@
 package com.lotte.otp.domain;
 
+import com.lotte.otp.config.LocalDateTimePersistenceConverter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -19,6 +22,7 @@ import java.util.Date;
 @ToString(exclude = "user")
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class User2NdAuth implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -38,9 +42,9 @@ public class User2NdAuth implements Serializable {
     private String kakaoUserKey;
 
     @LastModifiedDate
-    @Temporal(TemporalType.TIMESTAMP)
+    @Convert(converter = LocalDateTimePersistenceConverter.class)
     @Column(name = "last_published_date")
-    private Date lastPublishedDate;
+    private LocalDateTime lastPublishedDate;
 
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId

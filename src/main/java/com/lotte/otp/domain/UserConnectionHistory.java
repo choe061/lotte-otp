@@ -1,13 +1,16 @@
 package com.lotte.otp.domain;
 
+import com.lotte.otp.config.LocalDateTimePersistenceConverter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -18,6 +21,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class UserConnectionHistory implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -39,9 +43,9 @@ public class UserConnectionHistory implements Serializable {
     private String browser;
 
     @CreatedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "accessed_date", insertable=false, updatable=false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private Date accessed_date;
+    @Convert(converter = LocalDateTimePersistenceConverter.class)
+    @Column(name = "accessed_date", updatable=false)
+    private LocalDateTime accessed_date;
 
     @Column(name = "success", updatable = false, nullable = false)
     private boolean success;

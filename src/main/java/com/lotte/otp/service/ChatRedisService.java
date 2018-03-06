@@ -71,7 +71,6 @@ public class ChatRedisService {
 
     public void createTempKey(String id) {
         int tempKey = SecurityUtils.distributeTempKey();
-        logger.info("TempKey =>>> " + tempKey);
         redisTemplate.opsForValue().set(id+TEMP_KEY, tempKey, 5, TimeUnit.MINUTES);
     }
 }

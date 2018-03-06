@@ -7,7 +7,6 @@ import javax.persistence.Converter;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Date;
 
 /**
@@ -22,7 +21,6 @@ public class LocalDateTimePersistenceConverter implements AttributeConverter<Loc
         if (attribute == null) {
             attribute = LocalDateTime.now();
         }
-        LoggerFactory.getLogger(getClass()).info(String.valueOf(attribute));
         return Date.from(attribute.atZone(ZONE_SEOUL).withZoneSameInstant(ZONE_SEOUL).toInstant());
     }
 
