@@ -64,12 +64,12 @@ public class UserController {
             , consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ModelAndView signUp(User user) {
         if (!UserValidator.isValidationUserInfo(user)) {
-            return new ModelAndView("redirect:/sign-up", HttpStatus.NO_CONTENT);
+            return new ModelAndView("redirect:/sign-up", HttpStatus.BAD_REQUEST);
         }
         if (userService.createUser(user)) {
             return new ModelAndView("redirect:/login", HttpStatus.CREATED);
         } else {
-            return new ModelAndView("redirect:/sign-up", HttpStatus.BAD_REQUEST);
+            return new ModelAndView("redirect:/sign-up", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -88,7 +88,7 @@ public class UserController {
 
         if (!UserValidator.isValidationLoginInfo(user)) {
             result.put("result", false);
-            responseEntity = new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
+            responseEntity = new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
             return responseEntity;
         }
 
