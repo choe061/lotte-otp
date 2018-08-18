@@ -2,7 +2,7 @@ package com.lotte.otp.service;
 
 import com.lotte.otp.domain.BlockUser;
 import com.lotte.otp.domain.User2NdAuth;
-import com.lotte.otp.domain.UserAuthStatus;
+import com.lotte.otp.domain.type.UserAuthStatus;
 import com.lotte.otp.repository.BlockUserRepository;
 import com.lotte.otp.repository.User2NdAuthRepository;
 import com.lotte.otp.repository.UserRepository;

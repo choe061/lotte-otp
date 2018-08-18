@@ -1,7 +1,7 @@
 package com.lotte.otp.service;
 
 import com.lotte.otp.domain.User;
-import com.lotte.otp.domain.UserAuthStatus;
+import com.lotte.otp.domain.type.UserAuthStatus;
 import com.lotte.otp.domain.UserConnectionHistory;
 import com.lotte.otp.exception.DuplicateUserIDException;
 import com.lotte.otp.repository.UserConnectionHistoryRepository;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Date;
 import java.util.List;
 
 /**

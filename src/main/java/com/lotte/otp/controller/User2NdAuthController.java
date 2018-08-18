@@ -1,7 +1,7 @@
 package com.lotte.otp.controller;
 
 import com.lotte.otp.domain.BlockUser;
-import com.lotte.otp.domain.UserAuthStatus;
+import com.lotte.otp.domain.type.UserAuthStatus;
 import com.lotte.otp.domain.UserConnectionHistory;
 import com.lotte.otp.service.ChatRedisService;
 import com.lotte.otp.service.User2NdAuthService;

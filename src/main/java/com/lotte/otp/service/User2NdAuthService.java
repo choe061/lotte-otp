@@ -1,7 +1,7 @@
 package com.lotte.otp.service;
 
 import com.lotte.otp.domain.BlockUser;
-import com.lotte.otp.domain.UserAuthStatus;
+import com.lotte.otp.domain.type.UserAuthStatus;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional

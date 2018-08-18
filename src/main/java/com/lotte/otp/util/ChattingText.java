@@ -1,9 +1,12 @@
 package com.lotte.otp.util;
 
+import com.lotte.otp.domain.KakaoKeyboard;
+import com.lotte.otp.domain.type.Button;
+
 /**
  * Created by choi on 2018. 2. 2. PM 2:27.
  */
-public class ChattingText {
+public final class ChattingText {
     private ChattingText() {}
 
     public static final String[] NO_MATCHING = {
@@ -16,4 +19,9 @@ public class ChattingText {
     public static final String REQUEST_OTP_BUTTON = "OTP (재)발급";
     public static final String OTP_EXPIRATION_TIME_BUTTON = "OTP 만료 시간 확인";
     public static final String LOGIN_HISTORY_BUTTON = "로그인 내역 확인";
+    public static final KakaoKeyboard DEFAULT_KEYBOARD = new KakaoKeyboard("buttons", new String[]{
+            Button.REQUEST_OTP_BUTTON.getTitle(),
+            Button.OTP_EXPIRATION_TIME_BUTTON.getTitle(),
+            Button.LOGIN_HISTORY_BUTTON.getTitle()
+    });
 }

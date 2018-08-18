@@ -1,4 +1,4 @@
-package com.lotte.otp.domain;
+package com.lotte.otp.domain.type;
 
 /**
  * Created by choi on 2018. 1. 31. PM 2:42.

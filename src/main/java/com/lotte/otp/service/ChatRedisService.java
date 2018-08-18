@@ -1,6 +1,6 @@
 package com.lotte.otp.service;
 
-import com.lotte.otp.domain.ChatBotStep;
+import com.lotte.otp.domain.type.ChatBotStep;
 import com.lotte.otp.exception.KeyTimeoutException;
 import com.lotte.otp.util.SecurityUtils;
 import org.slf4j.Logger;
